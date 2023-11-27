@@ -1,0 +1,17 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xValDefine{xC}[0.0]
+\xValDefine{yC}[0.0]
+
+\path (xC|-yC) node[nmos,bulk,name=mos] {};
+
+\path (mos.G) node[left] {G};
+\path (mos.S) node[right] {S};
+\path (mos.D) node[right] {D};
+\path (mos.bulk) node[right] {B};
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,103 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-7]
+\xValDefine{xR}[+7]
+\xValMiddle{xC}{xL}{xR}
+\xValDefine{disR}[0.1]
+\xValDefine{disG}[0.16]
+
+\foreach \x/\n in {xB/0.15,xS/0.42,xD/0.85,xM/0.5}
+{
+    \xValPropor{\x N}{xL}{xC}[\n]
+    \xValPropor{\x NL}{xL}{xC}[\fpeval{\n-\disR}]
+    \xValPropor{\x NR}{xL}{xC}[\fpeval{\n+\disR}]
+}
+
+\xValMiddle{xGN}{xSN}{xDN}
+\xValOffpro{xGNL}{xGN}{xL}{xC}[-\disG]
+\xValOffpro{xGNR}{xGN}{xL}{xC}[+\disG]
+\xValPropor{xtox}{xSNL}{xSN}[0.25]
+
+\foreach \x in {xB,xS,xD,xG,xM}
+{
+    \xValMirror{\x P}{\x N}{xC}
+    \xValMirror{\x PL}{\x NR}{xC}
+    \xValMirror{\x PR}{\x NL}{xC}
+}
+
+\xSetY
+\xValDefine{yB}[-1.3]
+\xValDefine{yA}[+1.3]
+\xValPropor{yR}{yB}{yA}[0.7]
+\xValPropor{yW}{yB}{yA}[0.12]
+\xValPropor{yWt}{yB}{yA}[0.25]
+\xValPropor{ySiO}{yB}{yA}[1.17]
+\xValPropor{yPoly}{yB}{yA}[1.30]
+\xValPropor{yPin}{yB}{yA}[1.5]
+
+\xValPropor{yLDRx}{yR}{yWt}[0.7]
+\xValPropor{yLDFx}{yR}{yWt}[0.5]
+\xValPropor{yLDR}{yLDRx}{yLDFx}[0.4]
+\xValPropor{yLDF}{yLDFx}{yR}[0.5]
+\xValPropor{yLEF}{yA}{yR}[0.8]
+
+\draw[fill=mnmP2] (xL|-yB) rectangle (xR|-yA);
+\draw[fill=mnmN2] (xC|-yW) rectangle (xR|-yA);
+
+\path (xMP|-yWt) node[white] {$n$阱};
+\path (xMN|-yWt) node[white] {$p$衬底};
+
+\foreach \x in {xD,xS}
+{
+    \draw[fill=mnmN0] (\x NL|-yA) rectangle node[white] {$n^{+}$} (\x NR|-yR);
+    \draw[fill=mnmP0] (\x PL|-yA) rectangle node[white] {$p^{+}$} (\x PR|-yR);
+}
+
+\foreach \x in {xB}
+{
+    \draw[fill=mnmP0] (\x NL|-yA) rectangle node[white] {$p^{+}$} (\x NR|-yR);
+    \draw[fill=mnmN0] (\x PL|-yA) rectangle node[white] {$n^{+}$} (\x PR|-yR);
+}
+
+\foreach \t in {N,P}
+{
+    \draw[fill=mnmSiO2] (xG\t L|-yA) rectangle
+     node[black] {\small \cx{SiO2}} (xG\t R|-ySiO);
+     \draw[fill=mnmPolySi] (xG\t L|-ySiO) rectangle node[white] {\small \cx{Poly-Si}} (xG\t R|-yPoly);
+}
+
+\foreach \t in {N,P}
+{
+    \foreach \x/\n/\y in {xB/B/yA,xS/S/yA,xD/D/yA,xG/G/yPoly}
+    {
+        \draw (\x\t|-\y) -- (\x\t|-yPin) node[ocirc] {} node[above] {\n};
+    }
+}
+
+\foreach \t in {N,P}
+{
+    \path (xM\t|-yB) node[below] {\large \t MOS};
+}
+
+\draw[ultra thin] (xGNL|-yR) -- (xGNL|-yLDRx);
+\draw[ultra thin] (xGNR|-yR) -- (xGNR|-yLDRx);
+\draw[ultra thin] (xSNR|-yR) -- (xSNR|-yLDFx);
+\draw[ultra thin] (xDNL|-yR) -- (xDNL|-yLDFx);
+
+\draw[ultra thin,latex-latex] (xSNR|-yLDF) -- (xGNL|-yLDF) node[left] {$L_D$};
+\draw[ultra thin,latex-latex] (xDNL|-yLDF) -- (xGNR|-yLDF) node[right] {$L_D$};
+
+\draw[ultra thin,latex-latex] (xGNL|-yLDR) -- node[above] {$L_{drawn}$} (xGNR|-yLDR);
+\draw[ultra thin,latex-latex] (xSNR|-yLEF) -- node[above] {$L_{eff}$} (xDNL|-yLEF);
+
+\draw[ultra thin] (xSNL|-ySiO) -- (xGNL|-ySiO);
+\draw[ultra thin,latex-latex] (xtox|-ySiO) -- node[left] {$t_{ox}$} (xtox|-yA);
+
+\xValBorder{xL}{xR}{yB}[-0.7]{yPin}[+0.7]*
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,73 @@
+\section{亚阈值导电}
+\uwave{亚阈值导电}（Subthreshold conduction）是指，当MOS的$V_{GS}<V_{TH}$时，沟道实际不会立即关断（仍然存在一个“弱反型层”），$I_D$也并非零，而是与$V_{GS}$呈现指数关系，经验公式为
+\begin{Equation}
+    I_D=\alpha\frac{W}{L}\exp\frac{V_{GS}-V_{TH}}{\xi V_T}
+\end{Equation}
+而我们知道，在饱和区（这里假定$V_{DS}$足够大使器件不处于线性区），$I_D$与$V_{GS}$呈平方关系
+\begin{Equation}
+    I_D=\mu_n C_{ox}\frac{W}{L}[\qty(V_{GS}-V_{TH})^2/2]
+\end{Equation}
+
+而现在的问题是，$V_{GS}$在增大到多少时，器件会由亚阈值区过渡到饱和区？这看上去是一个相当复杂的问题，但有一个巧妙的定义是：定义亚阈值区和饱和区的界限是两者跨导相等处。
+
+\begin{BoxFormula}[亚阈值跨导]
+    当器件处于亚阈值区时，跨导可以表示为
+    \begin{Equation}
+        g_m=\frac{I_D}{\xi V_{T}}
+    \end{Equation}
+    当器件处于饱和区时，跨导可以表示为
+    \begin{Equation}
+        g_m=\frac{2I_D}{V_{GS}-V_{TH}}
+    \end{Equation}
+\end{BoxFormula}
+
+依照定义，界限处的$V_{GS}$应当满足
+\begin{Equation}
+    \frac{I_D}{\xi V_T}=\frac{2I_D}{V_{GS}-V_{TH}}
+\end{Equation}
+约去$I_D$，得到
+\begin{Equation}
+    \frac{1}{\xi V_T}=\frac{2}{V_{GS}-V_{TH}}
+\end{Equation}
+即
+\begin{Equation}
+    V_{GS}=V_{TH}+2\xi V_{T}
+\end{Equation}
+由此我们就得到了亚阈值区和饱和区的分界线，即$V_{GS}=V_{TH}+2\xi V_{T}$，整理电流的结论
+\begin{BoxFormula}[亚阈值电流]
+    当$V_{GS}<V_{TH}+2\xi V_{T}$，器件处于亚阈值区，电流适用指数规律
+    \begin{Equation}
+        I_D=\alpha\frac{W}{L}\exp\frac{V_{GS}-V_{TH}}{\xi V_T}
+    \end{Equation}
+    当$V_{GS}>V_{TH}+2\xi V_{T}$，器件处于饱和区，电流适用平方规律
+    \begin{Equation}
+        I_D=\mu_n C_{ox}\frac{W}{L}[(V_{GS}-V_{TH})^2/2]
+    \end{Equation}
+\end{BoxFormula}
+这里$\xi$是一个非理想因子，通常取$\xi=1.5$，而$\alpha$是一个与器件特性有关的独立参数。但现在的问题是，分界点$V_{GS}=V_{TH}+2\xi V_T$保证了跨导$g_m$的连续性，却未能保证电流$I_D$的连续性，而$I_D$中还包含独立参数$\alpha$。再一次，出于建模的目的，我们抛开事实不谈，将$\alpha$作为非独立参数，其取值应当使$I_D$在分界点$V_{GS}=V_{TH}+2\xi V_T$连续，由此，得到方程
+\begin{Equation}
+    \alpha\frac{W}{L}\exp\frac{2\xi V_{T}}{\xi V_T}=2\mu_nC_{ox}\frac{W}{L}(\xi V_{T})^2
+\end{Equation}
+即
+\begin{Equation}
+    \alpha=2\mu_nC_{ox}(\xi V_T)^2/
+    \e^2
+\end{Equation}
+基于此，我们就可以连续的绘制出$I_D$的图像了，如\xref{fig:亚阈值电流}所示。我们注意到，亚阈值电流是如此之小，以至于在线性坐标下完全看不出区别，但在对数坐标下，亚阈值电流就很明显了。
+
+\begin{Figure}[亚阈值电流]
+    \begin{FigureSub}[线性坐标连续曲线]
+        \includegraphics[scale=0.82]{build/Chapter02A_01g.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[对数坐标连续曲线]
+        \includegraphics[scale=0.82]{build/Chapter02A_01h.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[线性坐标分区曲线]
+        \includegraphics[scale=0.82]{build/Chapter02A_01i.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[对数坐标分区曲线]
+        \includegraphics[scale=0.82]{build/Chapter02A_01j.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+在\xref{fig:对数坐标连续曲线}中，我们也可以看到，当进入亚阈值区时，电流$I_D$大约在\xnum{1e-6}{A}以下。

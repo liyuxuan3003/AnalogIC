@@ -1,0 +1,152 @@
+\ProvidesPackage{xTikZ}
+
+% tikz
+\RequirePackage{tikz}
+
+\usetikzlibrary{intersections}
+\usetikzlibrary{decorations.markings}
+
+\usetikzlibrary{quotes}
+\usetikzlibrary{angles}
+
+\usetikzlibrary{graphs}
+
+\tikzset%
+{%
+    point/.style=%
+    {%
+        circle,%
+        draw=#1,%
+        solid,%
+        thin,%
+        radius=0.03,%
+        fill=white,%
+        inner sep=0.8pt%
+    },%
+    point/.default=black%
+}%
+
+% pgfplots
+\RequirePackage{pgfplots}
+\pgfplotsset{trig format plots=rad}
+\usepgfplotslibrary{fillbetween}
+
+% circuitikz
+\RequirePackage[european,americaninductors,americanvoltages,americancurrents,RPvoltages]{circuitikz}
+
+\ctikzset{logic ports=ieee}
+\ctikzset{voltage/distance from node=0.85}
+
+\ctikzset{bipoles/length=1.4cm}
+\ctikzset{resistors/scale=0.65}
+\ctikzset{capacitors/scale=0.75}
+\ctikzset{inductors/scale=0.65}
+\ctikzset{sources/scale=0.9}
+\ctikzset{diodes/scale=0.75}
+\ctikzset{logic ports/scale=0.65}
+\ctikzset{tripoles/mos style/arrows}
+
+% mnm color
+\definecolor{mnmP}{HTML}{FF0000}
+\definecolor{mnmN}{HTML}{0000FF}
+\colorlet{mnmP0}{mnmP!95!white}
+\colorlet{mnmN0}{mnmN!95!white}
+\colorlet{mnmP1}{mnmP!65!white}
+\colorlet{mnmN1}{mnmN!65!white}
+\colorlet{mnmP2}{mnmP!40!white}
+\colorlet{mnmN2}{mnmN!40!white}
+\colorlet{mnmP3}{mnmP!20!white}
+\colorlet{mnmN3}{mnmN!20!white}
+\colorlet{mnmAl}{black}
+\colorlet{mnmSiO2}{green!30!white}
+\colorlet{mnmSi3N4}{green!50!yellow!30!white}
+\colorlet{mnmLig}{yellow!30!white}
+\colorlet{mnmPolySi}{black!50!white}
+\colorlet{mnmDep}{black!30!white}
+
+% x-draw system
+\def\xEval#1{\expandafter\csname#1\endcsname}%
+
+\NewDocumentCommand{\xGeneratePoints}{mm}%
+{%
+    \foreach \x in {#1}%
+    {%
+        \path (\xEval{\x},0) coordinate(\x);%
+    }%
+    \foreach \y in {#2}%
+    {%
+        \path (0,\xEval{\y}) coordinate(\y);%
+    }%
+    \foreach \x in {#1}%
+    {%
+        \foreach \y in {#2}%
+        {%
+            \path (\xEval{\x},\xEval{\y}) coordinate(\x/\y);%
+        }%
+    }%
+}%
+
+\newcounter{xstatus}
+\newcounter{xstatusbck}
+
+\NewDocumentCommand{\xValDefine}{mO{0}}%
+{%
+    \expandafter\xdef\csname #1\endcsname{#2}%
+    \ifthenelse{\thexstatus=0}%
+    {%
+        \path (\xEval{#1},0) coordinate (#1);%
+    }%
+    {%
+        \path (0,\xEval{#1}) coordinate (#1);%
+    }%
+}%
+
+\NewDocumentCommand{\xSetX}{}{\setcounter{xstatus}{0}}
+\NewDocumentCommand{\xSetY}{}{\setcounter{xstatus}{1}}
+
+\NewDocumentCommand{\xSaveXY}{}{\setcounter{xstatusbck}{\thexstatus}}
+\NewDocumentCommand{\xLoadXY}{}{\setcounter{xstatus}{\thexstatusbck}}
+
+\NewDocumentCommand{\xValOffset}{mmO{0}}%
+{%
+    \xValDefine{#1}[\fpeval{(\xEval{#2})+(#3)}]%
+}%
+
+\NewDocumentCommand{\xValPropor}{mmmO{0.5}}%
+{%
+    \xValDefine{#1}[\fpeval{(1-#4)*(\xEval{#2})+(#4)*(\xEval{#3})}]%
+}%
+
+\NewDocumentCommand{\xValMiddle}{mmm}%
+{%
+    \xValPropor{#1}{#2}{#3}[0.5]%
+}%
+
+\NewDocumentCommand{\xValMirror}{mmm}%
+{%
+    \xValPropor{#1}{#2}{#3}[2]%
+}%
+
+\NewDocumentCommand{\xValOffpro}{mmmmO{0.5}}%
+{%
+    \xValDefine{#1}[\fpeval{(1-#5)*(\xEval{#3})+(#5)*(\xEval{#4})-\xEval{#3}+\xEval{#2}}]%
+}%
+
+\NewDocumentCommand{\xValSymmet}{mmmm}%
+{%
+    \xValDefine{#1}[\fpeval{\xEval{#3}+\xEval{#4}-\xEval{#2}}]%
+}%
+
+%L R B A
+\NewDocumentCommand{\xValBorder}{mO{-0.25}mO{+0.25}mO{-0.25}mO{+0.25}s}%
+{%
+    \xSaveXY%
+    \xSetX%
+    \xValOffset{xBorL}{#1}[#2]%
+    \xValOffset{xBorR}{#3}[#4]%
+    \xSetY%
+    \xValOffset{yBorB}{#5}[#6]%
+    \xValOffset{yBorA}{#7}[#8]%
+    \IfBooleanT{#9}{\draw[ultra thin] (xBorL|-yBorB) rectangle (xBorR|-yBorA);}%
+    \xLoadXY%
+}%

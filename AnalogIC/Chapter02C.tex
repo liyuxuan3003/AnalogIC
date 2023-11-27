@@ -1,0 +1,175 @@
+\section{沟道调制}
+\uwave{沟道调制}（Channel Modulation）是指，当MOS管进入饱和区，沟道夹断后，随着$V_{DS}$的进一步增大，沟道的实际长度是在减小的，换言之$L$在减小。而我们知道，电流$I_D$是正比于宽长比$(W/L)$的，因此，电流$I_D$在进入饱和区后并不会如\xref{fig:理想特性输出特性曲线}所示保持恒定，而是会随着$V_{DS}$进一步增大，经验表明，这种增大是线性的，可以用$\lambda V_{DS}$表征，即饱和区公式
+\begin{Equation}
+    I_D=\mu_nC_{ox}\frac{W}{L}\qty[(V_{GS}-V_{TH})^2/2]
+\end{Equation}
+应当被修正为，这里$\lambda$称为\uwave{沟道调制系数}
+\begin{Equation}
+    I_D=\mu_nC_{ox}\frac{W}{L}\qty[(V_{GS}-V_{TH})^2/2](1+\lambda V_{DS})
+\end{Equation}
+应当指出的是，沟道调制只存在于饱和区，线性区并不存在沟道调制效应，这是因为在线性区沟道从源端到漏端是连续的，$V_{DS}$不能调制沟道的长度。换言之，线性区的$I_D$公式后不应当乘以$(1+\lambda V_{DS})$因子。然而，这会导致一个明显的问题，线性区和饱和区的$I_D$公式将不连续。这种不连续性将为计算和分析带来困难，为了解决这个问题，我们可以抛开事实不谈，从建模的角度为线性区$I_D$公式添加$(1+\lambda V_{DS})$使$I_D$连续化，讨论线性区时令$\lambda=0$即可。
+% \footnote{有趣的是，MOS的Level 1的SPICE模型中，关于沟道调制，也是这么建模的。}
+
+\begin{BoxFormula}[MOS的沟道调制]
+    当$V_{GS}>V_{TH}, V_{DS}<V_{GS}-V_{TH}$，处于线性区，考虑沟道调制
+    \begin{Equation}
+        I_D=\mu_nC_{ox}\frac{W}{L}[(V_{GS}-V_{TH})V_{DS}-V_{DS}^2/2](1+\lambda V_{DS})
+    \end{Equation}
+    当$V_{GS}>V_{TH}, V_{DS}>V_{GS}-V_{TH}$，处于饱和区，考虑沟道调制
+    \begin{Equation}
+        I_D=\mu_nC_{ox}\frac{W}{L}[(V_{GS}-V_{TH})^2/2](1+\lambda V_{DS})
+    \end{Equation}
+\end{BoxFormula}
+
+再次注意，线性区的沟道调制项$(1+\lambda V_{DS})$只是建模考虑！考虑沟道调制后，特性曲线与特性曲面如\xref{fig:MOS的沟道调制}所示，明显的改变是，输出特性曲线发生上翘，且$V_{GS}$越大曲线随$V_{DS}$的上翘幅度越大，这是因为斜率是$\lambda$与饱和电流的乘积，而$V_{GS}$越大，饱和发生时的电流也越大。
+
+\begin{Figure}[MOS的沟道调制]
+    \begin{FigureSub}[输出特性曲线;沟道调制输出特性曲线]
+        \includegraphics[scale=0.83]{build/Chapter02A_01e.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[转移特性曲线;沟道调制转移特性曲线]
+        \includegraphics[scale=0.83]{build/Chapter02A_01f.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[特性曲面;沟道调制特性曲面]
+        \includegraphics{build/Chapter02A_01d.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+现在，让我们考虑一个重要的问题。MOS的电流$I_D=I_{D}(V_{DS},V_{GS})$是一个二元函数，在微积分中，我们知道，二元函数是可以求偏导数的，那么$I_D$的两个偏导数分别是什么？
+\begin{itemize}
+    \item $I_D(V_{DS},V_{GS})$对$V_{GS}$的偏导数，称为\uwave{转移电导}（Transconductance），也称为\uwave{跨导}。
+    \item $I_D(V_{DS},V_{GS})$对$V_{DS}$的偏导数，称为\uwave{输出电导}（Output Conductance）。
+\end{itemize}
+
+正式定义如下
+\begin{BoxDefinition}[MOS的转移电导]
+    转移电导定义为$I_D$对$V_{GS}$的偏导
+    \begin{Equation}
+        g_m=\pdv{I_D}{V_{GS}}
+    \end{Equation}
+\end{BoxDefinition}
+
+\begin{BoxDefinition}[MOS的输出电导]
+    输出电导定义为$I_D$对$V_{DS}$的骗到
+    \begin{Equation}
+        g_O=\pdv{I_D}{V_{DS}}
+    \end{Equation}
+\end{BoxDefinition}
+
+这里值得注意的是，转移电导$g_m$是通常的提法，它代表了$I_D$对$V_{GS}$变化的敏感程度，转移电导$g_m$也是MOS管用于放大的关键参数。输出电导$g_O$则不是，输出电导$g_O$的本质就是沟道的小信号电导，故应用中，我们关心的往往都是$g_O$的倒数，即，输出电阻$r_O=1/g_O$。
+
+\begin{Figure}[转移电导与输出电导]
+    \begin{FigureSub}[转移电导（理想特性）]
+        \includegraphics[scale=0.77]{build/Chapter02A_01k.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[输出电导（理想特性）]
+        \includegraphics[scale=0.77]{build/Chapter02A_01l.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.75cm}
+    \begin{FigureSub}[转移电导（沟道调制）]
+        \includegraphics[scale=0.77]{build/Chapter02A_01m.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[输出电导（沟道调制）]
+        \includegraphics[scale=0.77]{build/Chapter02A_01n.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+\xref{fig:转移电导与输出电导}绘制了$g_m$和$g_O$的图像，其公式将在稍后给出。
+
+\subsection{转移电导}
+\begin{BoxFormula}[MOS的转移电导]
+    转移电导$g_m$在线性区可以表示为
+    \begin{Equation}&[A]
+        g_m=\mu_nC_{ox}\frac{W}{L}[V_{DS}+\lambda V_{DS}^2]
+    \end{Equation}
+    转移电导$g_m$在饱和区可以表示为
+    \begin{Equation}&[B]
+        g_m=\mu_nC_{ox}\frac{W}{L}[(V_{GS}-V_{TH})+\lambda V_{DS}(V_{GS}-V_{TH})]
+    \end{Equation}
+    特别的，当$\lambda=0$时，在线性区（$V_{DS}<V_{GS}-V_{TH}$）的转移电导为
+    \begin{Equation}&[C]
+        g_m=\mu_nC_{ox}\frac{W}{L}V_{DS}
+    \end{Equation}
+    特别的，当$\lambda=0$时，在饱和区（$V_{DS}>V_{GS}-V_{TH}$）的转移电导为
+    \begin{Equation}&[C]
+        g_m=\mu_nC_{ox}\frac{W}{L}(V_{GS}-V_{TH})
+    \end{Equation}
+    或者可以写为
+    \begin{Equation}
+        g_m=\sqrt{2\mu_nC_{ox}\frac{W}{L}I_D}
+    \end{Equation}
+    或者可以写为
+    \begin{Equation}
+        g_m=\frac{2I_{D}}{V_{GS}-V_{TH}}
+    \end{Equation}
+\end{BoxFormula}
+
+从\xref{fig:转移电导（理想特性）}中，我们看到，转移电导$g_m$通常在$\si{mS}$的数量级
+\begin{itemize}
+    \item 当MOS处于饱和区时，转移电导$g_m$随着$V_{GS}$的增加而增加。
+    \item 当MOS处于线性区时，转移电导$g_m$不再随$V_{GS}$变化，保持恒定。
+\end{itemize}
+\begin{Figure}[饱和区转移电导]
+    \includegraphics[scale=0.83]{build/Chapter02A_01q.fig.pdf}
+\end{Figure}
+
+由此可见，若器件进入线性区，跨导$g_m$会下降，故用于放大时通常令MOS工作在饱和区。
+
+
+\subsection{输出电导}
+\begin{BoxFormula}[MOS的输出电导]*
+    输出电导$g_O$在线性区可以表示为
+    \begin{Equation}&[A]
+        \qquad\qquad
+        g_O=\mu_nC_{ox}\frac{W}{L}[(V_{GS}-V_{TH})-V_{DS}+(V_{GS}-V_{TH})\lambda V_{DS}/2-3\lambda V_{DS}^2/2]
+        \qquad\qquad
+    \end{Equation}
+    输出电导$g_O$在饱和区可以表示为
+    \begin{Equation}&[B]
+        g_O=\mu_nC_{ox}\frac{W}{L}[(V_{GS}-V_{TH})^2\lambda/2]
+    \end{Equation}
+    特别的，当$\lambda=0$时，在深线性区（$V_{DS}\approx 0$）的输出电导为
+    \begin{Equation}&[C]
+        g_O=\mu_nC_{ox}\frac{W}{L}(V_{GS}-V_{TH})
+    \end{Equation}
+    特别的，当$\lambda= 0$时，在饱和区（$V_{DS}>V_{GS}-V_{TH}$）的输出电导为
+    \begin{Equation}
+        g_O=0
+    \end{Equation}
+    特别的，当$\lambda\neq 0$时，在饱和区（$V_{DS}>V_{GS}-V_{TH}$）的输出电导为
+    \begin{Equation}
+        g_O=\frac{\lambda I_D}{1+\lambda V_{DS}}\approx\lambda I_D
+    \end{Equation}
+\end{BoxFormula}
+
+这里可以观察到一个相当有趣的规律，\empx{饱和区转移电导等于深线性区输出电导}
+\begin{Equation}
+    g_m|_\te{饱和区}=g_O|_\te{深线性区}
+\end{Equation}
+关于深线性区，由于$I_D$与$V_{DS}$的关系是线性的，此时小信号电阻和电阻的意义是一致的，换言之，MOS沟道在深线性区可以视为一个栅压控制的可变电阻，\xref{fig:深线性区输出电导}展示了$g_O$和$r_O$。
+\begin{Figure}[深线性区输出电导]
+    \begin{FigureSub}[输出电导;深线性区输出电导s]
+        \includegraphics[scale=0.83]{build/Chapter02A_01o.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[输出电阻;深线性区输出电阻s]
+        \includegraphics[scale=0.83]{build/Chapter02A_01p.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+在深线性区，栅压越大，MOS沟道的电阻越小（栅压能使沟道导通程度增加）。
+
+关于饱和区，若$\lambda=0$不考虑沟道调制，此时输出电导$g_O=0$是恒定于零的，换言之，沟道是完全不导通是理想的电流源。因此，在饱和区，输出电导$g_O$或输出电阻$r_O$比较有意义的讨论只能建立在考虑沟道调制$\lambda\neq 0$的情况下（这也是为何转移电导和输出电导的讨论需放在沟道调制效应引入后）。请注意！饱和区下$r_O$是数百$\si{k\ohm}$，深线性区下$r_O$是数十$\si{k\ohm}$。
+
+\begin{Figure}[饱和区输出电导]
+    \begin{FigureSub}[输出电导;饱和区输出电导s]
+        \includegraphics[scale=0.83]{build/Chapter02A_01r.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[输出电阻;饱和区输出电阻s]
+        \includegraphics[scale=0.83]{build/Chapter02A_01s.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+饱和区的$g_m$和$r_O$是模拟集成电路中的两个重要参数，关注\xref{fig:饱和区转移电导}和\xref{fig:饱和区输出电阻s}
+\begin{itemize}
+    \item 随着$V_{GS}$增大，转移电导$g_m$增大，输出电阻$r_O$减小。
+    \item 随着$V_{GS}$减小，转移电导$g_m$减小，输出电阻$r_O$增大。
+\end{itemize}
+通常，我们希望，转移电导$g_m$要尽可能大，输出电阻$r_O$要尽可能小，这两者需要权衡。

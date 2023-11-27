@@ -1,0 +1,100 @@
+\section{MOS的理想特性}
+
+\subsection{阈值电压}
+阈值电压$V_{TH}$即栅源电压$V_{GS}$是沟道导通的电压，具体而言
+\begin{itemize}
+    \item NMOS的阈值电压定义为，界面反型电子浓度等于P型衬底空穴浓度时的栅压。
+    \item PMOS的阈值电压定义为，界面反型空穴浓度等于N型衬底电子浓度时的栅压。
+\end{itemize}
+阈值电压$V_{TH}$可以通过以下公式计算
+\begin{BoxFormula}[MOS的阈值电压]
+    MOS的阈值电压可以通过以下公式计算
+    \begin{Equation}
+        V_{TH}=\Phi_{MS}+2\Phi_F+\frac{Q_{dep}}{C_{ox}}
+    \end{Equation}
+    $\Phi_{MS}$是多晶硅栅和硅衬底间的功函数之差对应的电压。
+
+    $\Phi_F$即衬底费米能级偏离禁带中线的距离
+    \begin{Equation}
+        \Phi_F=V_T\ln\frac{N_{sub}}{n_i}
+    \end{Equation}
+    $Q_{dep}$是耗尽区电荷
+    \begin{Equation}
+        Q_{dep}=\sqrt{4q\varepsilon_{si}|\Phi_F|N_{sub}}
+    \end{Equation}
+    $C_{ox}$是栅氧化层单位面积电容
+    \begin{Equation}
+        C_{ox}=\frac{\varepsilon_{ox}}{t_{ox}}
+    \end{Equation}
+    $\varepsilon_{ox}$和$\varepsilon_{si}$是二氧化硅和硅的介电常数
+    \begin{Equation}
+        \varepsilon_{ox}=3.9\varepsilon_0\qquad
+        \varepsilon_{si}=11.9\varepsilon_0
+    \end{Equation}
+    $V_T$为热电压（当$T=300\si{K}$时，有$V_T=0.026\si{V}$）
+    \begin{Equation}
+        V_T=\frac{\kB T}{q}
+    \end{Equation}
+    $N_{sub}$为衬底掺杂浓度，$\kB$为玻尔兹曼常数，$T$为温度，$q$为元电荷。
+\end{BoxFormula}
+
+\subsection{理想特性}
+MOS的理想特性及其推导我们已经很熟悉了，这里仅列出一下结果。
+\begin{BoxFormula}[MOS的理想特性]*
+    当$V_{GS}>V_{TH}, V_{DS}<V_{GS}-V_{TH}$，处于线性区\footnote[2]{线性区也被称为三极管区。}
+    \begin{Equation}
+        I_D=\mu_nC_{ox}\frac{W}{L}[(V_{GS}-V_{TH})V_{DS}-V_{DS}^2/2]
+    \end{Equation}
+    当$V_{GS}<V_{TH}, V_{DS}>V_{GS}-V_{TH}$，处于饱和区
+    \begin{Equation}
+        I_D=\mu_nC_{ox}\frac{W}{L}[(V_{GS}-V_{TH})^2/2]
+    \end{Equation}
+    当$V_{GS}<V_{TH}$时，处于截止区
+    \begin{Equation}
+        I_D=0
+    \end{Equation}
+\end{BoxFormula}
+
+MOS的理想特性的特性曲线和曲面我们也很熟悉了
+\begin{Figure}[MOS的理想特性]
+    \begin{FigureSub}[输出特性曲线;理想特性输出特性曲线]
+        \includegraphics[scale=0.83]{build/Chapter02A_01b.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[转移特性曲线;理想特性转移特性曲线]
+        \includegraphics[scale=0.83]{build/Chapter02A_01c.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[特性曲面;理想特性特性曲面]
+        \includegraphics{build/Chapter02A_01a.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+这里我们重点阐述几个要点
+\begin{itemize}
+    \item 线性区其实并不“线性”，介于其包含$V_{DS}^2/2$的二次项，但当$V_{DS}$非常小时，二次项可以被忽略，只保留$(V_{GS}-V_{TH})V_{DS}$的一次项，这是可以视为“线性”，称为\uwave{深线性区}。
+    \item 在数字电路中，MOS主要工作在线性区。
+    \item 在模拟电路中，MOS主要工作在饱和区。
+\end{itemize}
+MOS的原理和器件方程都与项$(V_{GS}-V_{TH})$密切相关，这被称为\uwave{过驱动电压}，即栅源电压相对阈值电压的超量。我们可以这么建立MOS的理解：$V_{GS}$只要达到$V_{TH}$沟道就会开启，但是，$V_{GS}$相对$V_{TH}$的超量$V_{GS}-V_{TH}$可以视为一种“富余”，$V_{DS}$会消耗这种“富余”。具体而言，当$V_{DS}$没用完“富余”时器件就在线性区，当$V_{DS}$用完“富余”时器件就在饱和区。
+
+关于\xref{fig:MOS的理想特性}绘图中的参数选取，我们参考了\xnum{0.5}[um]工艺下MOS的SPICE模型（Level 1）的典型参数值，如\xref{tab:MOS的典型参数}所示（这里绘图只用到$\mu,V_\ti{TH},t_{ox}$，而$C_{ox}$由$C_{ox}=\varepsilon_{ox}/t_{ox}$给出，而其他参数涉及MOS的二级效应和电容特性，在后面将逐步介绍），宽长取$W=L=\SI{0.5}{um}$。
+
+\begin{Tablex}[MOS在\xnum{0.5}[um]下的典型参数;MOS的典型参数]{lllYYc}
+<SPICE名称&参数&参数意义&NMOS&PMOS&单位\\>
+VTO&$V_{TH0}$&阈值电压&+0.7&-0.8&\si{V}\\
+TOX&$t_{ox}$&栅氧层厚度&\num{9e-9}&\num{9e-9}&\si{m}\\
+GAMMA&$\gamma$&体效应系数&0.45&0.40&\si{V^{1/2}}\\
+PHI&$2\Phi_F$&两倍费米势&0.90&0.80&\si{V}\\
+UO&$\mu_n,\mu_p$&沟道迁移率&350&100&\si{cm^2.V^{-1}.s^{-1}}\\
+LAMBDA&$\lambda$&沟道调制系数&0.1&0.2&\si{V^{-1}}\\
+PSUB/NSUB&$N_{sub}$&衬底掺杂浓度&\num{9e+14}&\num{5e+14}&\si{cm^{-3}}\\
+CJ&$C_{j}$&单位面积的源漏结电容&\num{0.56e-3}&\num{0.94e-3}&\si{F.m^{-2}}\\
+CJSW&$C_{jsw}$&单位长度的源漏侧壁电容&\num{0.35e-11}&\num{0.32e-11}&\si{F.m^{-1}}\\
+JS&$J_S$&源漏结单位面积漏电流&\num{1.0e-8}&\num{0.5e-8}&\si{A.m^{-2}}\\
+MJ&$m_j$&源漏结电容中的幂指数&\num{0.45}&\num{0.50}&--\\
+MJSW&$m_{jsw}$&源漏侧壁电容中的幂指数&\num{0.20}&\num{0.30}&--\\
+CGDO&$C_{GDO}$&单位宽度的栅--漏覆盖电容&\num{0.4e-9}&\num{0.3e-9}&\si{F.m^{-1}}\\
+CGSO&$C_{GDO}$&单位宽度的栅--源覆盖电容&\num{0.4e-9}&\num{0.3e-9}&\si{F.m^{-1}}\\
+\end{Tablex}
+
+由\xref{fig:MOS的理想特性}，我们可以看到，该\xnum{0.5}[um]工艺下MOS的典型$I_D$值是在$\si{mA}$级。
+
+然而，MOS的特性是相当复杂，还有许多理想特性所不能描述的效应，这些效应统称为\uwave{二级效应}。在本章，我们所关注的MOS二级效应包含：沟道调制、衬偏调制、亚阈值导电效应。

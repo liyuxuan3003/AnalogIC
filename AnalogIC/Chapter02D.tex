@@ -1,0 +1,64 @@
+\section{衬偏调制}
+\uwave{衬偏调制}（Substrate Bias Modulation）也被称为\uwave{体效应}（Body Effect），是指，当MOS管的体电极B和源极S并没有短接，存在衬偏电压$V_{BS}$时（源极可视为MOS的参考电位），器件的阈值电压$V_{TH}$相较于零衬偏时的$V_{TH0}$发生变化的现象。这一点可以由以下公式给出。
+\begin{BoxFormula}[衬偏调制]
+    衬偏调制后，阈值电压$V_{TH}$变为
+    \begin{Equation}
+        V_{TH}=V_{TH0}+\gamma\qty(\sqrt{2\phi_F-V_{BS}}-\sqrt{2\Phi_F})
+    \end{Equation}
+\end{BoxFormula}
+
+衬偏调制的核心结果就是：阈值电压被改变。如\xref{fig:衬偏调制}所示
+\begin{itemize}
+    \item 当$V_{BS}<0$时，即令衬底的电压比源极更低，则阈值电压$V_{TH}>V_{TH0}$。
+    \item 当$V_{BS}>0$时，即令衬底的电压比源极更高，则阈值电压$V_{TH}<V_{TH0}$。
+\end{itemize}
+通常，NMOS的衬底总是接最低电位，但上述讨论表明，令NMOS衬底的电压高于源极确实可以减小阈值电压。不幸的是，通过衬偏效应减小阈值电压对于NMOS通常是不可行的，依照\xref{fig:MOS的结构}所示，NMOS通常是共用同一个衬底的。但这种方法可以应用于单个PMOS器件。
+
+\begin{Figure}[衬偏调制]
+    \includegraphics{build/Chapter02A_01t.fig.pdf}
+\end{Figure}
+
+衬偏调制的讨论似乎可以止步于阈值电压的改变，然而我们要认识到，应用中，MOS未必是在一个固定的衬偏电压$V_{BS}$下工作，换言之，在$V_{DS},V_{GS}$之后$V_{BS}$也会成为$I_D$是一个变量。因此，在$g_m, g_O$之后，我们也很有必要的计算一下衬底跨导$g_{mb}=\pdv*{I_D}{V_{BS}}$的值。
+
+\begin{BoxDefinition}[MOS的衬底跨导]
+    衬底跨导定义为$I_D$对$V_{BS}$的偏导
+    \begin{Equation}
+        g_{mb}=\pdv{I_D}{V_{BS}}
+    \end{Equation}
+\end{BoxDefinition}
+
+这里的计算限于不考虑沟道调制的饱和区，根据\fancyref{fml:MOS的理想特性}
+\begin{Equation}
+    g_{mb}=\pdv{I_D}{V_{BS}}=\mu_n C_{ox}\frac{W}{L}(V_{GS}-V_{TH})\qty(-\pdv{V_{TH}}{V_{BS}})
+\end{Equation}
+这里第一项可依据\fancyref{fml:MOS的转移电导}表示
+\begin{Equation}
+    g_{mb}=g_m\qty(-\pdv{V_{TH}}{V_{BS}})
+\end{Equation}
+依据\fancyref{fml:衬偏调制}
+\begin{Equation}
+    \pdv{V_{TH}}{V_{BS}}=-\frac{\gamma}{2}\frac{1}{\sqrt{2\Phi_F-V_{BS}}}
+\end{Equation}
+因此有
+\begin{Equation}
+    g_{mb}=\frac{\gamma}{2}\frac{1}{\sqrt{2\Phi_F-V_{BS}}}g_m
+\end{Equation}
+或者引入$\eta$作为系数
+\begin{Equation}
+    g_{mb}=\eta g_m
+\end{Equation}
+\begin{BoxFormula}[MOS的衬底跨导]
+    衬底跨导$g_{mb}$在不考虑沟道调制的饱和区可以表示为
+    \begin{Equation}
+        g_{mb}=\eta g_m
+    \end{Equation}
+    其中$\eta$是一个只关于$V_{BS}$的正系数
+    \begin{Equation}
+        \eta=\frac{\gamma}{2}\frac{1}{\sqrt{2\Phi_F-V_{BS}}}
+    \end{Equation}
+\end{BoxFormula}
+
+由关系式$g_{mb}=\eta g_m$可见，\empx{衬底可以视为MOS管的第二个栅极}，且由于$g_{mb},g_{m}$的极性相同，输入$V_{BS}$和$V_{GS}$在小信号下的增大或减小对$I_D$的影响是一致的。那么$g_{mb}$和$g_m$的定量关系如何呢？由于$g_{mb}=\eta g_{m}$而$\eta$是仅关于$V_{BS}$的函数，我们可以考察$\eta(V_{BS})$的函数图像，如\xref{fig:衬偏电导}所示，注意到$\eta$基本是小于$1$的（零衬偏时$\eta=0.237$），换言之$g_{mb}<g_m$，即衬底的跨导性能不如栅极。另外，衬偏电压$V_{BS}$变得更负时，衬底跨导$g_{mb}$会进一步减小。
+\begin{Figure}[衬偏电导]
+    \includegraphics{build/Chapter02A_01u.fig.pdf}
+\end{Figure}

@@ -1,0 +1,41 @@
+\section{MOS的基本概念}
+
+\subsection{MOS的结构}
+MOS的结构我们已经很熟悉了，如\xref{fig:MOS的结构}所示，这里我们重点说明两点
+\begin{itemize}
+    \item 关于栅极尺寸：栅长$L$是源漏间的横向尺寸，栅宽$W$是对应的垂直尺寸（在\xref{fig:MOSFET的结构}中栅宽$W$位于垂直直面的方向上），栅氧化层的厚度记为$t_{ox}$。理想状态下，栅极与源漏的边界应当是刚好对齐的，但实际上，源漏区在形成时会不可避免的发生横向扩散，源漏间的实际距离（这是我们真正关心的，称为有效栅长）是略小于实际栅长的。为了避免混淆\footnote{这里drawn代表版图\textbf{绘制}的栅长，而eff表示effective即\textbf{有效}。}，这里，栅极的实际长度记为$L_\ti{drawn}$，栅极的有效长度记为$L_\ti{eff}$，源漏的横向扩散长度记为$L_{D}$，显然有$L_\ti{eff}=L_\ti{drawn}-2L_{D}$。之后，当出现$L$时，我们总是指代有效长度$L=L_\ti{eff}$。栅长$L$和栅氧化层厚度$t_{ox}$对MOS的性能有非常重要的作用，MOS技术的发展的主旋律，就是在保证MOS的其他参数退化的的情况下，使$L$和$t_{ox}$不断减小。
+    \item 关于衬底和阱：衬底作为MOS的第四端，也需要引至表面，衬底从功能上是需要轻掺杂的，因此引线处需要进行重掺杂，以便与引线金属形成欧姆接触。除此之外，我们知道，NMOS需要$p$衬底，PMOS需要$n$衬底，但是两者在CMOS工艺需要被作在同一块衬底上，这通常会是$p$衬底。因此，PMOS就需要被作在$n$阱中，阱可以被认为是一种“局部衬底”。这也指出：\empx{所有NMOS共享一个衬底，而每个PMOS的衬底是相互独立的阱}。换言之，PMOS可以单独的调整阈值电压，PMOS的这种灵活性在一些模拟电路中会被应用（另外，双阱工艺可以使NMOS和PMOS同时具有这种灵活性）。
+\end{itemize}
+
+通常，NMOS的衬底与最低电位（GND）相连，PMOS的衬底与最高电位（VDD）相连。
+
+\begin{Figure}[MOS的结构]
+    \includegraphics{build/Chapter02A_02.fig.pdf}
+\end{Figure}
+
+\subsection{MOS的符号}
+MOS的符号如\xref{fig:MOS的符号}所示，这里说明几点
+\begin{itemize}
+    \item MOS是四端器件，但由于衬底一般接地或接电源，通常可以省略。
+    \item 数字电路中，习惯用栅极是否有圈区分PMOS和NMOS，NMOS无圈，PMOS有圈。
+    \item 模拟电路中，习惯用箭头方向区分PMOS和NMOS，箭头位于源侧（这可以有效区分源漏），箭头方向代表了衬底--源结的正向，NMOS箭头指向源，PMOS箭头背向源。
+    \item 这里为适应两种习惯，同时标注了圈和箭头（某种意义上，也是一种异端）。
+    \item PMOS的源位于上侧（源电位高），NMOS的源位于下侧（源电位低）。
+\end{itemize}
+\begin{Figure}[MOS的符号]
+    \begin{FigureSub}[三端NMOS]
+        \includegraphics{build/Chapter02A_03.fig.pdf}
+    \end{FigureSub}
+    \qquad
+    \begin{FigureSub}[三端PMOS]
+        \includegraphics{build/Chapter02A_04.fig.pdf}
+    \end{FigureSub}
+    \qquad
+    \begin{FigureSub}[四端NMOS]
+        \includegraphics{build/Chapter02A_05.fig.pdf}
+    \end{FigureSub}
+    \qquad
+    \begin{FigureSub}[四端PMOS]
+        \includegraphics{build/Chapter02A_06.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
