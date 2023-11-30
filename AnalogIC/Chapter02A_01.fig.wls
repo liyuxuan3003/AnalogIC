@@ -211,7 +211,7 @@ fig3b=Plot[Evaluate@Table[xID//.listValLAM,{VDS,{1,2,4}}],{VGS,0,4},
 
 
 fig4a=Plot[xIDs//.listValSTD,{VGS,0,4},
-	PlotRange->{-0.05m,+0.85m},
+	PlotRange->{-0.05m,+0.85m},PlotStyle->Black,
 	FrameTicks->{xTicks[{0,4,1},{2,1}],xTicksProp[{0,0.8,0.1},{2,1},m]},
 	GridLines->{xGrids[{0,4,0.5}],xGrids[{-0.04m,0.84m,0.02m}]},
 	Epilog->{
@@ -234,7 +234,7 @@ fig4a=Plot[xIDs//.listValSTD,{VGS,0,4},
 
 
 fig4b=LogPlot[xIDs//.listValSTD,{VGS,0.00,4},
-	PlotRange->{10^(-16),10^(-2)},
+	PlotRange->{10^(-16),10^(-2)},PlotStyle->Black,
 	FrameTicks->{xTicks[{0,4,1},{2,1}],xTicksLog[{-15,-3,3}]},
 	GridLines->{xGrids[{0,4,0.5}],xGridsLog[{-16,-2,1},{10^(-16),10^(-2)}]},
 	Epilog->{

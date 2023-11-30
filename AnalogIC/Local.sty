@@ -1,3 +1,14 @@
 \ProvidesPackage{Local}
 
 \NewDocumentCommand{\xnum}{mO{}}{ $\SI{#1}{#2}$}
+
+\NewDocumentCommand{\xDrawVoltage}{mD(){}D(){}O{}}%
+{%
+    \ifthenelse{\equal{#1}{B}}{\def\symDirA{below}\def\symDirB{above}}{}%
+    \ifthenelse{\equal{#1}{A}}{\def\symDirA{above}\def\symDirB{below}}{}%
+    \ifthenelse{\equal{#1}{L}}{\def\symDirA{left}\def\symDirB{right}}{}%
+    \ifthenelse{\equal{#1}{R}}{\def\symDirA{right}\def\symDirB{left}}{}%
+    \path (#2) node[\symDirA] {$+$};%
+    \path (#3) node[\symDirB] {$-$};%
+    \path ($(#2)!0.5!(#3)$) node {#4};%
+}%

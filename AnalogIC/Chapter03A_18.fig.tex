@@ -1,0 +1,40 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-5]
+\xValDefine{xR}[+5]
+\foreach \x/\s in {0/A,1/B,2/C,3/D,4/E,5/F}
+{
+    \xValPropor{xP\s}{xL}{xR}[\x/5]
+    \ifthenelse{\x=5}{}{\xValOffpro{xQ\s}{xP\s}{xL}{xR}[1/10]}
+}
+\xValMiddle{xRX}{xPB}{xQD}
+
+\xSetY
+\xValDefine{yB}[-2]
+\xValDefine{yA}[+2]
+\xValMiddle{yC}{yA}{yB}
+
+\draw (xL|-yA) node[left] {G} to[short,o-o] (xQA|-yA);
+\draw (xL|-yB) node[left] {B} to[short,o-o] (xR|-yB) node[right] {B};
+\draw (xQA|-yC) node[left] {S} to[short,o-o] (xPE|-yC) node[right] {S};
+\draw (xR|-yA) node[right] {D} to[short,o-] (xPB|-yA);
+
+\draw (xPB|-yB) node[circ] {} node[ground] {};
+
+\draw (xPB|-yA) to[cisource,l=$g_mV_{GS}$,-*] (xPB|-yC);
+\draw (xRX|-yA) to[cisource,l=$g_{mb}V_{BS}$,-*] (xRX|-yC);
+\draw (xQD|-yA) to[R=$r_{O}$,*-*] (xQD|-yC);
+
+\xDrawVoltage{B}(xQA|-yA)(xQA|-yC)[$V_{GS}$]
+\xDrawVoltage{A}(xQA|-yB)(xQA|-yC)[$V_{BS}$]
+\xDrawVoltage{B}(xPE|-yA)(xPE|-yC)[$V_{DS}$]
+
+\xValBorder{xL}[-0.75]{xR}[+0.75]{yB}[-0.8]{yA}*
+
+
+\end{tikzpicture}
+\end{document}

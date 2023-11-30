@@ -1,0 +1,206 @@
+\section{共源级放大器}
+
+共源级放大，就是指，输入信号接至栅极，输出信号接至漏极，而源极作为公共端接地，漏极同时需要接电源$V_{DD}$，然而，漏极和$V_{DD}$间还有一个负载，负载的类型是本节的中心脉络
+\begin{itemize}
+    \item 采用电阻负载的共源级：负载也可以使用偏置于深线性区的PMOS管。
+    \item 采用电流源负载的共源级：负载也可以使用偏置于饱和区的PMOS管。
+    \item 采用二极管负载的共源级：这里的二极管指“栅漏短接”的MOS管。
+    \item 采用反相器构型的共源级：也称为有源负载，这是因为负载管同时参与了放大过程。
+\end{itemize}
+
+\subsection{采用电阻负载的共源级}
+共源级放大最常见的负载形式，就是电阻，毕竟电阻看起来最像是“负载”。
+
+\begin{Figure}[采用电阻负载的共源级电路]
+    \begin{FigureSub}[使用电阻]
+        \includegraphics[scale=0.8]{build/Chapter03A_07.fig.pdf}
+    \end{FigureSub}\hspace{1cm}
+    \begin{FigureSub}[使用深线性区PMOS]
+        \includegraphics[scale=0.8]{build/Chapter03A_12.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+电阻可以是一个真正的电阻，如\xref{fig:使用电阻}所示，电阻也可以是一个被$V_b$恰当的偏置于深线性区的PMOS管，如\xref{fig:使用深线性区PMOS}所示，按照\fancyref{fml:MOS的输出电导}的结论，其等效为
+\begin{Equation}
+    R_{D}=-\frac{1}{\mu_pC_{ox}(W/L)_2(V_{b}-V_{DD}-V_{THP})}
+\end{Equation}
+因此，\xref{fig:使用深线性区PMOS}就可以化归为\xref{fig:使用电阻}，故我们之后总是讨论\xref{fig:使用电阻}。
+
+在继续分析之前，我们先需要弄明白我们到底想要分析什么。既然是放大电路，那我们最关心的必然是增益$A_V$。增益听上去是输出和输入的比$A_V=V_{out}/V_{in}$，但不要忘记，我们放大的是小信号，因此，增益正确的定义是输出对输入的导数，即$A_V=\pdv*{V_{out}}{V_{in}}$，记录如下。
+\begin{BoxDefinition}[增益]
+    增益是输出对输入的导数
+    \begin{Equation}
+        A_V=\pdv{V_{out}}{V_{in}}
+    \end{Equation}
+\end{BoxDefinition}
+
+那么，如何计算增益？最朴素（也是最暴力）的思想是，既然增益$A_V=\pdv*{V_{out}}{V_{in}}$，那么只要我们能求出$V_{out}=V_{out}(V_{in})$的函数关系，完成求导计算，增益$A_V$也就被求出来了！\setpeq{电阻负载共源}
+
+\xref{fig:使用电阻}中，$V_{in},V_{out}$和我们熟悉的那些MOS电压的关系是
+\begin{Equation}&[1]
+    V_{GS}=V_{in}\qquad V_{DS}=V_{out}
+\end{Equation}
+
+\xref{fig:使用电阻}的约束是，流经$R_D$的电流和流经$M_1$的电流应当是相等的，当然，首先我们处理一个特殊情况，若$V_{in}<V_{TH}$时，即NMOS截止，此时$I_D=0$电流为零，则$V_{out}=V_{DD}$。
+
+当NMOS处于饱和区时，即$V_{in}<V_{out}+V_{TH}$，根据\fancyref{fml:MOS的理想特性}
+\begin{Equation}&[2]
+    \mu_nC_{ox}(W/L)[(V_{in}-V_{TH})^2/2]=(V_{DD}-V_{out})/R_D
+\end{Equation}
+
+当NMOS处于线性区时，即$V_{in}>V_{out}+V_{TH}$，根据\fancyref{fml:MOS的理想特性}
+\begin{Equation}&[3]
+    \mu_nC_{ox}(W/L)[(V_{in}-V_{TH})V_{out}-V_{out}^2/2]=(V_{DD}-V_{out})/R_D
+\end{Equation}
+这两者的分界$V_{in1}$可以由\xrefpeq{2}中，代入$V_{in}=V_{in1}$和$V_{out}=V_{in1}-V_{TH}$求出。
+
+对于\xrefpeq{2}，容易解出
+\begin{Equation}&[4]
+    V_{out}=V_{DD}-\mu_nC_{ox}(W/L)\qty[(V_{in}-V_{TH})^2/2]R_D
+\end{Equation}
+对于\xrefpeq{3}，或许我们会相似的写出
+\begin{Equation}&[5]
+    V_{out}=V_{DD}-\mu_nC_{ox}(W/L)\qty[(V_{in}-V_{TH})V_{out}-V_{out}^2/2]R_D
+\end{Equation}
+然而，应当注意到$V_{out}$的表达式中仍然出现了$V_{out}$，这实质是一个方程，不过，介于它是二次方程，求解是可能的，但是其结论相当冗长，其表达式无法带给我们任何知识。不过，计算机是可以完成这种求解的。至此，$V_{out}=V_{out}(Vin)$在截止区、饱和区、线性区的表达式，以及$V_{in}$对于这三个区域的两个分界线$V_{TH},V_{in1}$从理论上都是可求的了，那么增益$A_V$理论上也是可求的了。\xref{fig:采用电阻负载的共源级增益}给出了计算机基于这种想法的求解结果，我们可以得出一些有价值的结论
+\begin{itemize}
+    \item 随着$R_{D}$的增加，$V_{in1}$在减小，$V_{in}$会更早的进入线性区。
+    \item 在电压特性\xref{fig:电压图采用电阻负载的共源级}中，我们看到，$V_{out}$最初为$V_{DD}$，当NMOS导通后，$V_{out}$随$V_{in}$的增加而减小，当$V_{in}$越过$V_{in1}$使NMOS由饱和区进入线性区后，这种减小放缓了。
+    \item 在增益特性\xref{fig:增益图采用电阻负载的共源级}中，我们首先注意到，增益是负的，这种反相特性是共源放大的一个基本特征。增益在饱和区随着$V_{in}$线性增大，进入线性区后则迅速回落至零，这也是为何当用于放大时，MOS总是应处于饱和区。同时，也注意到，漏极电阻$R_D$越大，增益越大，增益随$V_{in}$变化越大，增益处于饱和区的$V_{in}$范围越小。这三者分别代表了三个性质：增益、线性、摆幅。而漏极电阻$R_{D}$的取值将在这三个性质间形成Trade Off。
+    \item 漏极电阻$R_D$取值较大时，增益较高，线性差，摆幅较小（牺牲线性和摆幅，换取增益）。
+    \item 漏极电阻$R_D$取值较小时，增益较小，线性好，摆幅较大（牺牲增益，换取线性和摆幅）。
+\end{itemize}
+
+\begin{Figure}[采用电阻负载的共源级增益]
+    \begin{FigureSub}[区间图;区间图采用电阻负载的共源级]
+        \includegraphics[scale=0.82]{build/Chapter03A_01a.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[电压图;电压图采用电阻负载的共源级]
+        \includegraphics[scale=0.82]{build/Chapter03A_01b.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[增益图;增益图采用电阻负载的共源级]
+        \includegraphics[scale=0.82]{build/Chapter03A_01c.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+现在让我们从这些绚丽的图像回到$A_V$的解析式的求解上来。糟糕的是，我们目前只有饱和区的$V_{out}=V_{out}(V_{in})$，不过介于用于放大的MOS管总是处于饱和区，我们实际上也只关心饱和区的增益，线性区的情况我们并不在意，通过\xref{fig:采用电阻负载的共源级增益}这样的图像定性了解就已经足够了。
+
+对于\xrefpeq{4}求导得到
+\begin{Equation}&[6]
+    A_V=\pdv{V_{out}}{V_{in}}=-\mu_nC_{ox}(W/L)(V_{in}-V_{TH})R_{D}
+\end{Equation}
+若引用\fancyref{fml:MOS的转移电导}的结论
+\begin{Equation}&[7]
+    A_V=-g_mR_D
+\end{Equation}
+这是一个非常有价值的结论，从中我们也可以再次看到增益$A_V$随$R_D$增大的特点。
+
+以上是基于$V_{out}=V_{out}(V_{in})$直接求导得到$A_V$的大信号分析方法，但请不要忘记，我们真正关心的只是增益$A_V$，因此计算$V_{out}=V_{out}(V_{in})$并不是必须的。事实是，我们可以通过小信号电路直接计算得到$A_V$。小信号电路的分析非常简单，且可以帮助我们更好的考虑二阶效应。\goodbreak
+
+\xref{fig:采用电阻负载的共源级小信号电路}给出了\xref{fig:使用电阻}的小信号电路图，比较令人奇怪的是，为什么$R_D$被绘制在了D和B之间，在\xref{fig:使用电阻}中$R_D$很明显在$D$和$V_{DD}$间！这背后是小信号电路绘制的几个重要想法
+\begin{itemize}
+    \item 电源和地，在小信号电路中都视为接地。
+    \item 电压源在小信号电路中短路。
+    \item 电流源在小信号电路中开路。
+\end{itemize}
+\begin{Figure}[采用电阻负载的共源级小信号电路]
+    \includegraphics[scale=0.8]{build/Chapter03A_14.fig.pdf}    
+\end{Figure}
+这里$R_D$连接了D和$V_{DD}$，在小信号上即连接了D和GND，而衬底B就是GND。
+
+在\xref{fig:采用电阻负载的共源级小信号电路}中，由于S和B被短接了，电流$g_mV_{GS}$实质上流经了$r_O$和$R_{D}$的并联电阻，而输出电压$V_{out}$是这电压降的负值，同时，我们也注意到$V_{BS}=0$使得$V_{GS}=V_{in}$，故有
+\begin{Equation}&[8]
+    V_{out}=-g_mV_{in}\qty(r_{O}\parallel R_D)
+\end{Equation}
+在小信号下，增益就是简单的输出和输入的比了
+\begin{Equation}&[9]
+    A_V=\frac{V_{out}}{V_{in}}
+\end{Equation}
+因此有
+\begin{Equation}&[10]
+    A_V=-g_m(r_{O}\parallel R_D)
+\end{Equation}
+若不考虑沟道调制，令$r_O\to\infty$，则有
+\begin{Equation}&[11]
+    A_V=-g_mR_D
+\end{Equation}
+这就回到了原先大信号的结论\xrefpeq{7}。总结一下这里得到的结论。
+
+\begin{BoxFormula}[采用电阻负载的共源级]
+    共源级放大，采用电阻负载，增益为
+    \begin{Equation}
+        A_V=-g_m\frac{r_OR_D}{r_O+R_D}
+    \end{Equation}
+    实质上是（此处的近似考虑到通常$r_O\gg R_D$）
+    \begin{Equation}
+        A_V=-g_m(r_O\parallel R_D)\approx -g_mR_D
+    \end{Equation}
+\end{BoxFormula}
+
+至此，让我们回顾一下上述过程中的经验
+\begin{enumerate}
+    \item 试图手工写出所有工作区的电压特性和增益特性的数学表达式是不切实际的努力，但是这种最直接的思路对于计算机而言是可能的，这可以帮助我们绘制出相当全面的图像。
+    \item 大信号的手工分析是可能的，但牢记我们关心的只是饱和区的增益！
+    \item 小信号分析是相当简便的，尤其是当需要考虑沟道调制或衬偏调制这类二阶效应时。
+    \item 小信号分析的本质是：\empx{用微分近似替代差分}。
+\end{enumerate}
+
+\subsection{采用电流源负载的共源级}
+实践中，有时我们会需要很高的增益，而\xref{subsec:采用电阻负载的共源级}指出增益$A_V=-g_m(r_O\parallel R_D)$，那么理论上只要令$R_D\to\infty$就可以获得最大增益$A_V=-g_mr_O$，也称为\uwave{本征增益}。但这显然是不可行的，如果负载开路，就没有任何电流了（增大负载电阻会消耗直流压降）。所以，一个更实际的思路是，采用一些不符合欧姆特性的器件，例如用电流源作为负载，如\xref{fig:使用电路流}所示，电流源在小信号中相当于一个无穷大的电阻，但是，电流源在大信号下又能提供用于偏置的直流电流，维持放大器的运作。当然，实际的电流源是通过一个偏置在饱和区的PMOS构成的。
+
+\begin{Figure}[采用电流源负载的共源级电路]
+    \begin{FigureSub}[使用电路流]
+        \includegraphics[scale=0.8]{build/Chapter03A_08.fig.pdf}
+    \end{FigureSub}\hspace{1cm}
+    \begin{FigureSub}[使用饱和区PMOS]
+        \includegraphics[scale=0.8]{build/Chapter03A_13.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+既然电流源在小信号下相当于开路，那么增益即为本征增益
+\begin{Equation}
+    A_V=-g_mr_{O}
+\end{Equation}
+然而，若考虑到电流源实际由饱和区PMOS构成，其输出电阻也需要被考虑
+\begin{Equation}
+    A_V=-g_m(r_{O1}\parallel r_{O2})
+\end{Equation}
+\begin{BoxFormula}[采用电流源负载的共源级]
+    共源极放大，采用电流源负载，增益为
+    \begin{Equation}
+        A_V=-g_m\frac{r_{O1}r_{O2}}{r_{O1}+r_{O2}}
+    \end{Equation}
+    实质上是
+    \begin{Equation}
+        A_V=-g_m(r_{O1}\parallel r_{O2})
+    \end{Equation}
+\end{BoxFormula}
+这里\xref{fig:采用电流源负载的共源级小信号电路}绘制了对应的小信号电路，在一定意义上，这就是用$r_{O2}$替换了$R_D$。
+\begin{Figure}[采用电流源负载的共源级小信号电路]
+    \includegraphics[scale=0.8]{build/Chapter03A_15.fig.pdf}    
+\end{Figure}
+
+这里我们再来讨论一下理想电流源的情况，增益为
+\begin{Equation}
+    A_V=-g_m r_O
+\end{Equation}
+依照\fancyref{fml:MOS的转移电导}
+\begin{Equation}
+    g_m=\sqrt{2\mu_nC_{ox}(W/L)I_D}\qquad g_m\propto I_D^{1/2}
+\end{Equation}
+依照\fancyref{fml:MOS的输出电导}
+\begin{Equation}
+    g_O=\lambda I_D\qquad r_{O}\propto I_D^{-1}
+\end{Equation}
+因此，我们可以推断出$A_V\propto I_D^{-1/2}$，这就表明，电流源负载的共源级放大器，电流越大，增益的幅值越小。\xref{fig:采用电流源负载的共源级增益}形象展示了这种趋势，其给出了理想电流源负载下共源放大的电压特性和增益特性。值得注意的是，由于采用了理想电流源，在\xref{fig:电压图采用电流源负载的共源级}中输出会迅速超过$V_{DD}$，这种情况对于通过PMOS饱和区偏置的电流源是不会发生的。故\xref{fig:电压图采用电流源负载的共源级}中观察$A_V\propto I_D^{-1/2}$即增益$A_V$随$I_D$增大而减小的关系时，应当比较各自$V_{in1}$处的$A_V$而非同一$V_{in}$处的$A_V$。\footnote{问题的根源并不是理想电流源，而是在于使用理想电流源，$V_{in}$在小于$V_{in1}$后$V_{out}$会迅速增大（超过$V_{DD}$与否并不重要），这就意味着$V_{DS}$是非常大的，而$g_{O}=\lambda I_D$的关系是通过$g_{O}=\lambda I_D/(1+\lambda V_{DS})$取$\lambda V_{DS}$很小的近似得到的，$V_{DS}$很大时这种关系将被破坏，从而无法再得到$A_V\propto I_D^{-1/2}$的关系。故考察$A_V\propto I_D^{-1/2}$只能在$V_{in1}$附近使$V_{out}=V_{DS}$不太大处进行。}
+\begin{Figure}[采用电流源负载的共源级增益]
+    \begin{FigureSub}[区间图;区间图采用电流源负载的共源级]
+        \includegraphics[scale=0.82]{build/Chapter03A_03a.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[电压图;电压图采用电流源负载的共源级]
+        \includegraphics[scale=0.82]{build/Chapter03A_03b.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[增益图;增益图采用电流源负载的共源级]
+        \includegraphics[scale=0.82]{build/Chapter03A_03c.fig.pdf}
+    \end{FigureSub}
+\end{Figure}

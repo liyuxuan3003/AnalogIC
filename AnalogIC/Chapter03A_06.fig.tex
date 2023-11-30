@@ -1,0 +1,33 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+    
+\tikzset{unit/.style={circle,draw=black,fill=black!10!white,very thick,inner sep=0.2cm,minimum size=1.75cm}}
+
+\tikzset{lineA/.style={thick,latex-latex}}
+\tikzset{lineB/.style={thin,dashed}}
+
+\newcounter{cnt}
+
+\foreach \ang/\t in {0*45+22.5/增益,1*45+22.5/线性,2*45+22.5/测试,3*45+22.5/功耗,4*45+22.5/阻抗,5*45+22.5/速度,6*45+22.5/摆幅,7*45+22.5/电源}
+{
+    \draw (\ang:4) node[unit] (P\thecnt) {\t};
+    \stepcounter{cnt}
+}
+
+\foreach \x/\y in {0/1,1/2,2/3,3/4,4/5,5/6,6/7,7/0}
+{
+    \draw[lineA] (P\x) -- (P\y);
+}
+
+\draw[lineB] (P0) -- (P4);
+\draw[lineB] (P1) -- (P3);
+\draw[lineB] (P1) -- (P5);
+\draw[lineB] (P1) -- (P7);
+\draw[lineB] (P2) -- (P6);
+\draw[lineB] (P3) -- (P6);
+
+
+\end{tikzpicture}
+\end{document}
