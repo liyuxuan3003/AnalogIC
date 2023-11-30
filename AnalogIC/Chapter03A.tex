@@ -149,7 +149,7 @@
 实践中，有时我们会需要很高的增益，而\xref{subsec:采用电阻负载的共源级}指出增益$A_V=-g_m(r_O\parallel R_D)$，那么理论上只要令$R_D\to\infty$就可以获得最大增益$A_V=-g_mr_O$，也称为\uwave{本征增益}。但这显然是不可行的，如果负载开路，就没有任何电流了（增大负载电阻会消耗直流压降）。所以，一个更实际的思路是，采用一些不符合欧姆特性的器件，例如用电流源作为负载，如\xref{fig:使用电路流}所示，电流源在小信号中相当于一个无穷大的电阻，但是，电流源在大信号下又能提供用于偏置的直流电流，维持放大器的运作。当然，实际的电流源是通过一个偏置在饱和区的PMOS构成的。
 
 \begin{Figure}[采用电流源负载的共源级电路]
-    \begin{FigureSub}[使用电路流]
+    \begin{FigureSub}[使用电流源]
         \includegraphics[scale=0.8]{build/Chapter03A_08.fig.pdf}
     \end{FigureSub}\hspace{1cm}
     \begin{FigureSub}[使用饱和区PMOS]
@@ -204,3 +204,150 @@
         \includegraphics[scale=0.82]{build/Chapter03A_03c.fig.pdf}
     \end{FigureSub}
 \end{Figure}
+
+\subsection{采用二极管负载的共源级}\setpeq{采用二极管负载的共源级}
+这里所说的二极管，并非通常意义上的那种PN结二极管，而是指二极管接法的MOS管，具体而言，\empx{就是将MOS管的栅和漏短接}，如\xref{fig:MOS管的二极管接法}所示。这种情况下有$V_{DS}=V_{GS}$成立，而饱和区条件是$V_{DS}>V_{GS}-V_{TH}$，换言之，二极管接法的MOS管将始终在饱和区工作。
+
+\begin{Figure}[MOS管的二极管接法]
+    \begin{FigureSub}[NMOS二极管接法]
+        \includegraphics{build/Chapter03A_16.fig.pdf}
+    \end{FigureSub}
+    \hspace{1cm}
+    \begin{FigureSub}[PMOS二极管接法]
+        \includegraphics{build/Chapter03A_17.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+\xref{fig:采用二极管负载的共源级电路}给出了二极管负载的共源级电路，负载二极管分别由NMOS和PMOS构成，我们先以NMOS为例来讨论。然而，两个MOS管看起来就很复杂！直接分析是困难的。因此，我们接下来先单独讨论MOS作为二极管负载时的性质，再来考虑其加入共源电路后的影响。
+
+\begin{Figure}[采用二极管负载的共源级电路]
+    \begin{FigureSub}[采用NMOS二极管]
+        \includegraphics[scale=0.8]{build/Chapter03A_09.fig.pdf}
+    \end{FigureSub}\hspace{1cm}
+    \begin{FigureSub}[采用PMOS二极管]
+        \includegraphics[scale=0.8]{build/Chapter03A_10.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+\xref{fig:未采用二极管接法}是通常的NMOS对应的小信号电路，而二极管接法的本质就是将MOS管的栅极和漏极短接，\xref{fig:已采用二极管接法}展现了NMOS二极管接法后的小信号电路，它对应了\xref{fig:NMOS二极管接法}的电路。
+\begin{Figure}[二极管接法的小信号电路]
+    \begin{FigureSub}[未采用二极管接法]
+        \includegraphics[scale=0.8]{build/Chapter03A_18.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[已采用二极管接法]
+        \includegraphics[scale=0.8]{build/Chapter03A_19.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+采用二极管接法后，在小信号下，将产生一个有趣的关系
+\begin{Equation}&[1]
+    V_{GS}=V_{DS}
+\end{Equation}
+
+现在我们考虑在\xref{fig:采用NMOS二极管}中的作为二极管的NMOS管$M_2$的小信号电路，如\xref{fig:二极管接法在共源放大器中的小信号电路}所示，我们注意到，\xref{fig:二极管接法在共源放大器中的小信号电路}相对\xref{fig:已采用二极管接法}的主要区别是，漏端D接地了，这是因为二极管作为共源级放大器的负载时，漏端D连接了$V_{DD}$，在小信号中相当于接地了。\xref{fig:二极管接法在共源放大器中的小信号电路}中的$V_{in}$和$I_{in}$是对于二极管接法的NMOS而言的，$V_{in}$代表其源端的电压，$I_{in}$代表源端至漏端的电流，此处的$V_{in}$与\xref{fig:采用NMOS二极管}中的$V_{in}$无关。我们现在要计算的就是该二极管的等效电阻$V_{in}/I_{in}$的值。
+
+\begin{Figure}[二极管接法在共源放大器中的小信号电路]
+    \includegraphics[scale=0.8]{build/Chapter03A_20.fig.pdf}
+\end{Figure}
+
+首先，由于D也接地了，\xrefpeq{1}的关系将扩展为
+\begin{Equation}
+    V_{GS}=V_{DS}=V_{BS}
+\end{Equation}
+这里$V_{in}$是
+\begin{Equation}
+    V_{in}=-V_{GS}=-V_{DS}=-V_{BS}
+\end{Equation}
+这里$I_{in}$则是
+\begin{Equation}
+    I_{in}=-g_mV_{GS}-g_{mb}V_{BS}-V_{DS}/r_O
+\end{Equation}
+将电压用$V_{in}$代换
+\begin{Equation}
+    I_{in}=g_mV_{in}+g_{mb}V_{in}+V_{in}/r_O=(g_m+g_{mb}+r_O^{-1})V_{in}
+\end{Equation}
+因此有
+\begin{BoxFormula}[二极管负载的等效电阻]
+    当作为共源极负载时，二极管接法的NMOS管的等效电阻是（可忽略$r_{O}^{-1}$）
+    \begin{Equation}
+        R_D=\frac{1}{g_m+g_{mb}+r_O^{-1}}\approx\frac{1}{g_m+g_{mb}}
+    \end{Equation}
+\end{BoxFormula}
+
+这里需要考虑体效应的原因是，\xref{fig:采用NMOS二极管}中$M_2$的源并不是地电位，源和体未短接。
+
+这样一来，事情就简单很多了。二极管负载，不过就是阻值不太好计算的电阻罢了。引用\fancyref{fml:二极管负载的等效电阻}和\fancyref{fml:采用电阻负载的共源级}，忽略沟道调制\setpeq{采用二极管负载的共源级}
+\begin{Equation}&[2]
+    A_V=-g_{m1}R_D=-g_{m1}\frac{1}{g_{m2}+g_{mb2}}
+\end{Equation}
+稍作变换
+\begin{Equation}&[3]
+    A_V=-\frac{g_{m1}}{g_{m2}(1+\eta)}
+\end{Equation}
+即
+\begin{Equation}&[4]
+    A_V=-\frac{g_{m1}}{g_{m2}}\frac{1}{1+\eta}
+\end{Equation}
+这里我们可以再做一些工作，就$g_{m1},g_{m2}$援引\fancyref{fml:MOS的转移电导}
+\begin{Equation}&[5]
+    A_V=-\frac{\sqrt{2\mu_nC_{ox}(W/L)_1I_D}}{\sqrt{2\mu_n C_{ox}(W/L)_2I_D}}\frac{1}{1+\eta}=-\sqrt{\frac{(W/L)_1}{(W/L)_2}}\frac{1}{1+\eta}
+\end{Equation}
+这表明，采用二极管负载时，\empx{增益正比于放大管和负载管的尺寸比的平方根}。
+\begin{BoxFormula}[采用NMOS二极管负载的共源极增益]
+    共源极放大，采用NMOS二极管负载，增益为
+    \begin{Equation}
+        A_V=-\frac{g_{m1}}{g_{m2}}\frac{1}{1+\eta}
+    \end{Equation}
+    或进一步表示为
+    \begin{Equation}
+        A_V=-\sqrt{\frac{(W/L)_1}{(W/L)_2}}\frac{1}{1+\eta}
+    \end{Equation}
+\end{BoxFormula}
+
+\xref{fig:采用二极管负载的共源级增益}给出了二极管负载的共源放大器的大信号特性，从中我们可以洞见一些小信号分析下无法展现的特征。如\xref{fig:增益图采用二极管负载的共源级}所示，二极管负载下增益在饱和区是常数，这意味着绝对的线性！相比之下，电阻负载下增益在饱和区是线性变化的。由此可见，先前我们说，二极管负载相当于一个特定阻值的电阻负载只对于小信号分析下增益$A_V$的表达式是正确的，两者的增益$A_V$随$V_{in}$是截然不同的。这是值得警惕的，完全脱离大信号特性的小信号分析是危险的！
+
+二极管负载虽然有极好的线性放大特性，但也有其问题
+\begin{itemize}
+    \item 二极管负载下，输出电压最高只能达到$V_{DD}-V_{TH}$，这是因为NMOS传输强$0$和弱$1$的特性所致，这里负载NMOS管恰好传输了弱$1$，不过这并不太重要，首先，模拟电路不关心电压特性，其次，只要将负载管从NMOS变成PMOS就可以妥当解决该问题。
+    \item 二极管负载的主要问题是，其难以实现高增益。增益正比于放大管和负载管的尺寸之比的平方根，这就意味着，提高增益需要以平方速率提高放大管的尺寸，这将导致面积的消耗和大电容的引入。从某种意义上说，以二极管代替电阻，用增益Trade Off了线性。
+\end{itemize}
+二极管负载下的增益随尺寸比的平方根变化的关系，可以很清楚的在\xref{fig:增益图采用二极管负载的共源级}中观察到。
+
+\begin{Figure}[采用二极管负载的共源级增益]
+    \begin{FigureSub}[区间图;区间图采用二极管负载的共源级]
+        \includegraphics[scale=0.82]{build/Chapter03A_02a.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[电压图;电压图采用二极管负载的共源级]
+        \includegraphics[scale=0.82]{build/Chapter03A_02b.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[增益图;增益图采用二极管负载的共源级]
+        \includegraphics[scale=0.82]{build/Chapter03A_02c.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+若采用PMOS二极管代替NMOS二极管，将发生一些变化
+\begin{itemize}
+    \item PMOS传输强$1$和弱$0$，故输出电压最高可以达到$V_{DD}$，而不是$V_{DD}-V_{TH}$。
+    \item PMOS的源在这种组态下接$V_{DD}$，故不存在体效应。
+    \item PMOS的迁移率和NMOS的迁移率不同。
+\end{itemize}\setpeq{采用二极管负载的共源级}
+
+在\xrefpeq{4}中，我们应当移除有关体效应的项
+\begin{Equation}
+    A_V=-\frac{g_{m1}}{g_{m2}}
+\end{Equation}
+在\xrefpeq{5}中，代入电流后$\mu_n,\mu_p$将分别保留
+\begin{Equation}
+    A_V=-\frac{\sqrt{2\mu_nC_{ox}(W/L)_1I_D}}{\sqrt{2\mu_pC_{ox}(W/L)_2I_D}}=-\sqrt{\frac{\mu_n(W/L)_1}{\mu_p(W/L)_2}}
+\end{Equation}
+由于$\mu_n>\mu_p$且不再有体效应，采用PMOS二极管相较NMOS二极管在增益上是有优势的。
+\begin{BoxFormula}[采用PMOS二极管负载的共源极增益]
+    共源极放大，采用PMOS二极管负载，增益为
+    \begin{Equation}
+        A_V=-\frac{g_{m1}}{g_{m2}}
+    \end{Equation}
+    或进一步表示为
+    \begin{Equation}
+        A_V=-\sqrt{\frac{\mu_n(W/L)_1}{\mu_p(W/L)_2}}
+    \end{Equation}
+\end{BoxFormula}

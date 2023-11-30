@@ -140,7 +140,7 @@ listWLropt={1,2,4,8}
 
 pointList2A={Point[{VTH0,VDD-VTH0}//.listVal]}
 pointList2B=Table[Point[{Vin,xVoutsat}]//.Join[{WLr2->1,Vin->xVin1},listVal]//.listVal,{WLr1,listWLr}];
-Plot[Evaluate@Table[xVout//.Join[{WLr2->1,Vin1->xVin1},listVal],{WLr1,{1.001,2,4,8}}],{Vin,0,VDD//.listVal},
+fig2=Plot[Evaluate@Table[xVout//.Join[{WLr2->1,Vin1->xVin1},listVal],{WLr1,{1.001,2,4,8}}],{Vin,0,VDD//.listVal},
 	PlotRange->{-0.25,0.25+VDD//.listVal},
 	GridLines->{xGrids[{0,4,0.5}],xGrids[{0,4,0.5}]},
 	FrameTicks->{xTicks[{0,4,1},{1,0}],xTicks[{0,4,1},{1,0}]},
@@ -169,7 +169,7 @@ pointList3B=Table[Point[{Vin,xAVsat}]//.Join[{WLr2->1,Vin->xVin1},listVal]//.lis
 
 pointList3A={Point[{VTH0,0}//.listVal]}
 pointList3B=Table[Point[{Vin,xAVsat}]//.Join[{WLr2->1,Vin->xVin1},listVal]//.listVal,{WLr1,listWLr}];
-Plot[Evaluate@Table[xAV//.Join[{WLr2->1,Vin1->xVin1},listVal],{WLr1,{1.001,2,4,8}}],{Vin,0,VDD//.listVal},
+fig3=Plot[Evaluate@Table[xAV//.Join[{WLr2->1,Vin1->xVin1},listVal],{WLr1,{1.001,2,4,8}}],{Vin,0,VDD//.listVal},
 	PlotRange->{-3.25,0.25},
 	GridLines->{xGrids[{0,4,0.5}],xGrids[{-3,0,0.5}]},
 	FrameTicks->{xTicks[{0,4,1},{1,0}],xTicks[{-3,0,1},{1,0}]},
@@ -193,7 +193,7 @@ Plot[Evaluate@Table[xAV//.Join[{WLr2->1,Vin1->xVin1},listVal],{WLr1,{1.001,2,4,8
 	Evaluate@xFigConfig]
 
 
-fig={}
+fig={fig1,fig2,fig3}
 
 
 figWithName=Transpose[{fig,nbPDFNameList[[1;;Length[fig]]]}];
