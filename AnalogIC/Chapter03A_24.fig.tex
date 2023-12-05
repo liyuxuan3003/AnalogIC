@@ -11,35 +11,35 @@
     \xValPropor{xP\s}{xL}{xR}[\x/5]
     \ifthenelse{\x=5}{}{\xValOffpro{xQ\s}{xP\s}{xL}{xR}[1/10]}
 }
-\xValMiddle{xRX}{xPB}{xQD}
+
+\xValMiddle{xRC}{xPC}{xQC}
 
 \xSetY
 \xValDefine{yB}[-2]
 \xValDefine{yA}[+2]
 \xValMiddle{yC}{yA}{yB}
 
-\draw (xL|-yA) node[left] {G} to[short,o-*] (xPB|-yA);
+\draw (xL|-yA) node[left] {G} to[short,o-o] (xQA|-yA);
 \draw (xL|-yB) node[left] {B} to[short,o-o] (xR|-yB) node[right] {B};
-\draw (xPA|-yC) node[left] {S} to[short,o-o] (xPE|-yC) node[right] {S};
+\draw (xQA|-yC) node[left] {S} to[short,o-o] (xPE|-yC) node[right] {S};
 \draw (xR|-yA) node[right] {D} to[short,o-] (xPB|-yA);
 
-\draw (xPB|-yB) node[circ] {} node[ground] {};
-\draw (xQE|-yA) to[short,*-*] (xQE|-yB);
+\draw (xPB|-yB) node[ground] {};
 
-\draw (xPB|-yA) to[cisource,l=$g_mV_{GS}$,-*] (xPB|-yC);
-\draw (xRX|-yA) to[cisource,l=$g_{mb}V_{BS}$,*-*] (xRX|-yC);
-\draw (xQD|-yA) to[R=$r_{O}$,*-*] (xQD|-yC);
+\draw (xPB|-yA) to[cisource,l=$g_{m}V_{GS}$,-*] (xPB|-yC);
+\draw (xRC|-yA) to[cisource,l=$g_{mb}V_{BS}$,*-*] (xRC|-yC);
+\draw (xQD|-yA) to[R=$r_O$,*-*] (xQD|-yC);
+\draw (xQE|-yA) to[R=$R_D$,*-*] (xQE|-yB);
+\draw (xPB|-yC) to[R=$R_S$,-*] (xPB|-yB);
 
+
+\xDrawVoltage{B}(xPA|-yA)(xPA|-yB)[$V_{in}$]
+\xDrawVoltage{B}(xPF|-yA)(xPF|-yB)[$~~~V_{out}$]
 \xDrawVoltage{B}(xQA|-yA)(xQA|-yC)[$V_{GS}$]
 \xDrawVoltage{A}(xQA|-yB)(xQA|-yC)[$V_{BS}$]
 \xDrawVoltage{B}(xPE|-yA)(xPE|-yC)[$V_{DS}$]
 
-\xDrawVoltage{B}(xPA|-yC)(xPA|-yB)[$V_{in}$]
-
-\draw (xQA|-yC) to[short,i=$I_{in}$] (xPB|-yC);
-
 \xValBorder{xL}[-0.75]{xR}[+0.75]{yB}[-0.8]{yA}*
-
 
 \end{tikzpicture}
 \end{document}

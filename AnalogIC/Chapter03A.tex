@@ -146,7 +146,7 @@
 \end{enumerate}
 
 \subsection{采用电流源负载的共源级}
-实践中，有时我们会需要很高的增益，而\xref{subsec:采用电阻负载的共源级}指出增益$A_V=-g_m(r_O\parallel R_D)$，那么理论上只要令$R_D\to\infty$就可以获得最大增益$A_V=-g_mr_O$，也称为\uwave{本征增益}。但这显然是不可行的，如果负载开路，就没有任何电流了（增大负载电阻会消耗直流压降）。所以，一个更实际的思路是，采用一些不符合欧姆特性的器件，例如用电流源作为负载，如\xref{fig:使用电路流}所示，电流源在小信号中相当于一个无穷大的电阻，但是，电流源在大信号下又能提供用于偏置的直流电流，维持放大器的运作。当然，实际的电流源是通过一个偏置在饱和区的PMOS构成的。
+实践中，有时我们会需要很高的增益，而\xref{subsec:采用电阻负载的共源级}指出增益$A_V=-g_m(r_O\parallel R_D)$，那么理论上只要令$R_D\to\infty$就可以获得最大增益$A_V=-g_mr_O$，也称为\uwave{本征增益}。但这显然是不可行的，如果负载开路，就没有任何电流了（增大负载电阻会消耗直流压降）。所以，一个更实际的思路是，采用一些不符合欧姆特性的器件，例如用电流源作为负载，如\xref{fig:使用电流源}所示，电流源在小信号中相当于一个无穷大的电阻，但是，电流源在大信号下又能提供用于偏置的直流电流，维持放大器的运作。当然，实际的电流源是通过一个偏置在饱和区的PMOS构成的。
 
 \begin{Figure}[采用电流源负载的共源级电路]
     \begin{FigureSub}[使用电流源]
@@ -276,6 +276,10 @@
 
 这里需要考虑体效应的原因是，\xref{fig:采用NMOS二极管}中$M_2$的源并不是地电位，源和体未短接。
 
+\begin{Figure}[采用二极管负载的共源级小信号电路]
+    \includegraphics[scale=0.8]{build/Chapter03A_21.fig.pdf}
+\end{Figure}
+
 这样一来，事情就简单很多了。二极管负载，不过就是阻值不太好计算的电阻罢了。引用\fancyref{fml:二极管负载的等效电阻}和\fancyref{fml:采用电阻负载的共源级}，忽略沟道调制\setpeq{采用二极管负载的共源级}
 \begin{Equation}&[2]
     A_V=-g_{m1}R_D=-g_{m1}\frac{1}{g_{m2}+g_{mb2}}
@@ -304,7 +308,7 @@
     \end{Equation}
 \end{BoxFormula}
 
-\xref{fig:采用二极管负载的共源级增益}给出了二极管负载的共源放大器的大信号特性，从中我们可以洞见一些小信号分析下无法展现的特征。如\xref{fig:增益图采用二极管负载的共源级}所示，二极管负载下增益在饱和区是常数，这意味着绝对的线性！相比之下，电阻负载下增益在饱和区是线性变化的。由此可见，先前我们说，二极管负载相当于一个特定阻值的电阻负载只对于小信号分析下增益$A_V$的表达式是正确的，两者的增益$A_V$随$V_{in}$是截然不同的。这是值得警惕的，完全脱离大信号特性的小信号分析是危险的！
+\xref{fig:采用二极管负载的共源级增益}给出了二极管负载的共源放大器的大信号特性，从中我们可以洞见一些小信号分析下无法展现的特征。如\xref{fig:增益图采用二极管负载的共源级}所示，二极管负载下增益在饱和区是常数，这意味着绝对的线性！相比之下，电阻负载下增益在饱和区是线性变化的。由此可见，先前我们说，二极管负载相当于一个特定阻值的电阻负载只对于小信号分析下增益$A_V$的表达式是正确的，两者的增益$A_V$随$V_{in}$是截然不同的。这是值得警惕的，完全脱离大信号特性的小信号分析是危险的！\goodbreak
 
 二极管负载虽然有极好的线性放大特性，但也有其问题
 \begin{itemize}
@@ -351,3 +355,258 @@
         A_V=-\sqrt{\frac{\mu_n(W/L)_1}{\mu_p(W/L)_2}}
     \end{Equation}
 \end{BoxFormula}
+
+\subsection{采用反相器构型的共源极}
+采用PMOS器件作为负载引申出这样一种思路，我们能否让PMOS也同步参与放大？答案是肯定的，这种设计被称为有源负载的共源极，如\xref{fig:采用反相器构型的共源级电路}所示，其实质就是数字电路的反相器。
+\begin{Figure}[采用反相器构型的共源级电路]
+    \includegraphics[scale=0.8]{build/Chapter03A_11.fig.pdf}
+\end{Figure}
+
+\xref{fig:采用反相器构型的共源级小信号电路}是\xref{fig:采用反相器构型的共源级电路}对应的小信号电路，这里有个问题，此处G，S，D，B到底是指那一MOS管的电极？事实是，在小信号下，$M_1$和$M_2$管实际共用了所有电极！栅极G和漏极D连接了相同的$V_{in}$和$V_{out}$，源极S和体电极B均连接了电源，因此，结果就是，$M_1$和$M_2$的电流源$g_{m1}V_{GS}$和$g_{m2}V_{GS}$发生并联变为$(g_{m1}+g_{m2})V_{GS}$，协同放大。两者的输出电阻也并联。
+\begin{Figure}[采用反相器构型的共源级小信号电路]
+    \includegraphics[scale=0.8]{build/Chapter03A_22.fig.pdf}
+\end{Figure}
+
+这样一来，反相器构型下的增益就很容易计算了。
+\begin{BoxFormula}[采用反相器构型的共源极增益]
+    共源极放大，采用反相器构型，增益为
+    \begin{Equation}
+        A_V=-(g_{m1}+g_{m2})\frac{r_{O1}r_{O2}}{r_{O1}+r_{O2}}
+    \end{Equation}
+    实质上是
+    \begin{Equation}
+        A_V=-(g_{m1}+g_{m2})(r_{O1}\parallel r_{O2})
+    \end{Equation}
+\end{BoxFormula}
+
+\xref{fig:采用反相器构型的共源级增益}给出了反相器的大信号特性
+\begin{itemize}
+    \item 由于反相器构型中两个MOS管均参与放大，因此工作区的划分会更复杂，随着$V_{in}$的增大，$M_1/M_2$经历：截止/线性、饱和/线性、饱和/饱和、线性/饱和、线性/截止。而在这些阶段中，只有当两个MOS管同时工作在饱和区时，该结构才能被用于放大。
+    \item 反相器构型的优点在于，两个MOS管同时参与放大，有利于实现高增益。
+    \item 反相器构型的缺点在于，两个MOS管同时处于放大区的范围非常窄，另外，模集电的设计讲究PVT，PVT即Process, Voltage, Temperature，换言之PVT代表了电路对工艺偏差和环境的敏感性。反相器构型对这种偏差很敏感（PVT的强函数），这很不好。
+    \item 较大的NMOS尺寸会使曲线向左移动。
+    \item 较大的PMOS尺寸会使曲线向右移动。
+    \item 当两者尺寸一致时，曲线也会偏左，这是因为两者的载流子迁移率不同。
+\end{itemize}
+
+总而言之，尽管反相器对于数字电路非常重要，但在模拟电路中并没有那么适合放大。
+
+\begin{Figure}[采用反相器构型的共源级增益]
+    \begin{FigureSub}[区间图;区间图采用反相器构型的共源级增益]
+        \includegraphics[scale=0.82]{build/Chapter03A_04a.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[电压图;电压图采用反相器构型的共源级增益]
+        \includegraphics[scale=0.82]{build/Chapter03A_04b.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[增益图;增益图采用反相器构型的共源级增益]
+        \includegraphics[scale=0.82]{build/Chapter03A_04c.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+\subsection{带源极负反馈的共源放大}
+反馈总是会让一切计算变得复杂！但同时，反馈也是控制的基础！在放大器中，反馈常常以所谓“源极负反馈”的形式存在，具体而言，源极原先都是直接接地的，源极负反馈就是指在源端串联一个负反馈电阻。源极负反馈可以搭配任何负载，但其最常用于电阻负载的共源放大。
+
+\begin{Figure}[带源极负反馈的共源级电路]
+    \includegraphics[scale=0.8]{build/Chapter03A_23.fig.pdf}
+\end{Figure}
+
+反馈在这里的引入的目的是什么？答案是：源极负反馈电阻可以软化非线性关系。在\xref{fig:采用电阻负载的共源级增益}中我们就注意到，电阻负载会带来非线性，引入源极负反馈就可以在一定程度上减小这种非线性，当然，这种非线性的减小将以增益的损失为代价，这一点在\xref{fig:带源极负反馈的共源极增益}中可以被清晰看到。
+\begin{Figure}[带源极负反馈的共源极增益]
+    \begin{FigureSub}[区间图;区间图带源极负反馈的的共源级增益]
+        \includegraphics[scale=0.82]{build/Chapter03A_05a.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[电压图;电压图带源极负反馈的的共源级增益]
+        \includegraphics[scale=0.82]{build/Chapter03A_05b.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[增益图;增益图带源极负反馈的的共源级增益]
+        \includegraphics[scale=0.82]{build/Chapter03A_05c.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+% 当然，采用二极管负载事实上可以更好的解决非线性的问题，但源极负反馈也是一种手段。
+
+源极负反馈下，增益应该如何计算呢？如\xref{fig:带源极负反馈的共源级小信号电路}，源极电阻导致了许多麻烦
+\begin{itemize}
+    \item 源极电阻使源和地不在短接，这使我们不得不考虑体效应。
+    \item 源极电阻使电路网络更加复杂了，现在$g_{m}V_{GS}$不再直接位于输出端口了。
+\end{itemize}
+\begin{Figure}[带源极负反馈的共源级小信号电路]
+    \includegraphics[scale=0.8]{build/Chapter03A_24.fig.pdf}
+\end{Figure}
+
+这些麻烦都对增益的计算带来了挑战。不过，对策就存在于电路基础中——诺顿定理！
+
+其实，稍稍回顾一下我们就会发现，在本小节之前的所有放大电路，都是\xref{fig:共源放大的诺顿等效电路}的结构。
+\begin{Figure}[共源放大的诺顿等效电路]
+    \includegraphics[scale=0.8]{build/Chapter03A_27.fig.pdf}
+\end{Figure}
+很明显，这里有
+\begin{Equation}
+    V_{out}=-I_{out}R_{out}=-G_mV_{in}(R_O\parallel R_D)
+\end{Equation}
+即
+\begin{Equation}
+    A_V=-G_m(R_O\parallel R_D)
+\end{Equation}
+在\xref{fig:采用电阻负载的共源级小信号电路}中，对应到\xref{fig:共源放大的诺顿等效电路}，各个参量就分别是
+\begin{Equation}
+    G_{m}=g_m\qquad R_{O}=r_{O}\qquad V_{in}=V_{GS}
+\end{Equation}
+这就会回到我们相当熟悉的$A_V=-g_m(r_{O}\parallel R_D)$的形似了。现在我们的想法是，将\xref{fig:带源极负反馈的共源级小信号电路}也转化为\xref{fig:共源放大的诺顿等效电路}的形式，当然$G_m, R_O$等参量需要被重新计算。这听上去可能很困难，但幸运的是，诺顿定理告诉我们，任何电路网络都可以等效为电流源和一个电阻的并联，具体而言
+\begin{itemize}
+    \item 计算电流，即$G_m$时，输出端口短接$V_{out}=0$，而$G_m$由$G_m=I_{out}/V_{in}$给出。
+    \item 计算电阻，即$G_O=R_O^{-1}$时，输入端口短接$V_{in}=0$，而$G_O$由$G_O=I_{in}/V_{out}$给出。
+\end{itemize}
+请注意，上述两个步骤中负载$R_D$均不需要被考虑，它不是电路网络的一部分。
+
+% 现在，我们来实践这种想法。
+
+\subsubsection{计算等效转移电导}\setpeq{计算等效转移电导共源}
+计算等效转移电导，对于\xref{fig:共源放大的诺顿等效电路}，将输出端口短接，如\xref{fig:计算源极负反馈的共源放大等效转移电导}所示
+\begin{Figure}[计算源极负反馈的共源放大等效转移电导]
+    \includegraphics[scale=0.8]{build/Chapter03A_25.fig.pdf}
+\end{Figure}
+列写代换关系
+\begin{Equation}&[1]
+    V_{GS}=V_{in}-I_{out}R_S\qquad
+    V_{BS}=-I_{out}R_S\qquad
+    V_{DS}=-I_{out}R_S
+\end{Equation}
+基于$I_{out}$建立方程
+\begin{Equation}&[2]
+    I_{out}=g_mV_{GS}+g_{mb}V_{BS}+r_{O}^{-1}V_{DS}
+\end{Equation}
+在\xrefpeq{2}中代入\xrefpeq{1}
+\begin{Equation}&[3]
+    I_{out}=g_m(V_{in}-I_{out}R_S)+g_{mb}(-I_{out}R_S)+r_{O}^{-1}(-I_{out}R_S)
+\end{Equation}
+稍作整理
+\begin{Equation}
+    I_{out}=g_mV_{in}-(g_m+g_{mb}+r_{O}^{-1})I_{out}R_S
+\end{Equation}
+将$I_{out}$均移至左侧
+\begin{Equation}
+    I_{out}\qty[1+(g_m+g_{mb}+r_{O}^{-1})R_S]=g_mV_{in}
+\end{Equation}
+这就得到
+\begin{Equation}
+    G_m=I_{out}/V_{in}=\frac{g_m}{1+(g_m+g_{mb}+r_{O}^{-1})R_S}
+\end{Equation}
+这是第一种形式，上下同乘$r_O$可以得到第二种形式
+\begin{Equation}
+    G_m=\frac{g_mr_{O}}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
+\end{Equation}
+% 将结论整理如下
+\begin{BoxFormula}[源极反馈的共源放大等效转移电导]
+    共源极放大，当存在源极反馈时，等效转移电导为
+    \begin{Equation}
+        G_m=\frac{g_m}{1+(g_m+g_{mb}+r_{O}^{-1})R_S}
+    \end{Equation}
+    也可以表示为
+    \begin{Equation}
+        G_m=\frac{g_mr_{O}}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
+    \end{Equation}
+\end{BoxFormula}
+\subsubsection{计算等效输出电导}\setpeq{计算等效输出电导共源}
+计算等效转移电导，对于\xref{fig:共源放大的诺顿等效电路}，将输出端口短接，如\xref{fig:计算源极负反馈的共源放大等效转移电导}所示
+\begin{Figure}[计算源极负反馈的共源放大等效输出电导]
+    \includegraphics[scale=0.8]{build/Chapter03A_26.fig.pdf}
+\end{Figure}
+列写代换关系
+\begin{Equation}&[1]
+    V_{GS}=-I_{out}R_S\qquad
+    V_{BS}=-I_{out}R_S\qquad
+    V_{DS}=V_{out}-I_{out}R_S
+\end{Equation}
+我们可以关注一下\xrefpeq{1}和\xrefpeq[计算等效转移电导共源]{1}的联系和差异，它们对应了\xref{fig:计算源极负反馈的共源放大等效输出电导}和\xref{fig:计算源极负反馈的共源放大等效转移电导}。
+
+基于$I_{out}$建立方程，和之前一样
+\begin{Equation}&[2]
+    I_{out}=g_mV_{GS}+g_{mb}V_{BS}+r_{O}^{-1}V_{BS}
+\end{Equation}
+在\xrefpeq{2}中代入\xrefpeq{1}，得到
+\begin{Equation}
+    I_{out}=g_m(-I_{out}R_S)+g_{mb}(-I_{out}R_S)+r_{O}^{-1}(V_{out}-I_{out}R_S)
+\end{Equation}
+稍作整理
+\begin{Equation}
+    I_{out}=r_{O}^{-1}V_{out}-(g_m+g_{mb}+r_{O}^{-1})I_{out}R_S
+\end{Equation}
+将$I_{out}$均移至左侧
+\begin{Equation}
+    I_{out}\qty[1+(g_m+g_{mb}+r_{O}^{-1})R_S]=r_{O}^{-1}V_{out}
+\end{Equation}
+这就得到
+\begin{Equation}
+    G_{O}=I_{out}/V_{out}=\frac{r_O^{-1}}{1+(g_m+g_{mb}+r_{O}^{-1})R_S}
+\end{Equation}
+这是第一种形式，上下同乘$r_O$可以得到第二种形式
+\begin{Equation}
+    G_{O}=\frac{1}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
+\end{Equation}
+对于输出电导，这第二种形式是很有益的，因为其倒数给出的输出电阻的形式尤为简单。
+\begin{BoxFormula}[源极反馈的共源放大等效输出电导]
+    共源极放大，当存在源极反馈时，等效转移电导为
+    \begin{Equation}
+        G_O=\frac{r_O^{-1}}{1+(g_m+g_{mb}+r_{O}^{-1})R_S}
+    \end{Equation}
+    也可以表示为
+    \begin{Equation}
+        G_O=\frac{1}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
+    \end{Equation}
+    输出电阻即
+    \begin{Equation}
+        R_O=R_S+r_O\qty[1+(g_m+g_{mb})R_S]
+    \end{Equation}
+\end{BoxFormula}
+
+对比\xref{fml:源极反馈的共源放大等效转移电导}和\xref{fml:源极反馈的共源放大等效输出电导}，若改记$r_{O}^{-1}=g_O$
+\begin{Equation}
+    G_m=\frac{g_m}{1+(g_m+g_{mb}+r_{O}^{-1})R_S}\qquad
+    G_O=\frac{g_O}{1+(g_m+g_{mb}+r_{O}^{-1})R_S}
+\end{Equation}
+我们注意到：\empx{源极负反馈的效果是，使$g_m,g_O$分别减小了$1+(g_m+g_{mb}+r_{O}^{-1})R_S$倍}。
+
+\subsubsection{计算增益}\setpeq{计算增益共源极}
+现在，让我们回到增益的计算上
+\begin{Equation}&[1]
+    A_V=-G_m(R_O\parallel R_D)
+\end{Equation}
+我们不妨记
+\begin{Equation}&[2]
+    A_V=-G_mR_{out}
+\end{Equation}
+这里$R_O$代表MOS管的输出电阻，而$R_{out}=R_O\parallel R_{D}$则是整个放大器的输出电阻。
+
+这里先来计算$R_{out}$，应用\fancyref{fml:源极反馈的共源放大等效输出电导}
+\begin{Equation}&[3]
+    R_{out}=R_{O}\parallel R_D=\qty\big(R_S+r_O\qty[1+(g_m+g_{mb})R_S])\parallel R_D
+\end{Equation}
+得到
+\begin{Equation}&[4]
+    R_{out}=\frac{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}{R_D+R_S+r_O\qty[1+(g_m+g_{mb})R_S]}R_D
+\end{Equation}
+而\fancyref{fml:源极反馈的共源放大等效转移电导}又告诉我们
+\begin{Equation}&[5]
+    G_m=\frac{g_mr_O}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
+\end{Equation}
+当我们应用\xrefpeq{2}计算增益时，\xrefpeq{4}的分子和\xrefpeq{5}的分母可以约掉
+\begin{Equation}
+    A_V=\frac{-g_mr_OR_D}{R_D+R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
+\end{Equation}
+这里得到的$A_V, R_{out}$代表了我们对共源放大电路最深刻的定量理解，整理如下。
+\begin{BoxFormula}[共源级放大器综述]
+    共源级放大器的增益为
+    \begin{Equation}
+        A_V=\frac{-g_mr_OR_D}{R_D+R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
+    \end{Equation}
+    共源级放大器的输出电阻为
+    \begin{Equation}
+        R_{out}=\frac{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}{R_D+R_S+r_O\qty[1+(g_m+g_{mb})R_S]}R_D
+    \end{Equation}
+    共源级放大器的输入电阻为
+    \begin{Equation}
+        R_{in}=\infty
+    \end{Equation}
+\end{BoxFormula}
+
+至此，我们也最终引入了描述一个放大器特性的三个要素：增益、输出电阻、输入电阻。不同组态的放大器在这三个要素上的表现各有优劣，暂且我们先不评价共源放大器的性能。最后解释一下，共源放大器的输入电阻为何是无穷大？因为共源极的输入是绝缘栅极，不存在电流。
