@@ -461,8 +461,8 @@
 % 现在，我们来实践这种想法。
 
 \subsubsection{计算等效转移电导}\setpeq{计算等效转移电导共源}
-计算等效转移电导，对于\xref{fig:共源放大的诺顿等效电路}，将输出端口短接，如\xref{fig:计算源极负反馈的共源放大等效转移电导}所示
-\begin{Figure}[计算源极负反馈的共源放大等效转移电导]
+计算等效转移电导，对于\xref{fig:共源放大的诺顿等效电路}，将输出端口短接，如\xref{fig:计算共源放大等效转移电导}所示
+\begin{Figure}[计算共源放大等效转移电导]
     \includegraphics[scale=0.8]{build/Chapter03A_25.fig.pdf}
 \end{Figure}
 列写代换关系
@@ -496,7 +496,7 @@
     G_m=\frac{g_mr_{O}}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
 \end{Equation}
 % 将结论整理如下
-\begin{BoxFormula}[源极反馈的共源放大等效转移电导]
+\begin{BoxFormula}[共源放大器的等效转移电导]
     共源极放大，当存在源极反馈时，等效转移电导为
     \begin{Equation}
         G_m=\frac{g_m}{1+(g_m+g_{mb}+r_{O}^{-1})R_S}
@@ -507,8 +507,8 @@
     \end{Equation}
 \end{BoxFormula}
 \subsubsection{计算等效输出电导}\setpeq{计算等效输出电导共源}
-计算等效转移电导，对于\xref{fig:共源放大的诺顿等效电路}，将输出端口短接，如\xref{fig:计算源极负反馈的共源放大等效转移电导}所示
-\begin{Figure}[计算源极负反馈的共源放大等效输出电导]
+计算等效输出电导，对于\xref{fig:共源放大的诺顿等效电路}，将输出端口短接，如\xref{fig:计算共源放大等效转移电导}所示
+\begin{Figure}[计算共源放大等效输出电导]
     \includegraphics[scale=0.8]{build/Chapter03A_26.fig.pdf}
 \end{Figure}
 列写代换关系
@@ -517,7 +517,7 @@
     V_{BS}=-I_{out}R_S\qquad
     V_{DS}=V_{out}-I_{out}R_S
 \end{Equation}
-我们可以关注一下\xrefpeq{1}和\xrefpeq[计算等效转移电导共源]{1}的联系和差异，它们对应了\xref{fig:计算源极负反馈的共源放大等效输出电导}和\xref{fig:计算源极负反馈的共源放大等效转移电导}。
+我们可以关注一下\xrefpeq{1}和\xrefpeq[计算等效转移电导共源]{1}的联系和差异，它们对应了\xref{fig:计算共源放大等效输出电导}和\xref{fig:计算共源放大等效转移电导}。
 
 基于$I_{out}$建立方程，和之前一样
 \begin{Equation}&[2]
@@ -544,8 +544,8 @@
     G_{O}=\frac{1}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
 \end{Equation}
 对于输出电导，这第二种形式是很有益的，因为其倒数给出的输出电阻的形式尤为简单。
-\begin{BoxFormula}[源极反馈的共源放大等效输出电导]
-    共源极放大，当存在源极反馈时，等效转移电导为
+\begin{BoxFormula}[共源放大器的等效输出电导]
+    共源极放大，当存在源极反馈时，等效输出电导为
     \begin{Equation}
         G_O=\frac{r_O^{-1}}{1+(g_m+g_{mb}+r_{O}^{-1})R_S}
     \end{Equation}
@@ -559,7 +559,7 @@
     \end{Equation}
 \end{BoxFormula}
 
-对比\xref{fml:源极反馈的共源放大等效转移电导}和\xref{fml:源极反馈的共源放大等效输出电导}，若改记$r_{O}^{-1}=g_O$
+对比\xref{fml:共源放大器的等效转移电导}和\xref{fml:共源放大器的等效输出电导}，若改记$r_{O}^{-1}=g_O$
 \begin{Equation}
     G_m=\frac{g_m}{1+(g_m+g_{mb}+r_{O}^{-1})R_S}\qquad
     G_O=\frac{g_O}{1+(g_m+g_{mb}+r_{O}^{-1})R_S}
@@ -577,7 +577,7 @@
 \end{Equation}
 这里$R_O$代表MOS管的输出电阻，而$R_{out}=R_O\parallel R_{D}$则是整个放大器的输出电阻。
 
-这里先来计算$R_{out}$，应用\fancyref{fml:源极反馈的共源放大等效输出电导}
+这里先来计算$R_{out}$，应用\fancyref{fml:共源放大器的等效输出电导}
 \begin{Equation}&[3]
     R_{out}=R_{O}\parallel R_D=\qty\big(R_S+r_O\qty[1+(g_m+g_{mb})R_S])\parallel R_D
 \end{Equation}
@@ -585,7 +585,7 @@
 \begin{Equation}&[4]
     R_{out}=\frac{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}{R_D+R_S+r_O\qty[1+(g_m+g_{mb})R_S]}R_D
 \end{Equation}
-而\fancyref{fml:源极反馈的共源放大等效转移电导}又告诉我们
+而\fancyref{fml:共源放大器的等效转移电导}又告诉我们
 \begin{Equation}&[5]
     G_m=\frac{g_mr_O}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
 \end{Equation}

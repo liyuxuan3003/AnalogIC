@@ -1,0 +1,163 @@
+\section{共漏级放大器}
+作为一个放大器，我们希望其具有以下三点性质
+\begin{itemize}
+    \item 增益$A_V$尽可能大。
+    \item 输出电阻相较负载电阻要尽可能小，即$R_{out}$应较小。
+    \item 输入电阻相较信号内阻要尽可能大，即$R_{in}$应较大。
+\end{itemize}
+共源级放大器满足了高增益和高输入电阻的要求，然而，共源级放大器输出电阻较大，当其连接低阻负载时，将会损失增益。共漏级放大器可以很好的弥补这种缺点，它并不能提供很高增益，事实上其增益通常是略小于$1$的，忠实的在漏端输出源端输入的电压，因此，共漏放大器也被称为\uwave{源跟随器}。但是，共漏放大器的输出电阻很小，故可以在输出端作为缓冲级使用。
+
+\subsection{采用电阻负载的共漏级}
+共漏级的电路如\xref{fig:采用电阻负载的共漏级电路}所示，尽管共漏级和共源级性质差异很大，但两者的结构很相似
+\begin{itemize}
+    \item 共源级放大器，栅极输入，源极输出，负载$R_D$在漏极，如\xref{fig:使用电阻}所示。
+    \item 共漏极放大器，栅极输入，漏极输出，负载$R_S$在源极，如\xref{fig:采用电阻负载的共漏级电路}所示。
+\end{itemize}
+虽然$R_S$也出现在了共源级中，但是，$R_S$在共源级中只是负反馈，$R_S$在共漏极中却是负载。\goodbreak
+
+现在我们来分析一下，为什么\xref{fig:采用电阻负载的共漏级电路}的电路可以实现源跟随的功能？\nopagebreak
+
+\begin{Figure}[采用电阻负载的共漏级电路]
+    \includegraphics[scale=0.8]{build/Chapter03B_03.fig.pdf}
+\end{Figure}
+这种组态下，代换关系是
+\begin{Equation}
+    V_{GS}=V_{in}-V_{out}\qquad V_{DS}=V_{DD}-V_{out}\qquad V_{BS}=-V_{out}
+\end{Equation}
+
+建立方程，假定$M_1$处于饱和区，通过电流建立方程
+\begin{Equation}
+    \mu_nC_{ox}(W/L)(V_{in}-V_{TH}-V_{out})^2/2=V_{out}/R_S
+\end{Equation}
+两边同乘$R_S$，并对$V_{in}$求导得到，注意$R_S$的存在使体效应必须被考虑
+\begin{Equation}
+    \mu_nC_{ox}(W/L)(V_{in}-V_{TH}-V_{out})\qty(1-\pdv{V_{TH}}{V_{in}}-\pdv{V_{out}}{V_{in}})R_S=\pdv{V_{out}}{V_{in}}
+\end{Equation}
+应用链式法则，第一项给出$-\eta$，第二项中$V_{BS}=-V_{out}$
+\begin{Equation}
+    \pdv{V_{TH}}{V_{in}}=\pdv{V_{TH}}{V_{BS}}\cdot\pdv{V_{BS}}{V_{in}}=\eta\pdv{V_{out}}{V_{in}}
+\end{Equation}
+基于此，我们就得到
+\begin{Equation}
+    A_V=\pdv{V_{out}}{V_{in}}=\frac{\mu_nC_{ox}(W/L)(V_{in}-V_{TH}-V_{out})R_S}{1+\mu_nC_{ox}(W/L)(V_{in}-V_{TH}-V_{out})R_S(1+\eta)}
+\end{Equation}
+我们知道
+\begin{Equation}
+    g_{m}=\mu_nC_{ox}(W/L)(V_{in}-V_{TH}-V_{out})\qquad g_{mb}=\eta g_m
+\end{Equation}
+因此有
+\begin{Equation}
+    A_V=\frac{g_mR_s}{1+(g_m+g_{mb})R_S}
+\end{Equation}
+很明显，这是略一个小于$1$的增益，这也就是共漏放大器作为源跟随器的根源。\goodbreak
+
+值得注意的是，即便$R_S\to\infty$，增益也不会达到$1$，这是体效应的结果
+\begin{Equation}
+    A_V=\frac{g_m}{g_m+g_{mb}}=\frac{1}{1+\eta}
+\end{Equation}
+
+在\xref{fig:采用电阻负载的共漏级增益}中，我们绘制了共漏放大器的电压特性和增益特性。容易看出，较大的漏极负载可以使增益更快也更加接近$1$。值得注意的是，共漏放大器只会工作于饱和区，不存在线性区。
+\begin{Figure}[采用电阻负载的共漏级增益]
+    \begin{FigureSub}[电压图;电压图采用电阻负载的共漏级增益]
+        \includegraphics[scale=0.82]{build/Chapter03B_01a.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[增益图;增益图采用电阻负载的共漏级增益]
+        \includegraphics[scale=0.82]{build/Chapter03B_01b.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+接下来，我们分析一下小信号模型，完整起见，考虑沟道调制，如\xref{fig:采用电阻负载的共漏级小信号电路}所示，请注意，现在输出$V_{out}$位于源极处，并且由于漏极直接连接了电源，在小信号中等效于D和B短接了。
+\begin{Figure}[采用电阻负载的共漏级小信号电路]
+    \includegraphics[scale=0.8]{build/Chapter03B_04.fig.pdf}
+\end{Figure}
+
+直接计算增益是可能的，但是我们还是想沿袭\xref{subsec:带源极负反馈的共源放大}中的分析方法。
+
+\subsubsection{计算等效转移电导}\setpeq{计算等效转移电导}
+计算等效转移电导，对于\xref{fig:采用电阻负载的共漏级小信号电路}，将输出端口短接，如\xref{fig:计算共漏放大等效转移电导}所示
+\begin{Figure}[计算共漏放大等效转移电导]
+    \includegraphics[scale=0.8]{build/Chapter03B_05.fig.pdf}
+\end{Figure}
+列写代换关系
+\begin{Equation}
+    V_{GS}=V_{in}\qquad
+    V_{BS}=0\qquad
+    V_{DS}=0
+\end{Equation}
+有趣的是，由于S，D，B间均被短接了，有$V_{DS}=V_{BS}=0$，因此
+\begin{Equation}
+    I_{out}+g_mV_{GS}=0
+\end{Equation}
+即
+\begin{Equation}
+    I_{out}+g_mV_{in}=0
+\end{Equation}
+这就得到
+\begin{Equation}
+    G_m=\frac{I_{out}}{V_{in}}=-g_m
+\end{Equation}
+这里不必为负值结果感到惊讶，由于$A_V=-G_m(R_{O}\parallel R_S)$，负的等效跨导意味着正增益。
+
+\begin{BoxFormula}[共漏放大器的等效转移电导]
+    共漏极放大，等效转移电导为
+    \begin{Equation}
+        G_m=-g_m
+    \end{Equation}
+\end{BoxFormula}
+
+\subsubsection{计算等效输出电导}
+计算等效输出电导，对于\xref{fig:采用电阻负载的共漏级小信号电路}，将输入端口短接，如\xref{fig:计算共漏放大等效输出电导}所示
+\begin{Figure}[计算共漏放大等效输出电导]
+    \includegraphics[scale=0.8]{build/Chapter03B_06.fig.pdf}
+\end{Figure}
+列写代换关系
+\begin{Equation}
+    V_{GS}=-V_{out}\qquad V_{BS}=-V_{out}\qquad V_{DS}=-V_{out}
+\end{Equation}
+有趣的是，各端口的电压都等于$-V_{out}$，这意味着共漏下$g_{m},g_{mb},r_{O}$都可等效为电阻
+\begin{Equation}
+    I_{out}+g_mV_{GS}+g_{m}V_{BS}+r_{O}^{-1}V_{DS}
+\end{Equation}
+即
+\begin{Equation}
+    I_{out}-g_mV_{out}-g_{mb}V_{out}-r_{O}^{-1}V_{out}=0
+\end{Equation}
+这就得到
+\begin{Equation}
+    G_O=\frac{I_{out}}{V_{out}}=g_m+g_{mb}+r_{O}^{-1}
+\end{Equation}
+这就是说，输出电导是$g_m,g_{mb},r_{O}^{-1}$的和，就好比是它们是三个并联电阻一般。
+
+\begin{BoxFormula}[共漏放大器的等效输出电导]
+    共漏极放大，等效输出电导为
+    \begin{Equation}
+        G_O=g_m+g_{mb}+r_{O}^{-1}
+    \end{Equation}
+\end{BoxFormula}
+
+
+\subsubsection{计算增益}
+再一次，回到增益的计算上
+\begin{Equation}
+    A_V=-G_m(R_O\parallel R_S)
+\end{Equation}
+我们同样记
+\begin{Equation}
+    A_V=-G_mR_{out}
+\end{Equation}
+这里$R_{out}$和$A_V$的计算都很容易，我们直接给出最终结论。
+
+\begin{BoxFormula}[共源级放大器综述]
+    共源级放大器的增益为
+    \begin{Equation}
+        A_V=\frac{g_m}{g_m+g_{mb}+r_{O}^{-1}+R_S^{-1}}
+    \end{Equation}
+    共源级放大器的输出电阻为
+    \begin{Equation}
+        R_{out}=\frac{1}{g_m+g_{mb}+r_{O}^{-1}+R_S^{-1}}
+    \end{Equation}
+    共源级放大器的输入电阻为
+    \begin{Equation}
+        R_{in}=\infty
+    \end{Equation}
+\end{BoxFormula}
