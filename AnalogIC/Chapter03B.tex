@@ -27,11 +27,11 @@
 
 建立方程，假定$M_1$处于饱和区，通过电流建立方程
 \begin{Equation}
-    \mu_nC_{ox}(W/L)(V_{in}-V_{TH}-V_{out})^2/2=V_{out}/R_S
+    \mu_nC_{ox}(W/L)[(V_{in}-V_{out}-V_{TH})^2/2]=V_{out}/R_S
 \end{Equation}
 两边同乘$R_S$，并对$V_{in}$求导得到，注意$R_S$的存在使体效应必须被考虑
 \begin{Equation}
-    \mu_nC_{ox}(W/L)(V_{in}-V_{TH}-V_{out})\qty(1-\pdv{V_{TH}}{V_{in}}-\pdv{V_{out}}{V_{in}})R_S=\pdv{V_{out}}{V_{in}}
+    \mu_nC_{ox}(W/L)(V_{in}-V_{out}-V_{TH})\qty(1-\pdv{V_{out}}{V_{in}}-\pdv{V_{TH}}{V_{in}})R_S=\pdv{V_{out}}{V_{in}}
 \end{Equation}
 应用链式法则，第一项给出$-\eta$，第二项中$V_{BS}=-V_{out}$
 \begin{Equation}
@@ -39,11 +39,11 @@
 \end{Equation}
 基于此，我们就得到
 \begin{Equation}
-    A_V=\pdv{V_{out}}{V_{in}}=\frac{\mu_nC_{ox}(W/L)(V_{in}-V_{TH}-V_{out})R_S}{1+\mu_nC_{ox}(W/L)(V_{in}-V_{TH}-V_{out})R_S(1+\eta)}
+    A_V=\pdv{V_{out}}{V_{in}}=\frac{\mu_nC_{ox}(W/L)(V_{in}-V_{out}-V_{TH})R_S}{1+\mu_nC_{ox}(W/L)(V_{in}-V_{out}-V_{TH})R_S(1+\eta)}
 \end{Equation}
 我们知道
 \begin{Equation}
-    g_{m}=\mu_nC_{ox}(W/L)(V_{in}-V_{TH}-V_{out})\qquad g_{mb}=\eta g_m
+    g_{m}=\mu_nC_{ox}(W/L)(V_{in}-V_{out}-V_{TH})\qquad g_{mb}=\eta g_m
 \end{Equation}
 因此有
 \begin{Equation}
@@ -55,6 +55,18 @@
 \begin{Equation}
     A_V=\frac{g_m}{g_m+g_{mb}}=\frac{1}{1+\eta}
 \end{Equation}
+整理如下
+\begin{BoxFormula}[采用电阻负载的共漏极增益]
+    共漏极放大，采用电阻负载，增益为
+    \begin{Equation}
+        A_V=\frac{g_mR_s}{1+(g_m+g_{mb})R_S}
+    \end{Equation}
+    若令$R_S\to\infty$，简化为
+    \begin{Equation}
+        A_V=\frac{g_m}{g_m+g_{mb}}=\frac{1}{1+\eta}
+    \end{Equation}
+\end{BoxFormula}
+
 
 在\xref{fig:采用电阻负载的共漏级增益}中，我们绘制了共漏放大器的电压特性和增益特性。容易看出，较大的漏极负载可以使增益更快也更加接近$1$。值得注意的是，共漏放大器只会工作于饱和区，不存在线性区。
 \begin{Figure}[采用电阻负载的共漏级增益]
@@ -73,7 +85,7 @@
 
 直接计算增益是可能的，但是我们还是想沿袭\xref{subsec:带源极负反馈的共源放大}中的分析方法。
 
-\subsubsection{计算等效转移电导}\setpeq{计算等效转移电导}
+\subsubsection{计算共漏放大等效转移电导}
 计算等效转移电导，对于\xref{fig:采用电阻负载的共漏级小信号电路}，将输出端口短接，如\xref{fig:计算共漏放大等效转移电导}所示
 \begin{Figure}[计算共漏放大等效转移电导]
     \includegraphics[scale=0.8]{build/Chapter03B_05.fig.pdf}
@@ -105,7 +117,7 @@
     \end{Equation}
 \end{BoxFormula}
 
-\subsubsection{计算等效输出电导}
+\subsubsection{计算共漏放大等效输出电导}
 计算等效输出电导，对于\xref{fig:采用电阻负载的共漏级小信号电路}，将输入端口短接，如\xref{fig:计算共漏放大等效输出电导}所示
 \begin{Figure}[计算共漏放大等效输出电导]
     \includegraphics[scale=0.8]{build/Chapter03B_06.fig.pdf}
@@ -136,7 +148,7 @@
 \end{BoxFormula}
 
 
-\subsubsection{计算增益}
+\subsubsection{计算共漏放大的增益和输入输出电阻}
 再一次，回到增益的计算上
 \begin{Equation}
     A_V=-G_m(R_O\parallel R_S)
@@ -145,16 +157,25 @@
 \begin{Equation}
     A_V=-G_mR_{out}
 \end{Equation}
-这里$R_{out}$和$A_V$的计算都很容易，我们直接给出最终结论。
+这里先来计算$R_{out}=R_O\parallel R_S$
+\begin{Equation}
+    R_{out}=\frac{1}{g_m+g_{mb}+r_{O}^{-1}+R_S^{-1}}
+\end{Equation}
+由于$r_{O}^{-1}+R_{S}^{-1}=(r_{O}+R_{S})/(r_{O}R_S)$，不妨上下同乘$r_{O}R_S$
+\begin{Equation}
+    R_{out}=\frac{r_OR_S}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
+\end{Equation}
+
+由于$G_m=-g_m$，因此$A_V$只需要在$R_{out}$的基础上乘以$g_m$就可以了，总结如下。
 
 \begin{BoxFormula}[共源级放大器综述]
     共源级放大器的增益为
     \begin{Equation}
-        A_V=\frac{g_m}{g_m+g_{mb}+r_{O}^{-1}+R_S^{-1}}
+        A_V=\frac{g_mr_OR_S}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
     \end{Equation}
     共源级放大器的输出电阻为
     \begin{Equation}
-        R_{out}=\frac{1}{g_m+g_{mb}+r_{O}^{-1}+R_S^{-1}}
+        R_{out}=\frac{r_OR_S}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
     \end{Equation}
     共源级放大器的输入电阻为
     \begin{Equation}

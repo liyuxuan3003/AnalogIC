@@ -20,7 +20,9 @@
 \xValDefine{yA}[+2]
 \xValMiddle{yC}{yA}{yB}
 
-\draw (xSE|-yA) to[short,i=$I_{out}$] (xPE|-yA);
+\draw (xPF|-yA) to[short,i=$I_{out}$] (xPE|-yA);
+
+\draw (xR|-yA) to[short] (xR|-yB);
 
 \draw (xL|-yA) node[left] {G} to[short,o-o] (xQA|-yA);
 \draw (xL|-yB) node[left] {B} to[short,o-o] (xR|-yB) node[right] {B};
@@ -32,7 +34,6 @@
 \draw (xPB|-yA) to[cisource,l=$g_{m}V_{GS}$,-*] (xPB|-yC);
 \draw (xRC|-yA) to[cisource,l=$g_{mb}V_{BS}$,*-*] (xRC|-yC);
 \draw (xQD|-yA) to[R=$r_O$,*-*] (xQD|-yC);
-\draw (xSE|-yA) to[short,*-*] (xSE|-yB);
 \draw (xPB|-yC) to[R=$R_S$,-*] (xPB|-yB);
 
 \xDrawVoltage{B}(xPA|-yA)(xPA|-yB)[$V_{in}$]

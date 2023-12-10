@@ -126,12 +126,16 @@
 \end{Equation}
 这就回到了原先大信号的结论\xrefpeq{7}。总结一下这里得到的结论。
 
-\begin{BoxFormula}[采用电阻负载的共源级]
+\begin{BoxFormula}[采用电阻负载的共源级]*
     共源级放大，采用电阻负载，增益为
+    \begin{Equation}
+        A_V=-g_mR_D
+    \end{Equation}
+    若考虑沟道调制
     \begin{Equation}
         A_V=-g_m\frac{r_OR_D}{r_O+R_D}
     \end{Equation}
-    实质上是（此处的近似考虑到通常$r_O\gg R_D$）
+    实质上是
     \begin{Equation}
         A_V=-g_m(r_O\parallel R_D)\approx -g_mR_D
     \end{Equation}
@@ -460,7 +464,7 @@
 
 % 现在，我们来实践这种想法。
 
-\subsubsection{计算等效转移电导}\setpeq{计算等效转移电导共源}
+\subsubsection{计算共源放大等效转移电导}\setpeq{计算等效转移电导共源}
 计算等效转移电导，对于\xref{fig:共源放大的诺顿等效电路}，将输出端口短接，如\xref{fig:计算共源放大等效转移电导}所示
 \begin{Figure}[计算共源放大等效转移电导]
     \includegraphics[scale=0.8]{build/Chapter03A_25.fig.pdf}
@@ -506,7 +510,7 @@
         G_m=\frac{g_mr_{O}}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
     \end{Equation}
 \end{BoxFormula}
-\subsubsection{计算等效输出电导}\setpeq{计算等效输出电导共源}
+\subsubsection{计算共源放大等效输出电导}\setpeq{计算等效输出电导共源}
 计算等效输出电导，对于\xref{fig:共源放大的诺顿等效电路}，将输出端口短接，如\xref{fig:计算共源放大等效转移电导}所示
 \begin{Figure}[计算共源放大等效输出电导]
     \includegraphics[scale=0.8]{build/Chapter03A_26.fig.pdf}
@@ -566,7 +570,7 @@
 \end{Equation}
 我们注意到：\empx{源极负反馈的效果是，使$g_m,g_O$分别减小了$1+(g_m+g_{mb}+r_{O}^{-1})R_S$倍}。
 
-\subsubsection{计算增益}\setpeq{计算增益共源极}
+\subsubsection{计算共源放大的增益和输入输出电阻}\setpeq{计算增益共源极}
 现在，让我们回到增益的计算上
 \begin{Equation}&[1]
     A_V=-G_m(R_O\parallel R_D)
@@ -591,13 +595,13 @@
 \end{Equation}
 当我们应用\xrefpeq{2}计算增益时，\xrefpeq{4}的分子和\xrefpeq{5}的分母可以约掉
 \begin{Equation}
-    A_V=\frac{-g_mr_OR_D}{R_D+R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
+    A_V=\frac{-g_mr_O}{R_D+R_S+r_O\qty[1+(g_m+g_{mb})R_S]}R_D
 \end{Equation}
 这里得到的$A_V, R_{out}$代表了我们对共源放大电路最深刻的定量理解，整理如下。
 \begin{BoxFormula}[共源级放大器综述]
     共源级放大器的增益为
     \begin{Equation}
-        A_V=\frac{-g_mr_OR_D}{R_D+R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
+        A_V=\frac{-g_mr_O}{R_D+R_S+r_O\qty[1+(g_m+g_{mb})R_S]}R_D
     \end{Equation}
     共源级放大器的输出电阻为
     \begin{Equation}

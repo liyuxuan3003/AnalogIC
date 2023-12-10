@@ -1,0 +1,257 @@
+\section{共栅级放大器}
+
+\subsection{采用电阻负载的共栅级}
+共栅极是一种比较怪异的接法，输入从源极接入，输出从漏极接出，负载位于漏极，栅极则接偏置电压$V_{b}$，这里$V_{b}$未必等于$V_{DD}$，但为了让MOS管导通，可以预期$V_{b}$比较接近$V_{DD}$。
+
+\begin{Figure}[采用电阻负载的共栅级电路]
+    \includegraphics[scale=0.8]{build/Chapter03C_02.fig.pdf}
+\end{Figure}
+
+这种组态下代换关系是
+\begin{Equation}
+    V_{GS}=V_{b}-V_{in}\qquad 
+    V_{BS}=-V_{in}\qquad
+    V_{DS}=V_{out}-V_{in}
+\end{Equation}
+
+照例我们从大信号分析开始，同样以电流建立方程
+\begin{Equation}
+    \mu_nC_{ox}(W/L)[(V_{b}-V_{in}-V_{TH})^2/2]=(V_{DD}-V_{out})/R_D
+\end{Equation}
+容易解出
+\begin{Equation}
+    V_{out}=V_{DD}-\mu_nC_{ox}(W/L)[(V_b-V_{in}-V_{TH})^2/2]R_D
+\end{Equation}
+求导计算增益
+\begin{Equation}
+    A_V\pdv{V_{out}}{V_{in}}=-\mu_nC_{ox}(W/L)(V_b-V_{in}-V_{TH})\qty(-1-\pdv{V_{TH}}{V_{in}})R_D
+\end{Equation}
+注意到
+\begin{Equation}
+    \pdv{V_{TH}}{V_{in}}=-\pdv{V_{TH}}{V_{BS}}=\eta
+\end{Equation}
+因此有
+\begin{Equation}
+    A_V=-\mu_nC_{ox}(W/L)(V_b-V_{in}-V_{TH})\qty(-1-\eta)R_D
+\end{Equation}
+或者
+\begin{Equation}
+    A_V=\mu_nC_{ox}(W/L)(V_b-V_{in}-V_{TH})\qty(1+\eta)R_D
+\end{Equation}
+再用跨导代换
+\begin{Equation}
+    A_V=g_mR_D(1+\eta)
+\end{Equation}
+共源的增益为$A_V=-g_mR_D$，共栅的增益为$A_V=g_mR_D(1+\eta)$，这表明：共栅级可以提供和共源级相当的高增益，但为非反相的放大，有意思的是。体效应在共栅中还提高了增益。
+
+\begin{Figure}[采用电阻负载的共栅极增益]
+    \begin{FigureSub}[区间图;区间图采用电阻负载的共栅极增益]
+        \includegraphics[scale=0.82]{build/Chapter03C_01a.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[电压图;电压图采用电阻负载的共栅极增益]
+        \includegraphics[scale=0.82]{build/Chapter03C_01b.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[增益图;增益图采用电阻负载的共栅极增益]
+        \includegraphics[scale=0.82]{build/Chapter03C_01c.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+\xref{fig:采用电阻负载的共栅极增益}绘制了共栅放大的完整大信号特性，其结果可以与共源放大的\xref{fig:采用电阻负载的共源级增益}对照。
+
+\begin{BoxFormula}[采用电阻负载的共栅极增益]
+    共栅级放大，采用电阻负载，增益为
+    \begin{Equation}
+        A_V=g_mR_D(1+\eta)
+    \end{Equation}
+\end{BoxFormula}
+
+\subsection{带有源极负反馈的共栅级}
+共栅和共源类似，都可以引入源极电阻，本小节将考虑这种情况（同时考虑沟道调制）。
+
+带有源极负反馈的共栅级的电路如\xref{fig:带有源极负反馈的共栅级电路}所示
+\begin{Figure}[带有源极负反馈的共栅级电路]
+    \includegraphics[scale=0.8]{build/Chapter03C_03.fig.pdf}
+\end{Figure}
+它的小信号模型的结构是目前看起来最奇特的，但只不过是输入的位置比较特别
+\begin{Figure}[带有源极负反馈的共栅级小信号电路]
+    \includegraphics[scale=0.8]{build/Chapter03C_07.fig.pdf}
+\end{Figure}
+我们照例还是采用$G_m,G_O,A_V$的那种分析方法。
+
+\subsubsection{计算共栅放大等效转移电导}
+计算等效转移电导，对于\xref{fig:带有源极负反馈的共栅级小信号电路}，将输出端口短接，如\xref{fig:计算共栅放大等效转移电导}
+\begin{Figure}[计算共栅放大等效转移电导]
+    \includegraphics[scale=0.8]{build/Chapter03C_04.fig.pdf}
+\end{Figure}
+
+列写代换关系
+\begin{Equation}
+    \qquad\qquad
+    V_{GS}=-V_{in}-I_{out}R_S\qquad V_{BS}=-V_{in}-I_{out}R_S\qquad
+    V_{DS}=-V_{in}-I_{out}R_S
+    \qquad\qquad
+\end{Equation}
+基于电流建立方程
+\begin{Equation}
+    I_{out}=g_mV_{GS}+g_{mb}V_{BS}+r_O^{-1}V_{DS}
+\end{Equation}
+即
+\begin{Equation}
+    I_{out}=(g_{m}+g_{mb}+r_{O}^{-1})(-V_{in}-I_{out}R_S)
+\end{Equation}
+整理得到
+\begin{Equation}
+    I_{out}\qty[1+(g_m+g_{mb}+r_{O}^{-1})R_S]=-(g_m+g_{mb}+r_O^{-1})V_{in}
+\end{Equation}
+因此
+\begin{Equation}
+    G_m=\frac{I_{out}}{V_{in}}=-\frac{g_m+g_{mb}+r_{O}^{-1}}{1+(g_m+g_{mb}+r_{O}^{-1})R_S}
+\end{Equation}
+上下同乘$r_O$
+\begin{Equation}
+    G_m=-\frac{1+r_O(g_m+g_{mb})}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
+\end{Equation}
+% 将结论整理如下
+\begin{BoxFormula}[共栅放大器的等效转移电导]*
+    共栅极放大，当存在源极反馈时，等效转移电导为
+    \begin{Equation}
+        G_m=-\frac{g_m+g_{mb}+r_{O}^{-1}}{1+(g_m+g_{mb}+r_{O}^{-1})R_S}
+    \end{Equation}
+    也可以表示为
+    \begin{Equation}
+        G_m=-\frac{1+r_O(g_m+g_{mb})}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
+    \end{Equation}
+\end{BoxFormula}
+
+\subsubsection{计算共栅放大等效输出电导}
+计算等效输出电导，对于\xref{fig:带有源极负反馈的共栅级小信号电路}，将输入端口短接，如\xref{fig:计算共栅放大等效输出电导}所示
+\begin{Figure}[计算共栅放大等效输出电导]
+    \includegraphics[scale=0.8]{build/Chapter03A_26.fig.pdf}
+\end{Figure}
+有趣的是，我们注意到\xref{fig:计算共栅放大等效输出电导}和\xref{fig:计算共源放大等效输出电导}完全一致，这表明：\empx{共栅放大和共源放大具有相同的输出电导}，因此没必要重复计算，而是可以直接调用\fancyref{fml:共源放大器的等效输出电导}。
+
+\begin{BoxFormula}[共栅放大器的等效输出电导]
+    共栅极放大，当存在源极反馈时，等效输出电导为
+    \begin{Equation}
+        G_O=\frac{r_O^{-1}}{1+(g_m+g_{mb}+r_{O}^{-1})R_S}
+    \end{Equation}
+    也可以表示为
+    \begin{Equation}
+        G_O=\frac{1}{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}
+    \end{Equation}
+\end{BoxFormula}
+
+\subsubsection{计算共栅放大的增益和输入输出电阻}
+这里和过去一样，基于$R_{out}=R_O\parallel R_D$和$A_V=-G_mR_{out}$计算$A_V$和$R_{out}$，但是有一点不同，共源和共漏的输入电阻$R_{in}$没什么可计算的，都是无穷大，因为它们的输入信号从栅极接入，而栅极绝缘。然而，共栅的输入是从源极接入了，这时输入电阻$R_{in}$就成为了一个需要认真计算的量了。另一个问题是，输入电阻$R_{in}$的计算和输出电阻$R_{out}$方法上有些差异
+\begin{itemize}
+    \item 计算输出电阻时，\textbf{短路}输入接口，此时$R_{out}$由$R_{out}=V_{out}/I_{out}$给出。
+    \item 计算输入电阻时，\textbf{开路}输出接口，此时$R_{in}$由$R_{in}=V_{in}/I_{in}$给出。
+\end{itemize}
+输出电阻计算时，有一个讨巧的办法，介于负载$R_D$总是并联在输出端口上，我们可以先计算不带$R_D$的输出电阻$R_O$，随后由$R_{out}=R_D\parallel R_O$给出总的输出电阻。输入电阻$R_{in}$并没有这种技巧可用，无法先得到一个不带负载$R_D$的$R_I$后再得到$R_{in}$，输入电阻始终要考虑负载！
+
+\begin{Figure}[计算共栅放大的的输入输出电阻]
+    \begin{FigureSub}[共栅放大的的输入电阻]
+        \includegraphics[scale=0.8]{build/Chapter03C_05.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[共栅放大的的输出电阻]
+        \includegraphics[scale=0.8]{build/Chapter03C_06.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+现在我们来依据\xref{fig:共栅放大的的输入电阻}计算$R_{in}$，代换关系是
+\begin{Equation}
+    \qquad
+    V_{GS}=-V_{in}+I_{in}R_S\qquad
+    V_{BS}=-V_{in}+I_{in}R_S\qquad
+    V_{DS}=-V_{in}+I_{in}(R_S+R_D)
+    \qquad
+\end{Equation}
+基于$I_{in}$列写方程
+\begin{Equation}
+    I_{in}=g_mV_{GS}+g_{mb}V_{BS}+r_O^{-1}V_{DS}
+\end{Equation}
+进行代换
+\begin{Equation}
+    I_{in}+(g_m+g_{mb}+r_O^{-1})(-V_{in}+I_{in}R_S)+r_{O}^{-1}I_{in}R_D=0
+\end{Equation}
+将$I_{in}$和$V_{in}$分离
+\begin{Equation}
+    I_{in}[(g_m+g_{mb}+r_{O}^{-1})R_S+r_O^{-1}R_D+1]=V_{in}(g_{m}+g_{mb}+r_{O}^{-1})
+\end{Equation}
+我们计算$R_{in}^{-1}=I_{in}/V_{in}$（这是因为$R_{in}^{-1}$的形式与$R_{out}$比较匹配）
+\begin{Equation}
+    R_{in}^{-1}=\frac{I_{in}}{V_{in}}=\frac{(g_m+g_{mb}+r_{O}^{-1})}{(g_m+g_{mb}+r_O^{-1})R_S+r_{O}^{-1}R_D+1}
+\end{Equation}
+上下同乘$r_O$可以得到
+\begin{Equation}
+    R_{in}^{-1}=\frac{(g_m+g_{mb})r_O+1}{R_S+R_D+r_O[1+(g_m+g_{mb})R_S]}
+\end{Equation}
+至此，就得到了$R_{in}^{-1}$的结果，而$R_{out}=R_{O}\parallel R_{D}$是很容易求的
+\begin{Equation}
+    R_{out}=\frac{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}{R_D+R_S+r_O\qty[1+(g_m+g_{mb})R_S]}R_D
+\end{Equation}
+增益$A_V=-G_mR_{out}$也很好计算
+\begin{Equation}
+    A_V=\frac{(g_m+g_{mb})r_O+1}{R_D+R_S+r_O\qty[1+(g_m+g_{mb})R_S]}R_D
+\end{Equation}
+将全部结论总结如下
+\begin{BoxFormula}[共栅级放大器综述]
+    共源级放大器的增益为
+    \begin{Equation}
+        A_V=\frac{(g_m+g_{mb})r_O+1}{R_D+R_S+r_O\qty[1+(g_m+g_{mb})R_S]}R_D
+    \end{Equation}
+    共源级放大器的输出电阻为
+    \begin{Equation}
+        R_{out}=\frac{R_S+r_O\qty[1+(g_m+g_{mb})R_S]}{R_D+R_S+r_O\qty[1+(g_m+g_{mb})R_S]}R_D
+    \end{Equation}
+    共源级放大器的输入电阻为
+    \begin{Equation}
+        R_{in}^{-1}=\frac{(g_m+g_{mb})r_O+1}{R_S+R_D+r_O[1+(g_m+g_{mb})R_S]}
+    \end{Equation}
+\end{BoxFormula}
+
+在本节最后，我们简要总结一下共源、共漏、共栅放大器的输入和输出的位置。
+\begin{Tablex}[放大器的输入输出位置]{lXXX}
+<类型&源&漏&栅\\>
+共源级放大器&接GND&输出~接负载后接VDD&输入\\
+共漏级放大器&输出~接负载后接GND&接VDD&输入\\
+共栅级放大器&输入&输出~接负载后接VDD&接偏置Vb\\
+\end{Tablex}
+
+% \begin{TableLong}[三类放大器的公式总结]{|c|ccc|}
+% <参数&共源级CS&共栅级CG&共漏级CD\\>
+%     %-- G_m --%
+%     \mr{3}[-5ex]{$G_m$}
+%     &\xgp[2ex]{$\mal{\frac{g_mr_O}{R_S+r_O[1+(g_m+g_{mb})R_S]}}$}
+%     &\xgp[2ex]{$\mal{-\frac{(g_m+g_{mb})r_O+1}{R_S+r_O[1+(g_m+g_{mb})R_S]}}$}
+%     &--\\ \clinelig{2-4}
+%     &\xgp[2ex]{$\mal{\frac{g_m}{1+(g_m+g_{mb}+r_O^{-1})R_S}}$}
+%     &\xgp[2ex]{$\mal{-\frac{g_m+g_{mb}+r_O^{-1}}{1+(g_m+g_{mb}+r_O^{-1})R_S}}$}
+%     &--\\ \clinelig{2-4}
+%     &\xgp[2ex]{$\mal{g_m}$}
+%     &\xgp[2ex]{$\mal{-g_m-g_{mb}-r_{O}^{-1}}$}
+%     &\xgp[2ex]{$\mal{-g_m}$}\\
+%     \hlinemid
+%     %-- G_O --%
+%     \mr{3}[-5ex]{$G_O$}
+%     &\xgp[2ex]{$\mal{\frac{1}{R_S+r_O[1+(g_m+g_{mb})R_S]}}$}
+%     &\xgp[2ex]{$\mal{\frac{1}{R_S+r_O[1+(g_m+g_{mb})R_S]}}$}
+%     &--\\ \clinelig{2-4}
+%     &\xgp[2ex]{$\mal{\frac{r_O^{-1}}{1+(g_m+g_{mb}+r_O^{-1})R_S}}$}
+%     &\xgp[2ex]{$\mal{\frac{r_O^{-1}}{1+(g_m+g_{mb}+r_O^{-1})R_S}}$}
+%     &--\\ \clinelig{2-4}
+%     &\xgp[2ex]{$\mal{r_O^{-1}}$}
+%     &\xgp[2ex]{$\mal{r_O^{-1}}$}
+%     &\xgp[2ex]{$\mal{r_O^{-1}+g_m+g_{mb}}$}\\
+%     %-- A_V --%
+%     \mr{3}[-5ex]{$A_V$}
+%     &\xgp[2ex]{$-\mal{\frac{g_mr_O}{R_D+R_S+r_O[1+(g_m+g_{mb})R_S]}}R_D$}
+%     &\xgp[2ex]{$\mal{\frac{(g_m+g_{mb})r_O+1}{R_D+R_S+r_O[1+(g_m+g_{mb})R_S]}R_D}$}
+%     &--\\ \clinelig{2-4}
+%     &\xgp[2ex]{$\mal{\frac{r_O^{-1}}{1+(g_m+g_{mb}+r_O^{-1})R_S}}$}
+%     &\xgp[2ex]{$\mal{\frac{r_O^{-1}}{1+(g_m+g_{mb}+r_O^{-1})R_S}}$}
+%     &--\\ \clinelig{2-4}
+%     &\xgp[2ex]{$\mal{r_O^{-1}}$}
+%     &\xgp[2ex]{$\mal{r_O^{-1}}$}
+%     &\xgp[2ex]{$\mal{r_O^{-1}+g_m+g_{mb}}$}\\
+% \end{TableLong}

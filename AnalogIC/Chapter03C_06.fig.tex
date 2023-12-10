@@ -23,7 +23,7 @@
 
 \draw (xL|-yA) to[short,*-*] (xL|-yB);
 
-\draw (xPF|-yA) to[short,i=$I_{out}$] (xPE|-yA);
+\draw (xPF|-yA) to[short,i=$I_{out}$] (xQE|-yA);
 
 \draw (xL|-yA) node[left] {G} to[short,o-o] (xQA|-yA);
 \draw (xL|-yB) node[left] {B} to[short,o-o] (xR|-yB) node[right] {B};
@@ -36,6 +36,7 @@
 \draw (xRC|-yA) to[cisource,l=$g_{m}V_{BS}$,*-*] (xRC|-yC);
 \draw (xQD|-yA) to[R=$r_O$,*-*] (xQD|-yC);
 \draw (xPB|-yC) to[R=$R_S$,-*] (xPB|-yB);
+\draw (xQE|-yA) to[R=$R_D$,-*] (xQE|-yB);
 
 \xDrawVoltage{B}(xPF|-yA)(xPF|-yB)[$~~~V_{out}$]
 \xDrawVoltage{B}(xQA|-yA)(xQA|-yC)[$V_{GS}$]

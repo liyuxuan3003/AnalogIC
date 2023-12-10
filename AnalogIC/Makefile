@@ -12,10 +12,12 @@ TEXS:=$(filter-out .fig.tex,$(wildcard *.tex))
 FIGS:=$(wildcard *.fig.tex)
 OCTS:=$(wildcard *.fig.m)
 WLSS:=$(wildcard *.fig.wls)
+ASCS:=$(wildcard *.fig.py)
 
 FIGS_PDF:=$(addprefix ${BUILD_DIR}/,$(FIGS:.tex=.pdf))
 OCTS_PDF:=$(addprefix ${BUILD_DIR}/,$(OCTS:.m=.pdf))
 WLSS_PDF:=$(addprefix ${BUILD_DIR}/,$(WLSS:.wls=.pdf))
+ASCS_PDF:=$(addprefix ${BUILD_DIR}/,$(ASCS:.py=.pdf))
 
 default: ${BUILD_DIR} ${OUTPUT}
 	@echo Makefile: Done!
@@ -33,6 +35,9 @@ ${BUILD_DIR}/%.fig.pdf:%.fig.m
 
 ${BUILD_DIR}/%.fig.pdf:%.fig.wls
 	wolframscript.exe -script $<
+
+${BUILD_DIR}/%.fig.pdf:%.fig.py
+	/c/Anaconda3/python.exe $<
 
 ${BUILD_DIR}:
 	mkdir -p ${BUILD_DIR}
