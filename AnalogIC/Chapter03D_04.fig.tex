@@ -1,0 +1,38 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-3.0]
+\xValDefine{xR}[+3.0]
+\xValPropor{xLx}{xL}{xR}[1/3]
+\xValPropor{xRx}{xL}{xR}[2/3]
+\xValMiddle{xC}{xL}{xR}
+
+\xSetY
+\xValDefine{yB}[-3]
+\xValDefine{yA}[+3]
+\xValDefine{yC}{yB}{yA}
+\foreach \x/\s in {0/a,1/b,2/c,3/d}
+{
+    \xValPropor{yP\s}{yA}{yB}[\x/3]
+    \ifthenelse{\x=3}{}{\xValOffpro{yQ\s}{yP\s}{yA}{yB}[1/6]}
+}
+
+\path (xLx|-yPb) node[pmos] (M1) {$M_1$};
+\path (xRx|-yQb) node[nmos,xscale=-1] (M2) {\ctikzflipx{$M_2$}};
+\draw (xLx|-yPa) node[vdd] {$V_{DD}$} -- (M1.S);
+\draw (xRx|-yPa) node[vdd] {$V_{DD}$} to[R=$R_D$] (xRx|-yPb) -- (xRx|-M2.D);
+\draw (M2.S) to[short,f=$I_{D2}$] (xRx|-yPc) -- (xLx|-yPc) to[short,f=$I_{D1}$] (M1.D);
+\draw (xC|-yPc) node[below right] {$X$} to[isource,l=$I_0$,*-] (xC|-yPd) node[ground] {};
+\draw (M1.G) to[short,-o] (xL|-yPb) node[left] {$V_{in}$};
+\draw (M2.G) to[short,-o] (xR|-yQb) node[right] {$V_{b}$};
+\draw (xRx|-yPb) to[short,*-o] (xR|-yPb) node[right] {$V_{out}$};
+
+
+
+\xValBorder{xL}[-0.85]{xR}[+0.95]{yB}[-0.8]{yA}[+1.1]*
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,193 @@
+\section{共源共栅放大器}
+
+\subsection{套筒式共源共栅}
+共源共栅是一个很有趣的结构，它常被称为Cascode，是Cascaded Triodes即级联三极管的缩写，该名称或许可以追溯到真空管时代。尽管这里提到了“级联”，但我们要指出，共源共栅并不能简单视为共源和共栅的级联，它结构有一些特殊，如\xref{fig:套筒式共源共栅级的电路}所示，在共源共栅中
+
+\begin{Figure}[套筒式共源共栅级的电路]
+    \includegraphics[scale=0.8]{build/Chapter03D_03.fig.pdf}
+\end{Figure}
+
+\begin{itemize}
+    \item $M_1$管是“共源”部分，电压输入，电流输出，即$V_{in}\to I_D$，称为输入器件。
+    \item $M_2$管是“共栅”部分，电流输入，电压输出，即$I_{D}\to V_{out}$，称为共源共栅器件。
+\end{itemize}
+由此可见，共源共栅的本质特点是：\empx{流经两个器件的信号电流是相同的}。本小节展示的共源共栅电路被称为套筒式，除此之外，还有另外一种共源共栅电路被称为折叠式，在下一小节介绍。
+
+现在我们来分析套筒式共源共栅的大信号特性，\xref{fig:套筒式共源共栅放大器的特性}给出了\xref{fig:套筒式共源共栅级的电路}全面的仿真结果。
+
+$M_1$管的代换关系是
+\begin{Equation}
+    V_{GS1}=V_{in}\qquad V_{DS1}=V_X\qquad V_{BS1}=0
+\end{Equation}
+
+$M_2$管的代换关系是
+\begin{Equation}
+    V_{GS2}=V_{b}-V_X\qquad V_{DS2}=V_{out}-V_X\qquad V_{BS2}=-V_X
+\end{Equation}
+
+当$V_{in}=<V_{TH1}$时，$M_1$管截止，$M_2$管事实上也截止（为什么？），此时有
+\begin{Equation}
+    V_{out}=V_{DD}\qquad V_{X}=V_b-V_{TH2}
+\end{Equation}
+当$V_{in}=V_{GS1}>V_{TH1}$时，$M_1$管和$M_2$管导通且处于饱和区，$V_{out},V_X$将会逐渐下降。
+
+随着$V_{in}$的进一步增大，取决于电路的具体参数$V_b,R_D$的组合，可能出现两个结果。
+
+\paragraph{$M_1$管先进入线性区}
+$V_{in}$使$V_{DS1}\leq V_{GS1}-V_{TH1}$的条件先达到，即$M_1$管先进入线性区，代入代换关系
+\begin{Equation}
+    V_{X}\leq V_{in}-V_{TH1}
+\end{Equation}
+即
+\begin{Equation}
+    V_{X}-V_{in}\leq -V_{TH1}
+\end{Equation}
+这表明，当$V_X$比$V_{in}$低一个阈值电压$V_{TH1}$时，$M_1$将被迫进入线性区。
+
+\paragraph{$M_2$管先进入线性区}
+$V_{in}$使$V_{DS2}\leq V_{GS2}-V_{TH2}$的条件先达到，即$M_2$管先进入线性区，代入代换关系
+\begin{Equation}
+    V_{out}-V_{X}\leq V_b-V_X-V_{TH2}
+\end{Equation}
+注意到$V_X$可以被约掉
+\begin{Equation}
+    V_{out}-V_b\leq -V_{TH2}
+\end{Equation}
+这表明，当$V_{out}$比$V_b$低一个阈值电压$V_{TH2}$时，$M_2$将被迫进入线性区。
+
+现在我们讨论一下共源共栅的小信号电路，如\xref{fig:套筒式共源共栅级的小信号电路}所示
+
+\begin{Figure}[套筒式共源共栅级的小信号电路]
+    \includegraphics[scale=0.8]{build/Chapter03D_06.fig.pdf}
+\end{Figure}
+第一步，分析共源共栅的增益，这里我们不做具体的计算，只是做一些定性的考量。分析增益时我们姑且忽略$r_{O1}, r_{O2}$，我们会注意到：\empx{共源共栅的增益等同于共源的增益}，\empx{共栅级对于增益没有贡献}。这是因为所有电流最终都要流过共源级，因此，增益仍然是
+\begin{Equation}
+    A_V=-g_mR_D
+\end{Equation}
+第二步，分析共源共栅的输出电阻，这里可以适用一个有趣的近似，将共源极电阻$r_{O1}$视为共栅极的源极负反馈，由此可以立即套用\fancyref{fml:共栅放大器的等效输出电导}的结论
+\begin{Equation}
+    R_O=r_{O1}+r_{O2}[1+(g_{m2}+g_{mb2})r_{O1}]
+\end{Equation}
+展开为
+\begin{Equation}
+    R_O=r_{O1}+r_{O2}+(g_{m2}+g_{mb2})r_{O1}r_{O2}
+\end{Equation}
+由于转移电导总是比较大的，可以只保留
+\begin{Equation}
+    R_O=(g_{m2}+g_{mb2})r_{O1}r_{O2}
+\end{Equation}
+由此可见，共栅管$M_2$可以将共源管$M_1$的输出电阻自$r_{O1}$放大$r_{O2}(g_{m2}+g_{mb2})$倍。我们知道，当$R_D$很大时，增益要修正为$A_V=-g_m(R_{O}\parallel R_D)$并最终取决于$A_V=-g_mR_O$，换言之，输出电阻限制了通过增大负载电阻所能达到的增益上限，共源共栅提高了输出电阻，也就提高了这种上限，增益可以从$A_V=-g_{m1}r_{O1}$提升至$A_V=-g_{m1}(g_{m2}+g_{mb2})r_{O1}r_{O2}$，若近似认为$g_{m1}\approx g_{m2}+g_{mb2}$及$r_{O1}\approx r_{O2}$，即有：\empx{共源共栅可以将本征增益提高至原来的平方}。
+
+\subsection{折叠式共源共栅}
+共源共栅的设计思路是，将输入电压转化为电流作为共栅的输入，然而，输入器件和共源共栅器件不一定是同一种类型的，更确切的说，不必都是NMOS的，可以用PMOS和NMOS组合完成功能。这种器件选择上的变化，就让我们从套筒式共源共栅得到了折叠式共源共栅。
+
+折叠式共源共栅的电路如\xref{fig:折叠式共源共栅级的电路}所示，我们指出
+\begin{itemize}
+    \item \xref{fig:使用PMOS作输入器件}中，输入器件$M_1$是PMOS，共源共栅器件$M_2$是NMOS。
+    \item \xref{fig:使用NMOS作输入器件}中，输入器件$M_1$是NMOS，共源共栅器件$M_2$是PMOS。
+    \item 折叠式共源共栅还需要一个恰当的电流源$I_0$作偏置。
+\end{itemize}
+\begin{Figure}[折叠式共源共栅级的电路]
+    \begin{FigureSub}[使用PMOS作输入器件]
+        \includegraphics[scale=0.8]{build/Chapter03D_04.fig.pdf}
+    \end{FigureSub}
+    \hspace{1cm}
+    \begin{FigureSub}[使用NMOS作输入器件]
+        \includegraphics[scale=0.8]{build/Chapter03D_05.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+折叠式共源共栅中的“折叠式”是指，电流从VDD或GND出发，折叠一圈后又回到原位。
+
+现在我们来分析折叠式共源共栅的大信号特性，\xref{fig:折叠式共源共栅放大器的特性}给出了\xref{fig:使用PMOS作输入器件}全面的仿真结果。
+
+$M_1$管的代换关系是
+\begin{Equation}
+    V_{GS1}=V_{in}-V_{DD}\qquad V_{DS1}=V_X-V_{DD}\qquad V_{BS1}=0
+\end{Equation}
+$M_2$管的代换关系是
+\begin{Equation}
+    V_{GS2}=V_{b}-V_X\qquad V_{DS2}=V_{out}-V_X\qquad V_{BS2}=-V_X
+\end{Equation}
+这一点上，折叠式Cascode和套筒式Cascode完全一致。
+
+\begin{Figure}[套筒式共源共栅放大器的特性]
+    \begin{FigureSub}[中间电压;中间电压套筒4]
+        \includegraphics[scale=0.58]{build/Chapter03D_01_2.fig.pdf}
+    \end{FigureSub} \hspace{0.3cm}
+    \begin{FigureSub}[中间电压;中间电压套筒3]
+        \includegraphics[scale=0.58]{build/Chapter03D_01_6.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[输出电压;输出电压套筒4]
+        \includegraphics[scale=0.58]{build/Chapter03D_01_0.fig.pdf}
+    \end{FigureSub} \hspace{0.3cm}
+    \begin{FigureSub}[输出电压;输出电压套筒3]
+        \includegraphics[scale=0.58]{build/Chapter03D_01_4.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[电压增益;电压增益套筒4]
+        \includegraphics[scale=0.58]{build/Chapter03D_01_1.fig.pdf}
+    \end{FigureSub} \hspace{0.15cm}
+    \begin{FigureSub}[电压增益;电压增益套筒3]
+        \includegraphics[scale=0.58]{build/Chapter03D_01_5.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[电流特性;电流特性套筒4]
+        \includegraphics[scale=0.58]{build/Chapter03D_01_3.fig.pdf}
+    \end{FigureSub} \hspace{0.15cm}
+    \begin{FigureSub}[电流特性;电流特性套筒3]
+        \includegraphics[scale=0.58]{build/Chapter03D_01_7.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+
+\begin{Figure}[折叠式共源共栅放大器的特性]
+    \begin{FigureSub}[中间电压;中间电压折叠4]
+        \includegraphics[scale=0.58]{build/Chapter03D_02_2.fig.pdf}
+    \end{FigureSub} \hspace{0.3cm}
+    \begin{FigureSub}[中间电压;中间电压折叠3]
+        \includegraphics[scale=0.58]{build/Chapter03D_02_6.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[输出电压;输出电压折叠4]
+        \includegraphics[scale=0.58]{build/Chapter03D_02_0.fig.pdf}
+    \end{FigureSub} \hspace{0.3cm}
+    \begin{FigureSub}[输出电压;输出电压折叠3]
+        \includegraphics[scale=0.58]{build/Chapter03D_02_4.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[电压增益;电压增益折叠4]
+        \includegraphics[scale=0.58]{build/Chapter03D_02_1.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[电压增益;电压增益折叠3]
+        \includegraphics[scale=0.58]{build/Chapter03D_02_5.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[电流特性;电流特性折叠4]
+        \includegraphics[scale=0.58]{build/Chapter03D_02_3.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[电流特性;电流特性折叠3]
+        \includegraphics[scale=0.58]{build/Chapter03D_02_7.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+折叠式Cascode的大信号分析可以重点关注电流，写出节点X的电流方程
+\begin{Equation}
+    I_0=I_{D2}-I_{D1}
+\end{Equation}
+$M_1$管的电流$I_{D1}$可以表示为（这里$V_{GS1}=V_{in}-V_{DD}$）
+\begin{Equation}
+    I_{D1}=-\mu_pC_{ox}(W/L)_1\qty(V_{in}-V_{DD}-V_{TH1})^2/2
+\end{Equation}
+$M_2$管的电流$I_{D2}$可以用$I_{D2}=I_0+I_{D1}$表示为
+\begin{Equation}
+    I_{D2}=I_0+I_{D1}=I_0-\mu_pC_{ox}(W/L)_1\qty(V_{in}-V_{DD}-V_{TH1})^2/2
+\end{Equation}
+\begin{itemize}
+    \item 当$V_{in}>V_{DD}+V_{TH1}$时，将有$I_{D1}=0$和$I_{D2}=I_{0}$，电流完全流过$M_2$管，这是因为当出现$V_{GS1}>V_{TH1}$时$M_1$管会截止（$M_1$是PMOS管），代换后即$V_{in}>V_{DD}+V_{TH1}$。
+    \item 当$V_{in}<V_{in1}$时，将有$I_{D1}=-I_0$和$I_{D2}=0$，电流完全流过$M_1$管。
+\end{itemize}
+
+这里$V_{in1}$可以计算出来，由于$I_{D1}=-I_0$
+\begin{Equation}
+    I_{0}=\mu_pC_{ox}(W/L)_1\qty(V_{in1}-V_{DD}-V_{TH1})^2/2
+\end{Equation}
+容易解出
+\begin{Equation}
+    V_{in1}=V_{DD}+V_{TH1}-\sqrt{\frac{2I_0}{\mu_pC_{ox}(W/L)_1}}
+\end{Equation}
+这里开根号要取负号，因为显然$V_{in1}-V_{DD}-V_{TH1}<0$成立。

@@ -1,0 +1,57 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-7.5]
+\xValDefine{xR}[+7.5]
+\foreach \x/\s in {0/A,1/B,2/C,3/D,4/E,5/F,6/G}
+{
+    \xValPropor{xP\s}{xL}{xR}[\x/6]
+    \ifthenelse{\x=6}{}
+    {
+        \xValOffpro{xQ\s}{xP\s}{xL}{xR}[1/12]
+    }
+}
+
+\xSetY
+\xValDefine{yB}[-3]
+\xValDefine{yA}[+3]
+\xValPropor{yC}{yA}{yB}[0.5]
+\xValPropor{yAx}{yA}{yB}[0.4]
+\xValPropor{yBx}{yA}{yB}[0.75]
+
+\draw (xPA|-yA) -- (xPA|-yB);
+
+\draw (xPA|-yB) node[left] {B} to[short,o-o] (xPG|-yB) node[right] {B};
+\draw (xPA|-yA) node[left] {G$_2$} to[short,o-o]  (xQA|-yA);
+\draw (xPG|-yA) node[right] {D$_2$} to[short,o-] (xPC|-yA);
+\draw (xQA|-yAx) node[left] {S$_2$} to[short,o-o]  (xQE|-yAx) node[right] {S$_2$/D$_1$};
+\draw (xPB|-yC) node[left] {G$_1$} to[short,o-o]  (xQB|-yC);
+\draw (xQB|-yBx) node[left] {S$_1$} to[short,o-o]  (xPE|-yBx) node[right] {S$_1$};
+
+\draw (xPC|-yA) to[cisource,l=$g_{m2}V_{GS2}$,-*] (xPC|-yAx);
+\draw (xPD|-yA) to[cisource,l=$g_{mb2}V_{BS2}$,*-*] (xPD|-yAx);
+\draw (xPE|-yA) to[R=$r_{O2}$,*-*] (xPE|-yAx);
+
+\draw (xPC|-yAx) to[cisource,l=$g_{m1}V_{GS1}$,-*] (xPC|-yBx);
+\draw (xPD|-yAx) to[R=$r_{O1}$,*-*] (xPD|-yBx);
+\draw (xQF|-yA) to[R=$R_D$,*-*] (xQF|-yB);
+\draw (xPC|-yBx) to[short,-*] (xPC|-yB) node[ground] {};
+
+\xDrawVoltage{B}(xQA|-yA)(xQA|-yAx)[$V_{GS2}$]
+\xDrawVoltage{A}(xQA|-yB)(xQA|-yAx)[$V_{BS2}$]
+\xDrawVoltage{B}(xQB|-yC)(xQB|-yBx)[$V_{GS1}$]
+\xDrawVoltage{A}(xQB|-yB)(xQB|-yBx)[$V_{BS1}$]
+\xDrawVoltage{B}(xPB|-yC)(xPB|-yB)[$V_{in}$]
+\xDrawVoltage{B}(xPG|-yA)(xPG|-yB)[$V_{out}$]
+\xDrawVoltage{B}(xPE|-yAx)(xPE|-yBx)[$V_{DS1}$]
+\xDrawVoltage{B}(xQE|-yA)(xQE|-yAx)[$V_{DS2}$]
+\xDrawVoltage{B}(xQE|-yAx)(xQE|-yB)[$V_{X}$]
+
+
+\xValBorder{xL}[-0.75]{xR}[+0.75]{yB}[-0.8]{yA}*
+
+\end{tikzpicture}
+\end{document}

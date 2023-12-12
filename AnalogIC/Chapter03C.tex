@@ -212,10 +212,10 @@
 
 在本节最后，我们简要总结一下共源、共漏、共栅放大器的输入和输出的位置。
 \begin{Tablex}[放大器的输入输出位置]{lXXX}
-<类型&源&漏&栅\\>
-共源级放大器&接GND&输出~接负载后接VDD&输入\\
-共漏级放大器&输出~接负载后接GND&接VDD&输入\\
-共栅级放大器&输入&输出~接负载后接VDD&接偏置Vb\\
+<类型&共源级放大器源&共漏级放大器&共栅级放大器\\>
+源&\hphantom{\textbf{输出}}~~接GND&\textbf{输出}~~接负载接GND&\textbf{输入}\\
+漏&\textbf{输出}~~接负载接VDD&\hphantom{\textbf{输出}}~~接VDD&\textbf{输出}~~接负载接VDD\\
+栅&\textbf{输入}&\textbf{输入}&\hphantom{\textbf{输出}}~~接偏置Vb\\
 \end{Tablex}
 
 % \begin{TableLong}[三类放大器的公式总结]{|c|ccc|}

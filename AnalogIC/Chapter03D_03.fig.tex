@@ -1,0 +1,34 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-1.5]
+\xValDefine{xR}[+1.5]
+\xValMiddle{xC}{xL}{xR}
+
+\xSetY
+\xValDefine{yB}[-3]
+\xValDefine{yA}[+3]
+\xValDefine{yC}{yB}{yA}
+\foreach \x/\s in {0/a,1/b,2/c,3/d}
+{
+    \xValPropor{yP\s}{yA}{yB}[\x/3]
+    \ifthenelse{\x=3}{}{\xValOffpro{yQ\s}{yP\s}{yA}{yB}[1/6]}
+}
+
+\path (xC|-yQb) node[nmos] (mos2) {$M_2$};
+\path (xC|-yQc) node[nmos] (mos1) {$M_1$};
+\draw (xC|-yPa) node[vdd] {$V_{DD}$} to[R=$R_D$] (xC|-yPb) to[short] (mos2.D);
+\draw (mos2.S) -- (mos1.D);
+\draw (mos1.S) -- (xC|-yPd) node[ground] {};
+
+\draw (mos1.G) to[short,-o] (xL|-yQc) node[left] {$V_{in}$};
+\draw (mos2.G) to[short,-o] (xL|-yQb) node[left] {$V_{b}$};
+\draw (xC|-yPb) to[short,*-o] (xR|-yPb) node[right] {$V_{out}$};
+
+\xValBorder{xL}[-0.85]{xR}[+0.95]{yB}[-0.8]{yA}[+1.1]*
+
+\end{tikzpicture}
+\end{document}

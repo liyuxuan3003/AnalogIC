@@ -22,7 +22,7 @@ ASCS_PDF:=$(addprefix ${BUILD_DIR}/,$(ASCS:.py=.pdf))
 default: ${BUILD_DIR} ${OUTPUT}
 	@echo Makefile: Done!
 
-${OUTPUT}: ${TEXS} ${FIGS_PDF} ${OCTS_PDF} ${WLSS_PDF} ${STYS} ${CLSS}
+${OUTPUT}: ${TEXS} ${FIGS_PDF} ${OCTS_PDF} ${WLSS_PDF} ${ASCS_PDF} ${STYS} ${CLSS}
 	latexmk ${FLAGS} ${PROJECT}.tex
 	touch $@
 
