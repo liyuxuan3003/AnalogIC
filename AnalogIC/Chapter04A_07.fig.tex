@@ -1,0 +1,47 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-3]
+\xValDefine{xR}[+3]
+\xValMiddle{xC}{xL}{xR}
+\xValPropor{xLx}{xL}{xC}[0.5]
+\xValPropor{xRx}{xR}{xC}[0.5]
+
+\xSetY
+\xValDefine{yB}[-3.2]
+\xValDefine{yA}[+3.2]
+\xValDefine{yC}{yB}{yA}
+
+\def\ysplit{3}
+\newcounter{cnt}
+\foreach \s in {A,B,C,D}
+{
+    \xValPropor{yP\s}{yA}{yB}[\thecnt/(\ysplit+1)]
+    \ifthenelse{\thecnt=\ysplit+1}{}{\xValPropor{yQ\s}{yA}{yB}[(\thecnt+0.5)/(\ysplit+1)]}
+    \stepcounter{cnt}
+}
+
+\path (xLx|-yQC) node[nmos] (M1) {$M_1$};
+\path (xRx|-yQC) node[nmos,xscale=-1] (M2) {\ctikzflipx{$M_2$}};
+\draw (M1.D) to[R=$R_{D1}$] (xLx|-yQA);
+\draw (M2.D) to[R,l_=$R_{D2}$] (xRx|-yQA);
+\draw (xLx|-yQA) -- (xRx|-yQA);
+\draw (M1.S) -- (xLx|-yPD) -- (xRx|-yPD) -- (M2.S);
+\draw (xC|-yPD) node[above] {$V_P$} node[circ] {} to[isource,l=$I_{SS}$] (xC|-yB) node[ground] {};
+\draw (xC|-yQA) node[circ] {} -- (xC|-yA) node[vdd] {$V_{DD}$};
+
+\draw (M1.G) to[short,-o] (xL|-M1.G) node[left] {$V_{in1}$};
+\draw (M2.G) to[short,-o] (xR|-M2.G) node[right] {$V_{in2}$};
+
+\draw (M1.G) to[short,-o] (xL|-M1.G) node[left] {$V_{in1}$};
+\draw (M2.G) to[short,-o] (xR|-M2.G) node[right] {$V_{in2}$};
+
+\draw (xLx|-yPC) to[short,*-o] (xL|-yPC) node[left] {$V_{out1}$};
+
+\draw (xRx|-yPC) to[short,*-o] (xR|-yPC) node[right] {$V_{out2}$};
+
+\end{tikzpicture}
+\end{document}

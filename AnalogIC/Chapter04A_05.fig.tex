@@ -1,0 +1,67 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-3.5]
+\xValDefine{xR}[+3.5]
+\xValPropor{xM}{xL}{xR}[0.6]
+\xValPropor{xS}{xM}{xR}[0.1]
+\xValPropor{xCA}{xL}{xM}[1/6]
+\xValPropor{xCB}{xL}{xM}[3/6]
+\xValPropor{xCC}{xL}{xM}[5/6]
+
+\newcounter{cnt}{0}
+\foreach \x in {A,B,C,D,E,F,G,H,I}
+{
+    \xValPropor{xS\x}{xS}{xR}[\thecnt/8]
+    \stepcounter{cnt}
+}
+
+\xSetY
+\xValDefine{yB}[-1.75]
+\xValDefine{yA}[+1.75]
+\xValMiddle{yC}{yA}{yB}
+\foreach \y in {yB,yA,yC}
+{
+    \xValOffset{\y a}{\y}[+0.4]
+    \xValOffset{\y b}{\y}[-0.4]
+    \xValOffset{\y ax}{\y}[+0.5]
+    \xValOffset{\y bx}{\y}[-0.5]
+}
+
+\draw [green,thin]
+(xSA|-yCb) -|
+(xSB|-yCa) -|
+(xSC|-yCb) -|
+(xSD|-yCa) -|
+(xSE|-yCb) -|
+(xSF|-yCa) -|
+(xSG|-yCb) -|
+(xSH|-yCa) --
+(xSI|-yCa);
+
+\draw [green,thin]
+(xSA|-yB) sin
+(xSC|-yBa) cos
+(xSE|-yB) sin
+(xSG|-yBb) cos
+(xSI|-yB);
+
+\foreach \y/\t in {yB/$V_1$,yC/CK}
+{
+    \draw (xL|-\y) node[left] {\t} to[short,o-o] (xM|-\y);
+    \draw (xS|-\y bx) rectangle (xR|-\y ax);
+    \draw[dotted,thin] (xS|-\y) -- (xR|-\y);
+    \draw[dotted,thin] (xS|-\y a) -- (xR|-\y a); 
+    \draw[dotted,thin] (xS|-\y b) -- (xR|-\y b);
+}
+
+\foreach \x in {xCA,xCB,xCC}
+{
+    \draw (\x|-yC) to[C] (\x|-yB);
+}
+
+\end{tikzpicture}
+\end{document}
