@@ -32,8 +32,8 @@ plt.rc('text.latex',preamble=" ".join([
     r'\usepackage{siunitx}',
     r'\usepackage{xcolor}']))
 
-plt.rc('xtick', labelsize=8)
-plt.rc('ytick', labelsize=8)
+plt.rc('xtick', labelsize=6)
+plt.rc('ytick', labelsize=6)
 
 plt.rcParams["axes.prop_cycle"]=xColorCycle
 
