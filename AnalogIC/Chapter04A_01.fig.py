@@ -189,7 +189,7 @@ for id in range(graphNum):
         axes.legend(loc="center left")
         axes.annotate("$V_{DD}$",xy=(-2,4),xytext=(-0.5,4),va='center',arrowprops=xArrowProp)
         axes.annotate("$V_{DD}-R_{D}I_{SS}$",xy=(-2,1),xytext=(-0.5,1),va='center',arrowprops=xArrowProp)
-        axes.annotate("$V_{out,CM}=V_{DD}-R_{D}I_{SS}/2$",xy=(0.1,2.5),xytext=(0.7,2.5),va='center',arrowprops=xArrowProp)
+        axes.annotate("$V_{out,CM}=V_{DD}-R_{D}I_{SS}/2$",xy=(0.1,2.5),xytext=(0.6,2.5),va='center',arrowprops=xArrowProp)
         axes.annotate("$V_{in,CM}=V_{DD}/2$",xy=(0.1,2),xytext=(0.7,2),va='center',arrowprops=xArrowProp)
     if id==idVoutD:
         axes.set_ylim(-4.2,4.2)
@@ -232,6 +232,10 @@ for id in range(graphNum):
         axes.set_ylabel(r"$V_{DS},V_{GS}-V_{TH}~(\si{V})$")
         axes.legend(loc="lower center")
         axes.vlines(xVin[pArr],-1.5,4.5,colors='gray',lw=0.8,ls='dashed')
+        axes.text(-3.1,0,r"$-V_{ina}$",ha='center',va='center',c='r')
+        axes.text(+3.1,0,r"$+V_{ina}$",ha='center',va='center',c='b')
+        axes.text(-1.5,1.7,r"$-V_{inb}$",ha='center',va='center',c='b')
+        axes.text(+1.5,1.7,r"$+V_{inb}$",ha='center',va='center',c='r')
     if id==idVoutCM:
         axes.set_ylim(-0.2,4.2)
         axes.yaxis.set_major_locator(ticker.MultipleLocator(1))

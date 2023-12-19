@@ -1,0 +1,108 @@
+\section{差分放大器}
+差分放大器最简单的构造如\xref{fig:简单差分电路}所示，这就是将两个共源放大器联合在一起，分别输入两路差分信号$V_{in1},V_{in2}$再分别输出两路差分信号$V_{out1},V_{out2}$。然而，该设计存在一个问题。当输入信号受到较大的共模干扰使$V_{GS}=V_{in,CM}$发生一定变化时，这会导致$I_{D}$发生变化并进而导致输出共模$V_{out,CM}$发生变化。诚然，输入共模导致输出共模并没有太大妨碍，毕竟差模信号没有被直接影响，但这会使器件偏离预期的偏置状态，跨导和差模增益会发生变化，这仍然不是我们期望的。解决这个问题的思路在于，既然$V_{in,CM}$的变化会导致$I_D$的变化，我们不妨在源端引入一个电流源$I_{SS}$，由于是电路对称的，此时$I_{D1}=I_{D2}=I_{SS}/2$恒定，进而约束了$V_{GS}$也恒定，栅端$V_{in,CM}$的波动将在源端$V_P$被跟随，彻底屏蔽了共模输入的影响。
+
+\begin{Figure}[差分放大器]
+    \begin{FigureSub}[简单差分电路]
+        \includegraphics[scale=0.8]{build/Chapter04A_06.fig.pdf}
+    \end{FigureSub}
+    \hspace{0.5cm}
+    \begin{FigureSub}[基本差分电路]
+        \includegraphics[scale=0.8]{build/Chapter04A_07.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+\begin{Figure}[差分放大器的差模特性]
+    \begin{FigureSub}[输出电压;输出电压差模]
+        \includegraphics[scale=0.58]{build/Chapter04A_01_0.fig.pdf}
+    \end{FigureSub} \hspace{0.3cm}
+    \begin{FigureSub}[端口电压;端口电压差模]
+        \includegraphics[scale=0.58]{build/Chapter04A_01_7.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[差分电压;差分电压差模]
+        \includegraphics[scale=0.58]{build/Chapter04A_01_1.fig.pdf}
+    \end{FigureSub} \hspace{0.16cm}
+    \begin{FigureSub}[源端电压;源端电压差模]
+        \includegraphics[scale=0.58]{build/Chapter04A_01_2.fig.pdf}
+    \end{FigureSub} \hspace*{0.14cm}\\ \vspace{0.5cm}
+    \begin{FigureSub}[输出电流;输出电流差模]
+        \includegraphics[scale=0.58]{build/Chapter04A_01_3.fig.pdf}
+    \end{FigureSub} \hspace{0.1cm}
+    \begin{FigureSub}[差模增益;差模增益差模]
+        \includegraphics[scale=0.58]{build/Chapter04A_01_5.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \hspace*{-0.3cm}
+    \begin{FigureSub}[差分电流;差分电流差模]
+        \includegraphics[scale=0.58]{build/Chapter04A_01_4.fig.pdf}
+    \end{FigureSub} \hspace{0.13cm}
+    \begin{FigureSub}[转移电导;转移电导差模]
+        \includegraphics[scale=0.58]{build/Chapter04A_01_6.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+在\xref{fig:差分放大器的差模特性}中，展示了差分放大器的全面特性，其中使用的参数如下所示。这里要说明的是，尽管差分放大器的$V_{in1},V_{in2}$是两个独立的端口，但由于差分信号和控制变量的要求，分析差模特性时，应当是在一个确定的共模电压$V_{in,CM}$下变化差模电压$V_{in,DM}=V_{in}$，故\xref{fig:差分放大器的差模特性}中均是以$V_{in}$为自变量的，其变化范围是$\pm V_{DD}$，而$V_{in1},V_{in2}$分别由$V_{in,CM}\pm V_{in}/2$给出。
+\begin{itemize}
+    \item 当$V_{in}=-V_{DD}=-4\si{V}$取最小值时，$V_{in1}=0\si{V}$，$V_{in2}=4\si{V}$
+    \item 当$V_{in}=+V_{DD}=+4\si{V}$取最大值时，$V_{in1}=4\si{V}$，$V_{in2}=0\si{V}$
+    \item 当$V_{in}=0\si{V}$时，$V_{in1}=V_{in2}=V_{in,CM}=2\si{V}$，这时称差分电路处于平衡状态。
+\end{itemize}
+
+\begin{framed}
+    在差分电路的仿真中，我们将默认使用这组参数
+    \begin{Equation}
+        R_{D}=10\si{k\ohm}\qquad I_{SS}=0.3\si{mA}\qquad V_{in,CM}=V_{DD}/2=2\si{V}
+    \end{Equation}
+\end{framed}
+当然$V_{in,CM}$未必需要等于$V_{DD}/2$，这里令$V_{in,CM}=V_{DD}/2$只是为了讨论上简便对称些。
+
+现在我们对差分放大器的差模特性做一些定性分析，\xref{fig:差分放大器的差模特性}可以佐证这些分析
+\begin{itemize}
+    \item 当$V_{in}$很小（为负值），$M_1$管截止，$M_2$管导通，此时$I_{D1}=0$而$I_{D2}=I_{SS}$，这也就意味着$V_{out1}=V_{DD}$和$V_{out2}=V_{DD}-R_DI_{SS}$，差分电压输出$V_{out}=+R_DI_{SS}$取最大值。
+    \item 当$V_{in}$逐渐增大时，$M_1$管和$M_2$管都开始导通，$M_1$管通过$R_{D1}$开始从$I_{SS}$抽取电流，这就导致$V_{out1}$减少，$M_2$管上的电流因为前者的抽取而减小，从而导致$V_{out2}$增加，因此，这一阶段的特征是差分输出电压$V_{out}=V_{out1}-V_{out2}$逐渐减小，并最终由正转负。
+    \item 当$V_{in}$很大（为正值），$M_1$管导通，$M_2$管截止，此时$I_{D1}=I_{SS}$而$I_{D2}=0$，这也就意味着$V_{out1}=V_{DD}-R_DI_{SS}$和$V_{out2}=V_{DD}$，差分电压输出$V_{out}=-R_DI_{SS}$取最小值。
+\end{itemize}
+记$V_{in}=\pm V_{ina}$为截止--饱和分界，记$V_{in}=\pm V_{inb}$为饱和--线性分界，依据\xref{fig:端口电压差模}
+\begin{itemize}
+    \item 当$V_{in}<-V_{ina}$时，$M_1$管截止，$M_2$管线性。
+    \item 当$-V_{ina}<V_{in}<-V_{inb}$时，$M_1$管饱和，$M_2$管线性。
+    \item 当$-V_{inb}<V_{in}<+V_{inb}$时，$M_1$管饱和，$M_2$管饱和。
+    \item 当$+V_{inb}<V_{in}<+V_{ina}$时，$M_1$管线性，$M_2$管饱和。
+    \item 当$V_{in}>+V_{ina}$时，$M_1$管线性，$M_2$截止。
+\end{itemize}
+这样我们就很清楚各阶段$M_1,M_2$管所处的工作区了，上述过程和反相器是很类似的。
+
+关于增益和跨导，首先我们注意到这里增益$A_V$和跨导$G_m$间是简单的比例关系，实际上两者间就相差了一个$-R_D$的系数。其次，增益在平衡位置$V_{in}=0$即$V_{in1}=V_{in2}=V_{in,CM}$时最大，当偏离平衡位置时，增益会略微减小，但当有一方进入线性区后，增益会快速减小至零。
+
+\begin{BoxDefinition}[差模增益]
+    差模增益$V_{DM}$定义为，差模输出电压$V_{out,DM}$对差模输入电压$V_{in,DM}$的偏导
+    \begin{Equation}
+        A_{DM}=\pdv{V_{out,DM}}{V_{in,DM}}=\pdv{V_{out}}{V_{in}}
+    \end{Equation}
+\end{BoxDefinition}
+
+现在我们对差分放大器的共模特性做一些定性分析，\xref{fig:差分放大器的共模特性}给出了相关仿真结果。当讨论共模特性时，我们总是令差模输入$V_{in}=V_{in,DM}$为零而改变共模输入$V_{in,CM}$。\xref{fig:输出电压共模}和\xref{fig:输出电流共模}指出，正如我们所预期的，随着共模输入电压$V_{in,CM}$的增大，使得$M_1,M_2$进入饱和区
+\begin{itemize}
+    \item 共模输出电压$V_{out,CM}$趋于定值$V_{out,CM}=V_{DD}-R_{S}I_{SS}/2$，共模增益$A_{CM}=0$
+    \item 共模电流$I_{D,CM}$趋于定值$I_{D,CM}=I_{SS}/2$
+\end{itemize}
+
+\begin{Figure}[差分放大器的共模特性]
+    \begin{FigureSub}[共模电压;输出电压共模]
+        \includegraphics[scale=0.58]{build/Chapter04A_01_8.fig.pdf}
+    \end{FigureSub} \hspace{0.3cm}
+    \begin{FigureSub}[共模电流;输出电流共模]
+        \includegraphics[scale=0.58]{build/Chapter04A_01_9.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.1cm}
+    \begin{FigureSub}[共模增益;共模增益共模]
+        \includegraphics[scale=0.58]{build/Chapter04A_01_10.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+
+这表明，只要$V_{in,CM}$不太低，共模输入的波动对差分放大器毫无影响！
+
+\begin{BoxDefinition}[共模增益]
+    共模增益$V_{CM}$定义为，共模输出电压$V_{out,CM}$对共模输入电压$V_{in,CM}$的偏导
+    \begin{Equation}
+        A_{CM}=\pdv{V_{out,CM}}{V_{in,CM}}
+    \end{Equation}
+\end{BoxDefinition}
