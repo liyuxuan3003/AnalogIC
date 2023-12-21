@@ -116,15 +116,14 @@ for id in range(graphNum):
     axes=plt.gca()
     axes.grid(linewidth=0.25)
     axes.tick_params(labeltop=True,labelright=True,top=True,right=True)
-    plt.savefig(fileExport(id),bbox_inches ='tight')
     if id in [idVoutCMRD,idVoutDMRD,idAVCDRD,idAVCMRD]:
         axes.set_xlim(0,4)
         axes.xaxis.set_major_locator(ticker.MultipleLocator(1))
         axes.set_xlabel(r"$V_{in,CM}~(\si{V})$")
         axes.legend(loc="lower right")
     if id==idVoutDMRD:
-        axes.set_ylim(-2.1,0.1)
-        axes.yaxis.set_major_locator(ticker.MultipleLocator(0.5))
+        axes.set_ylim(-4.2,0.2)
+        axes.yaxis.set_major_locator(ticker.MultipleLocator(1))
         axes.set_ylabel(r"$V_{out,DM}=V_{out}~(\si{V})$")
     if id==idVoutCMRD:
         axes.set_ylim(-0.2,4.2)
@@ -138,5 +137,6 @@ for id in range(graphNum):
         axes.set_ylim(-2.1,1.1)
         axes.yaxis.set_major_locator(ticker.MultipleLocator(0.5))
         axes.set_ylabel(r"$A_{CM}$")
-
+    plt.savefig(fileExport(id),bbox_inches ='tight')
+    
 os.remove(fileNET)

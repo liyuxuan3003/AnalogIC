@@ -110,21 +110,23 @@
 \end{BoxFormula}
 现在我们计算增益，可以证明
 \begin{Equation}
-    A_{CM}=\pdv{V_{out}}{V_{in}}=\frac{1}{2}\mu_nC_{ox}(W/L)\frac{\qty[4I_{SS}/\mu_nC_{ox}(W/L)]-2V_{in}^2}{\sqrt{\qty[4I_{SS}/\mu_nC_{ox}(W/L)]-V_{in}^2}}
+    \qquad\qquad
+    A_{DM}=-\pdv{V_{out}}{V_{in}}=\frac{1}{2}\mu_nC_{ox}(W/L)\frac{\qty[4I_{SS}/\mu_nC_{ox}(W/L)]-2V_{in}^2}{\sqrt{\qty[4I_{SS}/\mu_nC_{ox}(W/L)]-V_{in}^2}}R_D
+    \qquad\qquad
 \end{Equation}
 我们特别关心的是$V_{in}=0$时的增益，此时差分放大器位于平衡点，增益最大
 \begin{Equation}
-    A_{CM}=\frac{1}{2}\mu_nC_{ox}(W/L)\sqrt{4I_{SS}/\mu_nC_{ox}(W/L)}
+    A_{DM}=-\frac{1}{2}\mu_nC_{ox}(W/L)\sqrt{4I_{SS}/\mu_nC_{ox}(W/L)}R_D
 \end{Equation}
 化简得到
 \begin{Equation}
-    A_{CM}=\sqrt{\mu_nC_{ox}(W/L)I_{SS}}
+    A_{DM}=-\sqrt{\mu_nC_{ox}(W/L)I_{SS}}R_D
 \end{Equation}
 整理结论如下
-\begin{BoxFormula}[差分放大器的差模增益]
+\begin{BoxFormula}[差分放大器的最大差模增益]
     差分放大器中，当位于平衡点时，差模增益最大且为
     \begin{Equation}
-        A_{CM}=\sqrt{\mu_nC_{ox}(W/L)I_{SS}}
+        A_{DM}=-\sqrt{\mu_nC_{ox}(W/L)I_{SS}}R_D
     \end{Equation}
 \end{BoxFormula}
 
@@ -223,6 +225,13 @@
     A_{DM}=\frac{V_{out1}-V_{out2}}{V_{in1}-V_{in2}}=-g_mR_D
 \end{Equation}
 这告诉我们，差分放大器的增益可以近似为组成其的共源放大器独立工作时的增益。
+
+\begin{BoxFormula}[差分放大器的差模增益]
+    差分放大器的差模增益为
+    \begin{Equation}
+        A_{DM}=-g_mR_D
+    \end{Equation}
+\end{BoxFormula}
 
 \subsubsection{应用半边法}
 

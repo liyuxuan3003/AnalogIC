@@ -48,7 +48,7 @@
 
 \begin{framed}
     在差分电路的仿真中，我们将默认使用这组参数
-    \begin{Equation}
+    \begin{Equation}*
         R_{D}=10\si{k\ohm}\qquad I_{SS}=0.3\si{mA}\qquad V_{in,CM}=V_{DD}/2=2\si{V}
     \end{Equation}
 \end{framed}
@@ -101,7 +101,7 @@
 这表明，只要$V_{in,CM}$不太低，共模输入的波动对差分放大器毫无影响！
 
 \begin{BoxDefinition}[共模增益]
-    共模增益$V_{CM}$定义为，共模输出电压$V_{out,CM}$对共模输入电压$V_{in,CM}$的偏导
+    共模增益$A_{CM}$定义为，共模输出电压$V_{out,CM}$对共模输入电压$V_{in,CM}$的偏导
     \begin{Equation}
         A_{CM}=\pdv{V_{out,CM}}{V_{in,CM}}
     \end{Equation}

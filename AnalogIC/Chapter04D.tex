@@ -1,0 +1,203 @@
+\section{共模特性的定量分析}
+本节我们将定量分析差分放大器的共模特性，差分放大器的一个重要特点就是其对共模扰动影响的抑制能力，这里我们要明确的是，共模扰动的影响事实上表现在两个方面
+\begin{itemize}
+    \item 输入共模的变化，导致了输出共模的变化，这会导致偏置点的变化。
+    \item 输入共模的变化，导致了输出差模的变化，这是更为严重的，破坏了差分原理。
+\end{itemize}
+前者已经在\xref{def:差模增益}给出了，后者则需要一个新的定义
+\begin{BoxDefinition}[共模--差模增益]
+    共模--差模增益$A_{CM-DM}$，差模输出电压$V_{out,DM}$对共模输入电压$V_{in,CM}$的偏导
+    \begin{Equation}
+        A_{CM-DM}=\pdv{V_{out,DM}}{V_{in,CM}}
+    \end{Equation}
+\end{BoxDefinition}
+
+然而，幸运的是，对于理想差分放大电路而言，共模增益$A_{CM}$和共模--差模增益$A_{CM-DM}$都是零。然而，实际的差分放大电路存在诸多不理想的因素，这主要包含以下两个方面
+\begin{itemize}
+    \item 差分电路的尾电流源$I_{SS}$是非理想的，存在一个电阻$R_{SS}$与之并联的。
+    \item 差分电路未必完全对称，分别可能有$R_{D1}\neq R_{D1}$和$g_{m1}\neq g_{m2}$的不对称。
+\end{itemize}
+我们先给出结论
+\begin{itemize}
+    \item 当$R_{SS}$存在时，将仅出现共模增益$A_{CM}$。
+    \item 当$R_{SS}$存在且电路不对成，将出现共模增益$A_{CM}$和共模--差模增益$A_{CM-DM}$。
+\end{itemize}
+
+\begin{Figure}[尾电流源非理想时的差分放大器]
+    \includegraphics[scale=0.8]{build/Chapter04D_01.fig.pdf}
+\end{Figure}
+
+接下来，我们将分别就这些情况进行定量分析。
+
+\subsection{当尾电流源非理想时的共模增益}
+现在我们分析\xref{fig:尾电流源非理想时的等效电路}，这听上去可能很困难，但是介于这里分析共模特性，事情可以得到简化。
+
+\begin{Figure}[尾电流源非理想时的等效电路]
+    \includegraphics[scale=0.8]{build/Chapter04D_02.fig.pdf}
+\end{Figure}
+
+\begin{itemize}
+    \item 输出$V_{out1}=V_{out2}=V_{out,CM}$，意味着两个输出端事实上短接了，故$V_{DD}$至$V_{out,CM}$两条路径上的两个电阻$R_{D1},R_{D2}$就相当于并联了，等效电阻为$R_{D1}\parallel R_{D2}=R_D/2$。
+    \item 输出$V_{out1}=V_{out2}=V_{out,CM}$和输入$V_{in1}=V_{in2}=V_{in,CM}$，意味着$M_1,M_2$并联了，两者接受相同的栅源电源$V_{in,CM}-V_P$在两个相同的端点$V_{out,CM}$和$V_P$间产生相同的电流，并联时电流应相加，因此这里$M_1,M_2$管可以等效为一个跨导为$2g_m$的MOS管。
+\end{itemize}
+这样就得到了\xref{fig:尾电流源非理想时的等效电路}，此时问题回到了带源极负反馈的共源放大，引用\xref{fml:源极负反馈下的共源增益}
+\begin{BoxFormula}[差分放大器的共模增益]
+    差分放大器的共模增益为
+    \begin{Equation}
+        A_{CM}=-\frac{R_D/2}{R_{SS}+(2g_m)^{-1}}
+    \end{Equation}
+\end{BoxFormula}
+
+\subsection{当电阻不对称时的共模--差模增益}
+在这一小节，我们分析电阻不对称，即$R_{D1}\neq R_{D2}$时的共模--差模增益$A_{CM-DM}$。
+
+根据\xref{fig:尾电流源非理想时的等效电路}，我们仍然将$M_1,M_2$管等效为一个跨导为$2_{gm}$的MOS管，由于小信号下$I_{SS}$可以视为开路，这里$V_{in,CM}$至$V_P$可以视为一个共漏放大器，而依据\xref{fml:采用电阻负载的共漏极增益}\setpeq{电阻不对称}
+\begin{Equation}&[1]
+    V_P=\frac{2g_mR_{SS}}{1+2g_{m}R_{SS}}V_{in,CM}
+\end{Equation}
+我们注意到
+\begin{Equation}&[2]
+    V_{in,CM}-V_P=\frac{1}{1+2g_mR_{SS}}V_{in,CM}
+\end{Equation}
+计算上式的目的是为了计算电流
+\begin{Equation}&[3]
+    I_{D1}=I_{D2}=g_m(V_{in,CM}-V_P)=\frac{g_m}{1+2g_mR_{SS}}V_{in,CM}
+\end{Equation}
+然而，电流相同，由于$R_{D1}\neq R_{D2}$，输出电压$V_{out1},V_{out2}$是不同的。
+
+$V_{out1}$为
+\begin{Equation}&[4]
+    V_{out1}=-I_{D1}R_{D1}=-\frac{g_mR_{D1}}{1+2g_mR_{SS}}V_{in,CM}
+\end{Equation}
+
+$V_{out2}$为
+\begin{Equation}&[5]
+    V_{out2}=-I_{D2}R_{D2}=-\frac{g_mR_{D2}}{1+2g_mR_{SS}}V_{in,CM}
+\end{Equation}
+
+将\xrefpeq{4}和\xrefpeq{5}相减
+\begin{Equation}
+    V_{out}=V_{out1}-V_{out2}=-\frac{g_m(R_{D1}-R_{D2})}{1+2g_mR_{SS}}V_{in,CM}
+\end{Equation}
+
+容易得到
+\begin{Equation}
+    A_{CM-DM}=\frac{V_{out}}{V_{in,CM}}=-\frac{g_m(R_{D1}-R_{D2})}{1+2g_mR_{SS}}
+\end{Equation}
+这告诉我们，当电阻不对称时，共模--差模增益$A_{CM-DM}$正比于电阻的差值。
+
+\begin{Figure}[当电阻不对称时差分放大器的特性]
+    \begin{FigureSub}[共模电压;共模电压电阻]
+        \includegraphics[scale=0.58]{build/Chapter04A_02_0.fig.pdf}
+    \end{FigureSub} \hspace{0.3cm}
+    \begin{FigureSub}[差模电压;差模电压电阻]
+        \includegraphics[scale=0.58]{build/Chapter04A_02_1.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.1cm}
+    \begin{FigureSub}[共模增益;共模增益电阻]
+        \includegraphics[scale=0.58]{build/Chapter04A_02_3.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[共模--差模增益;共模差模增益电阻]
+        \includegraphics[scale=0.58]{build/Chapter04A_02_2.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+\xref{fig:当电阻不对称时差分放大器的特性}展现了电阻不对称时差分放大器的特性，其中，绘图使用的参数如下
+\begin{framed}
+    \begin{Equation}*
+        R_{D1}=15\si{k\ohm}\qquad 
+        R_{D2}=5\si{k\ohm}\qquad 
+        I_{SS}=0.3\si{mA}\qquad 
+        R_{SS}=40\si{k\ohm}
+    \end{Equation}
+\end{framed}
+
+\begin{BoxFormula}[共模--差模增益（电阻不对称）]
+    当电阻不对称时，共模--差模增益可以表示为
+    \begin{Equation}
+        A_{CM-DM}=-\frac{g_m(R_{D1}-R_{D2})}{1+2g_mR_{SS}}
+    \end{Equation}
+\end{BoxFormula}
+
+% 我们可以看出，尾电流源的并联电阻$R_{SS}$是导致共模增益$A_{CM}$的主因，而共模0
+
+\subsection{当跨导不对称时的共模--差模增益}
+在这一小节，我们分析跨导不对称，即$g_{m1}\neq g_{m2}$时的共模--差模增益$A_{CM-DM}$。\setpeq{跨导不对称}
+
+$I_{D1}$可以表示为
+\begin{Equation}&[1]
+    I_{D1}=g_{m1}(V_{in,CM}-V_P)
+\end{Equation}
+$I_{D2}$可以表示为
+\begin{Equation}&[2]
+    I_{D2}=g_{m2}(V_{in,CM}-V_P)
+\end{Equation}
+在小信号下$I_{SS}$是开路的，因此$V_{P}$的电压等于电流$I_{D1}+I_{D2}$流过$R_{SS}$
+\begin{Equation}&[3]
+    V_P=(I_{D1}+I_{D2})R_{SS}
+\end{Equation}
+将\xrefpeq{1}和\xrefpeq{2}代入\xrefpeq{3}
+\begin{Equation}&[4]
+    V_P=(V_{in,CM}-V_P)(g_{m1}+g_{m2})R_{SS}
+\end{Equation}
+展开
+\begin{Equation}&[5]
+    V_P=V_{in,CM}(g_{m1}+g_{m2})R_{SS}-V_P(g_{m1}+g_{m2})R_{SS}
+\end{Equation}
+我们的目的是解出$V_P$
+\begin{Equation}&[6]
+    V_P=\frac{(g_{m1}+g_{m2})R_{SS}}{1+(g_{m1}+g_{m2})R_{SS}}V_{in,CM}
+\end{Equation}
+注意到
+\begin{Equation}&[7]
+    V_{in,CM}-V_P=\frac{1}{1+(g_{m1}+g_{m2})R_{SS}}V_{in,CM}
+\end{Equation}
+
+$V_{out1}$可以表示为，代入\xrefpeq{1}和\xrefpeq{7}
+\begin{Equation}
+    V_{out1}=-I_{D1}R_{D}=\frac{-g_{m1}R_D}{1+(g_{m1}+g_{m2})R_{SS}}V_{in,CM}
+\end{Equation}
+$V_{out2}$可以表示为，代入\xrefpeq{2}和\xrefpeq{7}
+\begin{Equation}
+    V_{out2}=-I_{D2}R_{D}=\frac{-g_{m2}R_D}{1+(g_{m1}+g_{m2})R_{SS}}V_{in,CM}
+\end{Equation}
+相减得到
+\begin{Equation}
+    V_{out}=-\frac{(g_{m1}-g_{m2})R_{D}}{1+(g_{m1}+g_{m2})R_{SS}}V_{in,CM}
+\end{Equation}
+容易得到
+\begin{Equation}
+    A_{CM-DM}=\frac{V_{out}}{V_{in,CM}}=-\frac{(g_{m1}-g_{m2})R_{D}}{1+(g_{m1}+g_{m2})R_{SS}}
+\end{Equation}
+这告诉我们，当跨导不对称时，共模--差模增益$A_{CM-DM}$正比于跨导的差值。
+
+\begin{BoxFormula}[共模--差模增益（跨导不对称）]
+    当跨导不对称时，共模--差模增益可以表示为
+    \begin{Equation}
+        A_{CM-DM}=-\frac{(g_{m1}-g_{m2})R_{D}}{1+(g_{m1}+g_{m2})R_{SS}}
+    \end{Equation}
+\end{BoxFormula}
+
+\begin{Figure}[当跨导不对称时差分放大器的特性]
+    \begin{FigureSub}[共模电压;共模电压跨导]
+        \includegraphics[scale=0.58]{build/Chapter04A_03_0.fig.pdf}
+    \end{FigureSub} \hspace{0.3cm}
+    \begin{FigureSub}[差模电压;差模电压跨导]
+        \includegraphics[scale=0.58]{build/Chapter04A_03_1.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.1cm}
+    \begin{FigureSub}[共模增益;共模增益跨导]
+        \includegraphics[scale=0.58]{build/Chapter04A_03_3.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[共模--差模增益;共模差模增益跨导]
+        \includegraphics[scale=0.58]{build/Chapter04A_03_2.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+\xref{fig:当跨导不对称时差分放大器的特性}展现了跨导不对称时差分放大器的特性，其中，绘图使用的参数如下
+\begin{framed}
+    \begin{Equation}*
+        R_{D}=10\si{k\ohm}\quad 
+        (W/L)_1=2.0\quad
+        (W/L)_1=0.5\quad
+        I_{SS}=0.3\si{mA}\quad 
+        R_{SS}=40\si{k\ohm}
+    \end{Equation}
+\end{framed}
