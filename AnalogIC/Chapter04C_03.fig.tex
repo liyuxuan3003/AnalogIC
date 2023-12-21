@@ -1,0 +1,42 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-2]
+\xValDefine{xR}[+2]
+\xValMiddle{xC}{xL}{xR}
+\xValPropor{xLx}{xL}{xC}[0.5]
+\xValPropor{xRx}{xR}{xC}[0.5]
+
+\xSetY
+\xValDefine{yB}[-3.2]
+\xValDefine{yA}[+3.2]
+\xValDefine{yC}{yB}{yA}
+
+\def\ysplit{3}
+\newcounter{cnt}
+\foreach \s in {A,B,C,D}
+{
+    \xValPropor{yP\s}{yA}{yB}[\thecnt/(\ysplit)]
+    \ifthenelse{\thecnt=\ysplit+1}{}{\xValPropor{yQ\s}{yA}{yB}[(\thecnt+0.5)/(\ysplit)]}
+    \stepcounter{cnt}
+}
+
+\path (xC|-yQB) node[nmos,xscale=-1] (M1) {\ctikzflipx{$M_2$}};
+\path (xLx|-yPD) node[nmos,anchor=S] (M2) {$M_1$};
+
+\draw (M2.G) to[short,-o] (xL|-M2.G) node[left] {$V_{in}$};
+\draw (M2.S) -| (M1.S);
+\draw (M1.D) -- (xC|-yPB) to[R=$R_{D}$] (xC|-yPA) node[vdd] {$V_{DD}$};
+\draw (M1.G) -| (xR|-yB) node[ground] {};
+\draw (xC|-yPB) to[short,*-o] (xR|-yPB) node[right] {$V_{out2}$};
+\draw (M2.D) to[short,-o] (M2.D|-yPC) node[above] {$V_{out1}$};
+
+\path (M2.S) node[below] {$R_S=g_{m}^{-1}$};
+
+\xValBorder{xL}[-1.1]{xR}[+1.1]{yB}[-1]{yA}[1.2]*
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,229 @@
+\section{差模特性的定量分析}
+本节我们将定量分析差分放大器的差模特性，分别通过大信号和小信号两种方式。
+
+\subsection{大信号分析}\setpeq{差模特性的大信号分析}
+在本节，我们试图推导$V_{out}$与$V_{in}$的关系，并给出$G_m$和$A_V$的表达式。
+
+根据\xref{fig:基本差分电路}，我们注意到
+\begin{Equation}&[1]
+    V_{out1}=V_{DD}-R_{D1}I_{D1}\qquad
+    V_{out2}=V_{DD}-R_{D2}I_{D2}
+\end{Equation}
+将两者相减，考虑到$R_{D}=R_{D1}=R_{D2}$
+\begin{Equation}&[2]
+    V_{out1}-V_{out2}=R_{D2}I_{D2}-R_{D1}I_{D1}=-R_D(I_{D1}-I_{D2})
+\end{Equation}
+即
+\begin{Equation}&[3]
+    V_{out}=-R_DI_D
+\end{Equation}
+这就告诉我们，差分输出电压$V_{out}$正比于差分电流$I_D$，比例系数是漏极负载$R_D$的负值。
+\begin{BoxFormula}[差分放大器的电压电流关系]
+    差分放大器中，差分输出电压正比于差分电流
+    \begin{Equation}
+        V_{out}=-R_DI_D
+    \end{Equation}
+\end{BoxFormula}\setpeq{差模特性的大信号分析}
+我们注意到，由于$V_P$可以分别表示为
+\begin{Equation}&[4]
+    V_{P}=V_{in1}-V_{GS1}\qquad
+    V_{P}=V_{in2}-V_{GS2}
+\end{Equation}
+这就表明
+\begin{Equation}&[5]
+    V_{in1}-V_{GS1}=V_{in2}-V_{GS2}
+\end{Equation}
+故差分输入电压可以表示为
+\begin{Equation}&[6]
+    V_{in}=V_{in1}-V_{in2}=V_{GS1}-V_{GS2}
+\end{Equation}
+根据\fancyref{fml:MOS的理想特性}
+\begin{Equation}&[7]
+    I_{D1}=\mu_nC_{ox}(W/L)(V_{GS1}-V_{TH})\qquad
+    I_{D2}=\mu_nC_{ox}(W/L)(V_{GS2}-V_{TH})
+\end{Equation}
+由\xrefpeq{7}得
+\begin{Equation}&[8]
+    V_{GS1}=V_{TH1}+\sqrt{2I_{D1}/\mu_nC_{ox}(W/L)}\qquad
+    V_{GS2}=V_{TH2}+\sqrt{2I_{D2}/\mu_nC_{ox}(W/L)}
+\end{Equation}
+将\xrefpeq{8}代入\xrefpeq{6}，得到
+\begin{Equation}
+    V_{in}=\sqrt{2I_{D1}/\mu_nC_{ox}(W/L)}-\sqrt{2I_{D2}/\mu_nC_{ox}(W/L)}
+\end{Equation}
+两边平方，得到
+\begin{Equation}
+    V_{in}^2=\frac{2(I_{D1}+I_{D2})-4\sqrt{I_{D1}I_{D2}}}{\mu_nC_{ox}(W/L)}
+\end{Equation}
+由于$I_{SS}=I_{D1}+I_{D2}$
+\begin{Equation}
+    V_{in}^2=\frac{2I_{SS}-4\sqrt{I_{D1}I_{D2}}}{\mu_nC_{ox}(W/L)}
+\end{Equation}
+两边同乘$\mu_nC_{ox}(W/L)$，并除二
+\begin{Equation}
+    \mu_nC_{ox}(W/L)V_{in}^2/2=I_{SS}-2\sqrt{I_{D1}I_{D2}}
+\end{Equation}
+将$I_{SS}$移至左侧
+\begin{Equation}
+    \mu_nC_{ox}(W/L)V_{in}^2/2-I_{SS}=-2\sqrt{I_{D1}I_{D2}}
+\end{Equation}
+两边平方
+\begin{Equation}
+    \mu_n^2C_{ox}^2(W/L)^2V_{in}^4/4-\mu_nC_{ox}(W/L)V_{in}^2I_{SS}+I_{SS}^2=4I_{D1}I_{D2}
+\end{Equation}
+整理得到
+\begin{Equation}
+    I_{SS}^2-4I_{D1}I_{D2}=\mu_nC_{ox}(W/L)V_{in}^2I_{SS}-\mu_n^2C_{ox}^2(W/L)^2V_{in}^4/4
+\end{Equation}
+但同时，我们又注意到
+\begin{Equation}
+    I_{SS}^2-4I_{D1}I_{D2}=(I_{D1}+I_{D2})^2-4I_{D1}I_{D2}=(I_{D1}-I_{D2})^2=I_D^2
+\end{Equation}
+至此，我们终于将表达式中的$I_{D1},I_{D2}$全部转化为差分电流$I_D$
+\begin{Equation}
+    I_{D}^2=\mu_nC_{ox}(W/L)V_{in}^2I_{SS}-\mu_n^2C_{ox}^2(W/L)^2V_{in}^4/4
+\end{Equation}
+开平方根
+\begin{Equation}
+    I_D=\sqrt{\mu_nC_{ox}(W/L)V_{in}^2I_{SS}-\mu_n^2C_{ox}^2(W/L)^2V_{in}^4/4}
+\end{Equation}
+化简得到
+\begin{Equation}
+    I_D=V_{in}\sqrt{\mu_nC_{ox}(W/L)I_{SS}}\sqrt{1-\mu_nC_{ox}(W/L)V_{in}^2/4I_{SS}}
+\end{Equation}
+依据\fancyref{fml:差分放大器的电压电流关系}可以得到$V_{out}$的表达式了。
+\begin{BoxFormula}[差分放大器的电压电流关系]
+    差分放大器中，差分输出电压正比于差分电流
+    \begin{Equation}
+        \qquad\qquad
+        V_{out}=-V_{in}R_D\sqrt{\mu_nC_{ox}(W/L)I_{SS}}\sqrt{1-\mu_nC_{ox}(W/L)V_{in}^2/4I_{SS}}
+        \qquad\qquad
+    \end{Equation}
+    特别的，当$V_{in}$很小时
+    \begin{Equation}
+        V_{out}=-V_{in}R_{D}\sqrt{\mu_nC_{ox}(W/L)I_{SS}}
+    \end{Equation}
+    特别的，当$V_{in}=0$时
+    \begin{Equation}
+        V_{out}=0
+    \end{Equation}
+\end{BoxFormula}
+现在我们计算增益，可以证明
+\begin{Equation}
+    A_{CM}=\pdv{V_{out}}{V_{in}}=\frac{1}{2}\mu_nC_{ox}(W/L)\frac{\qty[4I_{SS}/\mu_nC_{ox}(W/L)]-2V_{in}^2}{\sqrt{\qty[4I_{SS}/\mu_nC_{ox}(W/L)]-V_{in}^2}}
+\end{Equation}
+我们特别关心的是$V_{in}=0$时的增益，此时差分放大器位于平衡点，增益最大
+\begin{Equation}
+    A_{CM}=\frac{1}{2}\mu_nC_{ox}(W/L)\sqrt{4I_{SS}/\mu_nC_{ox}(W/L)}
+\end{Equation}
+化简得到
+\begin{Equation}
+    A_{CM}=\sqrt{\mu_nC_{ox}(W/L)I_{SS}}
+\end{Equation}
+整理结论如下
+\begin{BoxFormula}[差分放大器的差模增益]
+    差分放大器中，当位于平衡点时，差模增益最大且为
+    \begin{Equation}
+        A_{CM}=\sqrt{\mu_nC_{ox}(W/L)I_{SS}}
+    \end{Equation}
+\end{BoxFormula}
+
+\subsection{小信号分析}
+在本节，我们试图应用小信号的分析方法，不过，和过去有所不同的是，这一次我们不会再像\xref{chap:单级放大器}那样绘制小信号等效电路，而是依据先前的经验，通过观察直接得出结论。尽管听上去有些随意，但这种“直觉”在模拟集成电路中是非常重要的，并且也能极大的简化分析。
+
+这里我们提供两种“直觉”，它们代表了不同的思路，都是很富有思想的。
+
+\subsubsection{应用叠加法}
+如\xref{fig:基本差分电路}所示，差分放大器有两个输入$V_{in1},V_{in2}$，它们间存在差分约束，是非独立的，但这并不妨碍我们在分析时应用叠加法，分别计算两个输入$V_{in1},V_{in2}$独立存在时的输出并叠加。
+
+如\xref{fig:仅考虑输入1}所示，现在我们先讨论$V_{in1}$的影响，故暂时让$V_{in2}$接地。
+
+\begin{Figure}[差分放大器的叠加法]
+    \begin{FigureSub}[仅考虑$V_{in1}$输入;仅考虑输入1]
+        \includegraphics[scale=0.8]{build/Chapter04C_01.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.25cm}
+    \begin{FigureSub}[分析$V_{in1}$对$V_{out1}$的影响;分析1对1的影响]
+        \includegraphics[scale=0.8]{build/Chapter04C_02.fig.pdf}        
+    \end{FigureSub}
+    \hspace{0.5cm}
+    \begin{FigureSub}[分析$V_{in1}$对$V_{out2}$的影响;分析1对2的影响]
+        \includegraphics[scale=0.8]{build/Chapter04C_03.fig.pdf}        
+    \end{FigureSub}
+\end{Figure}
+
+在继续之前，我们需要明确两件事情，第一件事情是关于带源极负反馈的共源级放大电路和共栅级放大电路的增益公式，\xref{subsec:带源极负反馈的共源放大}和\xref{subsec:带源极负反馈的共栅放大}都给出了结论，但我们需要简化一下。
+
+根据\fancyref{fml:共源级放大器综述}，忽略所有二阶效应
+\begin{Equation}
+    A_V=\frac{-g_mr_O}{R_D+R_S+r_O[1+(g_m+g_{mb})R_S]}R_D=\frac{-g_mR_D}{1+g_mR_S}=\frac{-R_D}{g_m^{-1}+R_S}
+\end{Equation}
+
+根据\fancyref{fml:共栅级放大器综述}，忽略所有二阶效应
+\begin{Equation}
+    A_V=\frac{(g_m+g_{mb})r_O}{R_D+R_S+r_O[1+(g_m+g_{mb})R_S]}R_D=\frac{g_mR_D}{1+g_mR_S}=\frac{R_D}{g_m^{-1}+R_S}
+\end{Equation}
+
+这样的结论就特别简单且对应了，我们整理一下。
+
+\begin{BoxFormula}[源极负反馈下的共源增益]
+    共源级放大器在带有源极负反馈时，忽略二阶效应，增益为
+    \begin{Equation}
+        A_V=\frac{-R_D}{g_m^{-1}+R_{S}}
+    \end{Equation}
+\end{BoxFormula}
+
+\begin{BoxFormula}[源极负反馈下的共栅增益]
+    共栅级放大器在带有源极负反馈时，忽略二阶效应，增益为
+    \begin{Equation}
+        A_V=\frac{R_D}{g_m^{-1}+R_{S}}
+    \end{Equation}
+\end{BoxFormula}
+
+第二件事情是一个很有用的小技巧，对于那些负载MOS管，若其栅极和源极分别连接了两个结点，在小信号下可以等效认为这两个结点被一个阻值为$g_{m}^{-1}$的电阻锁联通，换言之，在小信号下，MOS管的栅极和源极可以通过跨导跨过去，尽管MOS管的栅极实际并不导通。
+
+这个技巧基于这样一个事实，如\xref{fig:MOS管的跨导等效}所示，当我们仅在乎流向源极的电流，而不在乎这种电流到底来自哪里，我们能做些简化。标准的小信号电路中，栅源间断开且电压为$V_{GS}$，漏源间存在一个受控电流源$g_mV_{GS}$，但如果无所谓电路的拓扑结构，只在乎电流，上述的受控电流源$g_mV_{GS}$置于漏源还是置于栅源并没有什么所谓，若受控电流源$g_mV_{GS}$和其控制量$V_{GS}$恰位于同一路径上，那么它将符合欧姆定律的特性，换言之，事实上就可以视为一个电阻。
+
+\begin{Figure}[MOS管的跨导等效]
+    \begin{FigureSub}[原始电路]
+        \includegraphics[scale=0.8]{build/Chapter04C_05.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.25cm}
+    \begin{FigureSub}[等效电路]
+        \includegraphics[scale=0.8]{build/Chapter04C_06.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+让我们回到我们的主题，\xref{fig:分析1对1的影响}和\xref{fig:分析1对2的影响}中，分别分析$V_{in1}$对于$V_{out1}$和$V_{out2}$的影响
+\begin{itemize}
+    \item \xref{fig:分析1对1的影响}考虑$V_{in1}$对$V_{out1}$的影响，$M_1$作共源放大，$M_2$作$g_{m2}^{-1}$源极负反馈。
+    \item \xref{fig:分析1对2的影响}考虑$V_{in1}$对$V_{out2}$的影响，$M_2$作共栅放大，$M_1$作$g_{m1}^{-1}$源极负反馈。
+\end{itemize}
+由此，我们就可以简单的套用带源极负反馈的的共源放大和共栅放大的增益公式了
+\begin{Equation}
+    V_{out1}=\frac{-R_D}{g_{m1}^{-1}+g_{m2}^{-1}}V_{in1}\qquad
+    V_{out2}=\frac{R_D}{g_{m1}^{-1}+g_{m2}^{-1}}V_{in1}
+\end{Equation}
+两者相减，得到差分输出（注意这里的$V_{out}$是仅考虑$V_{in1}$的那部分）
+\begin{Equation}
+    (V_{out1}-V_{out2})|_{V_{in1}}=\frac{-2R_D}{g_{m1}^{-1}+g_{m2}^{-1}}V_{in1}
+\end{Equation}
+令$g_m=g_{m1}=g_{m2}$
+\begin{Equation}
+    (V_{out1}-V_{out2})|_{V_{in1}}=-g_mR_DV_{in1}
+\end{Equation}
+这是$V_{in1}$导致的输出，而$V_{in2}$的结果是相同的，但相位相反
+\begin{Equation}
+    (V_{out1}-V_{out2})|_{V_{in2}}=+g_mR_DV_{in2}
+\end{Equation}
+最终的输出是两者相加
+\begin{Equation}
+    (V_{out1}-V_{out2})=-g_mR_D(V_{in1}-V_{in2})
+\end{Equation}
+即
+\begin{Equation}
+    A_{DM}=\frac{V_{out1}-V_{out2}}{V_{in1}-V_{in2}}=-g_mR_D
+\end{Equation}
+这告诉我们，差分放大器的增益可以近似为组成其的共源放大器独立工作时的增益。
+
+\subsubsection{应用半边法}
+
+通过对\xref{fig:基本差分电路}的观察可知，当$V_{in1},V_{in2}$相对平衡点$V_{in,CM}$的变化较小时，由于$M_1,M_2$的栅源等效电阻$g_{m1}^{-1}$和$g_{m2}^{-1}$近似相等，因此$V_P$近似是不变的，换言之，在小信号分析下，可以认为$V_P$是交流接地的，这一结论也可以通过\xref{fig:输出电压差模}还是\xref{fig:源端电压差模}得到印证。这时，差分放大电路中的两个共源放大电路就变成独立的了，故可以直接得出$A_{DM}=-g_mR_D$的结论。而这种通过认为公共结点近似交流接地，将差分电路转化为其半边电路的方法，就是半边法。

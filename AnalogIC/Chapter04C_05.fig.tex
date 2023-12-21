@@ -1,0 +1,26 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-3.5]
+\xValDefine{xR}[+3.5]
+\xValMiddle{xC}{xL}{xR}
+\xValMiddle{xG}{xL}{xC}
+
+\xSetY
+\xValDefine{yB}[0]
+\xValDefine{yA}[2]
+
+\draw (xL|-yB) node[left] {G} to[short,o-o] (xG|-yB);
+
+\draw (xC|-yA) node[above] {D} to[cisource,l=$g_{m}V_{GS}$,o-] (xC|-yB) to[short,-o] (xR|-yB) node[right] {S};
+
+\xDrawVoltage{R}(xG|-yB)(xC|-yB)[$V_{GS}$]
+
+\xValBorder{xL}[-0.75]{xR}[0.75]{yB}[-0.5]{yA}[0.6]*
+
+
+\end{tikzpicture}
+\end{document}

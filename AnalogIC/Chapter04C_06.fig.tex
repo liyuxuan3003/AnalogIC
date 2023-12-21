@@ -1,0 +1,24 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-3.5]
+\xValDefine{xR}[+3.5]
+\xValMiddle{xC}{xL}{xR}
+\xValMiddle{xG}{xL}{xC}
+
+\xSetY
+\xValDefine{yB}[0]
+\xValDefine{yA}[1.5]
+
+\draw (xL|-yB) node[left] {G} to[R,v=$V_{GS}$,i=$g_mV_{GS}$,o-o] (xR|-yB) node[right] {S};
+
+\draw (xC|-yA) node[above] {D} node[ocirc] {} node[below=0.7cm] {$R=g_{m}^{-1}$};
+
+\xValBorder{xL}[-0.75]{xR}[0.75]{yB}[-0.75]{yA}[0.6]*
+
+
+\end{tikzpicture}
+\end{document}
