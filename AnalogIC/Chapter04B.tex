@@ -46,8 +46,8 @@
     \item 当$V_{in}=0\si{V}$时，$V_{in1}=V_{in2}=V_{in,CM}=2\si{V}$，这时称差分电路处于平衡状态。
 \end{itemize}
 
+在\xref{fig:差分放大器的差模特性}和稍后的\xref{fig:差分放大器的共模特性}中，我们使用的参数如下
 \begin{framed}
-    在差分电路的仿真中，我们将默认使用这组参数
     \begin{Equation}*
         R_{D}=10\si{k\ohm}\qquad I_{SS}=0.3\si{mA}\qquad V_{in,CM}=V_{DD}/2=2\si{V}
     \end{Equation}
@@ -66,7 +66,7 @@
     \item 当$-V_{ina}<V_{in}<-V_{inb}$时，$M_1$管饱和，$M_2$管线性。
     \item 当$-V_{inb}<V_{in}<+V_{inb}$时，$M_1$管饱和，$M_2$管饱和。
     \item 当$+V_{inb}<V_{in}<+V_{ina}$时，$M_1$管线性，$M_2$管饱和。
-    \item 当$V_{in}>+V_{ina}$时，$M_1$管线性，$M_2$截止。
+    \item 当$V_{in}>+V_{ina}$时，$M_1$管线性，$M_2$管截止。
 \end{itemize}
 这样我们就很清楚各阶段$M_1,M_2$管所处的工作区了，上述过程和反相器是很类似的。
 

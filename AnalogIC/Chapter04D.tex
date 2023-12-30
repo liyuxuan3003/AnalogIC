@@ -14,7 +14,7 @@
 
 然而，幸运的是，对于理想差分放大电路而言，共模增益$A_{CM}$和共模--差模增益$A_{CM-DM}$都是零。然而，实际的差分放大电路存在诸多不理想的因素，这主要包含以下两个方面
 \begin{itemize}
-    \item 差分电路的尾电流源$I_{SS}$是非理想的，存在一个电阻$R_{SS}$与之并联的。
+    \item 差分电路的尾电流源$I_{SS}$是非理想的，存在一个电阻$R_{SS}$与之并联。
     \item 差分电路未必完全对称，分别可能有$R_{D1}\neq R_{D1}$和$g_{m1}\neq g_{m2}$的不对称。
 \end{itemize}
 我们先给出结论
@@ -201,3 +201,12 @@ $V_{out2}$可以表示为，代入\xrefpeq{2}和\xrefpeq{7}
         R_{SS}=40\si{k\ohm}
     \end{Equation}
 \end{framed}
+
+\subsection{共模抑制比}
+很有趣的一个问题是，对于一个差分放大器，共模输入会多大程度上影响差模输出？为此，我们在这里引入了共模抑制比CMRR的概念，它被定义为$A_{DM}$和$A_{CM-DM}$的比的绝对值。
+\begin{BoxDefinition}[共模抑制比]
+    共模抑制比（Common Mode Rejection Ratio，CMRR）定义为
+    \begin{Equation}
+        \te{CMRR}=\abs{\frac{A_{DM}}{A_{CM-DM}}}
+    \end{Equation}
+\end{BoxDefinition}
