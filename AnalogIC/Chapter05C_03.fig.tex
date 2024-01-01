@@ -1,0 +1,64 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-3]
+\xValDefine{xR}[+3]
+\xValMiddle{xC}{xL}{xR}
+\xValPropor{xLx}{xL}{xC}[0.5]
+\xValPropor{xRx}{xR}{xC}[0.5]
+
+\xSetY
+\xValDefine{yB}[-3.2]
+\xValDefine{yA}[+3.2]
+\xValDefine{yC}{yB}{yA}
+
+\def\ysplit{4}
+\newcounter{cnt}
+\foreach \s in {A,B,C,D,E}
+{
+    \xValPropor{yP\s}{yA}{yB}[\thecnt/(\ysplit)]
+    \ifthenelse{\thecnt=\ysplit+1}{}{\xValPropor{yQ\s}{yA}{yB}[(\thecnt+0.5)/(\ysplit)]}
+    \stepcounter{cnt}
+}
+
+% \foreach \x in {PA,QA,PB,QB,PC,QC,PD,QD,PE}
+% {
+%     \draw [red] (xC|-y\x) circle(0.1) node[right] {\tiny \x} ;
+% }
+
+\path (xLx|-yQC) node[nmos] (M1) {$M_1$};
+\path (xRx|-yQC) node[nmos,xscale=-1] (M2) {\ctikzflipx{$M_2$}};
+\path (xRx|-yPB) node[pmos] (M4) {$M_4$};
+\path (xLx|-yPB) node[pmos,xscale=-1] (M3) {\ctikzflipx{$M_3$}};
+\path (xC|-yQD) node[nmos] (M5) {$M_5$};
+
+\draw (M3.S) -- (M3.S|-yQA);
+\draw (M4.S) -- (M4.S|-yQA);
+\draw (M3.D) -- (M3.D|-yPC);
+\draw (M4.D) -- (M4.D|-yPC);
+\draw (M3.G) -- (M4.G);
+\draw (M3.G) node[circ] {} |- (M3.D) node[circ] {};
+
+\draw (M5.G) node[ocirc] {} node[left] {$V_b$};
+
+\draw (xC|-yPD) node[above] {$V_P$} to[short,*-] (M5.D);
+\draw (M5.S) -- (xC|-yPE) node[ground] {};
+
+\draw (xLx|-yQA) -- (xRx|-yQA);
+\draw (M1.S) -- (xLx|-yPD) -- (xRx|-yPD) -- (M2.S);
+\draw (xC|-yQA) node[circ] {} -- (xC|-yA) node[vdd] {$V_{DD}$};
+
+\draw (M1.G) to[short,-o] (xL|-M1.G) node[left] {$V_{in1}$};
+\draw (M2.G) to[short,-o] (xR|-M2.G) node[right] {$V_{in2}$};
+
+\draw (xLx|-yPC)  node[right,gray] {\small $V_{out1}$} node[circ] {} node[left] {$V_F$};
+
+\draw (xRx|-yPC) node[left,gray] {\small $V_{out2}$}  to[short,*-o] (xR|-yPC) node[right] {$V_{out}$};
+
+\xValBorder{xL}[-1.2]{xR}[+1.2]{yB}[-1]{yA}[1.2]*
+
+\end{tikzpicture}
+\end{document}
