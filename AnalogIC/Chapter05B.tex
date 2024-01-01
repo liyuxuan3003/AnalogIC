@@ -1,0 +1,48 @@
+\section{共源共栅电流镜}
+正如上一节所述，沟长调制使镜像电流产生了极大的误差。共源共栅电流镜试图解决该问题。
+
+共源共栅电流镜的结构如\xref{fig:共源共栅电流镜}所示
+\begin{Figure}[共源共栅电流镜]
+    \includegraphics[scale=0.8]{build/Chapter05A_05.fig.pdf}
+\end{Figure}
+
+第一步，我们先解释$M_4$的作用，暂时忽略$M_3$管的存在而认为$M_4$的栅极接到了某个特定的偏置上。这里$M_2$与$M_4$构成了共源共栅结构，$M_2$共源，$M_4$共栅。我们知道，沟道长度效应对镜像特性的破坏是在于$V_{DS2}\neq V_{DS1}$，原先$V_{DS2}=V_{out}$使其会随$V_{out}$的变化而显著发生变化。共源共栅的想法就是，通过$M_4$管保护$M_4,M_2$的中间节点，使其电压$V_{D2}=V_{DS2}$随$V_{out}$的变化被削弱，换言之，$M_4$管在一定程度上，屏蔽了$V_{out}$的波动对$V_{DS2}$的影响。
+
+这一结果得益于共源共栅的高输出电阻，根据\fancyref{fml:共源共栅放大器的输出电阻}
+\begin{Equation}
+    R_{out}=r_{O2}r_{O4}(g_{m4}+g_{mb4})
+\end{Equation}
+这里$R_{out}$是$M_2,M_4$的总电阻，而$M_2$的输出电阻为
+\begin{Equation}
+    R_{out,CS}=r_{O2}
+\end{Equation}\goodbreak
+因此，就有
+\begin{Equation}
+    V_{D2}=\frac{r_{O2}V_{out}}{r_{O2}r_{O4}(g_{m4}+g_{mb4})}
+\end{Equation}
+即
+\begin{Equation}
+    V_{D2}=V_{DS2}=\frac{V_{out}}{r_{O4}(g_{m4}+g_{mb4})}
+\end{Equation}
+这表明$V_{DS2}$的波动通过共源共栅结构，相较$V_{out}$被削弱了$r_{O4}(g_{m4}+g_{mb4})$倍。
+
+共源共栅结构对中间节点的屏蔽作用实际上也可以在\xref{fig:中间电压套筒4}和\xref{fig:输出电压套筒4}的对比中看出。
+
+\begin{Figure}[共源共栅电流镜的特性]
+    \begin{FigureSub}[电流特性;共源共栅电流镜电流特性]
+        \includegraphics[scale=0.58]{build/Chapter05A_02_0.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[节点电压;共源共栅电流镜节点电压]
+        \includegraphics[scale=0.58]{build/Chapter05A_02_1.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.25cm}
+    \hspace*{0.12cm}
+    \begin{FigureSub}[$M_2$管端口;共源共栅电流镜M2管端口]
+        \includegraphics[scale=0.58]{build/Chapter05A_02_2.fig.pdf}
+    \end{FigureSub}
+    \hspace{0.12cm}
+    \begin{FigureSub}[$M_4$管端口;共源共栅电流镜M4管端口]
+        \includegraphics[scale=0.58]{build/Chapter05A_02_3.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+第二步，共源共栅结构使$V_{DS2}$一定程度上屏蔽了$V_{out}$的波动，那么，我们该如何选取$M_3$的栅偏置$V_b$使得大信号下令$V_{DS2}=V_{DS1}$呢？精确的令$V_{DS2}=V_{DS1}$是不可能做到的，毕竟$V_{DS2}$仍然会随$V_{out}$波动。如\xref{fig:共源共栅电流镜}所示，我们在$M_1$管的上方，引入了一个同样二极管接法的$M_3$管来产生$V_b$，很显然$M_3$的存在完全不会影响$M_1$的工作。那么，为什么这种方式产生的$V_b$就是合适的？这是因为电路的对称性，当$V_{out}=V_{D4}$使$V_{D4}=V_{D3}$时，两侧电路电压分布就完全一致了，此时必有$V_{D2}=V_{D1}$即$V_{DS2}=V_{DS1}$使得$I_{out}=I_{REF}$。换言之，这种偏置方法使$V_{out}$在其变化范围内的某处能使$V_{DS2}=V_{DS1}$，而共源共栅结构的屏蔽效应又使$V_{DS2}$基本不会随$V_{out}$变化太多，这就是共源共栅电流镜的原理。\xref{fig:共源共栅电流镜的特性}给出了共源共栅电流镜的特性，可以看出，共源共栅确实显著改善了电流镜的特性，$I_{out}$几乎不随$V_{out}$变化了。

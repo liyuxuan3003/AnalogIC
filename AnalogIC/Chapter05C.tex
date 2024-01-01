@@ -1,0 +1,287 @@
+\section{五管运算跨导放大器}
+\uwave{有源电流镜}（Active Current Mirror）是指如\xref{fig:五管运算跨导放大器}所示的电路，尽管名称中包含电流镜，但相较于基本电流镜和共源共栅电流镜，有源电流镜可以说是“来混的”。它实际上是将电流镜的结构用作差分放大器的负载，由于这种用法下，电流镜中的晶体管也会参与放大，故称为有源。有源电流镜更为恰当的一个名称是\uwave{五管运算跨导放大器}（Operational Transconductance Amplifier, OTA），换言之，这本质上就是一种特定的放大器，而不是什么复制电流的玩意。
+
+顺着“五管运算跨导放大器”的名称，我们来分析一下这个电路的结构
+\begin{itemize}
+    \item 名称中的“五管”是指该结构由五个晶体管构成，$M_1,M_2$是属于差分放大器的一对差分管，$M_3,M_4$是电流镜，它们充当了差分放大器的负载，但请特别注意的是这里$M_3,M_4$是PMOS电流镜而不是NMOS电流镜。$M_5$充当了尾电流源$I_{SS}$及其并联电阻$R_{SS}$。
+    \item 名称中的“运算放大器”我们在模拟电路中很熟悉，但是它到底是什么意思？较一般的说，\empx{运算放大器泛指一切差分输入单端输出的放大器}。这里输入$V_{in1},V_{in2}$是差分的，但却只有一个输出$V_{out}$，符合运算放大器的定义。事实上，从差分放大器的角度，该电路的负载是高度不对称的，我们后面会看到$V_{out1},V_{out2}$的变化差异很大，也确实并不适合差分输出，而选取$V_{out2}$作为输出端$V_{out}$就是因为其性质比较好，这是以牺牲$V_{out1}$为代价的。关于记号，弃用的输出端$V_{out1}$记为$V_F$，尾电流源上的中间节点照例记为$V_P$。
+\end{itemize}
+
+\begin{Figure}[五管运算跨导放大器]
+    \includegraphics[scale=0.8]{build/Chapter05C_03.fig.pdf}
+\end{Figure}
+
+接下来，我们从差模和共模的特性，分别分析这个电路。
+
+\subsection{五管运算跨导放大器的差模特性}
+\xref{fig:五管运算跨导放大器的差模特性}给出了OTA的差模特性的仿真，在定量计算前，让我们来试着定性分析一下。
+
+\begin{Figure}[五管运算跨导放大器的差模特性]
+    \begin{FigureSub}[电压特性;五管差模电压]
+        \includegraphics[scale=0.58]{build/Chapter05C_01_0.fig.pdf}
+    \end{FigureSub} \hspace{0.2cm}
+    \begin{FigureSub}[增益特性;五管差模增益]
+        \includegraphics[scale=0.58]{build/Chapter05C_01_1.fig.pdf}
+    \end{FigureSub} \\ \vspace{0.5cm}
+    %----------------------------------%
+    \begin{FigureSub}[电流特性;五管差模电流]
+        \includegraphics[scale=0.58]{build/Chapter05C_01_2.fig.pdf}
+    \end{FigureSub} \hspace{0.2cm}
+    \begin{FigureSub}[$M_5$管;五管差模5]
+        \includegraphics[scale=0.58]{build/Chapter05C_01_7.fig.pdf}
+    \end{FigureSub} \\ \vspace{0.5cm}
+    %----------------------------------%
+    \begin{FigureSub}[$M_1$管;五管差模1]
+        \includegraphics[scale=0.58]{build/Chapter05C_01_3.fig.pdf}
+    \end{FigureSub} \hspace{0.2cm}
+    \begin{FigureSub}[$M_2$管;五管差模2]
+        \includegraphics[scale=0.58]{build/Chapter05C_01_4.fig.pdf}
+    \end{FigureSub} \\ \vspace{0.5cm}
+    %----------------------------------%
+    \begin{FigureSub}[$M_3$管;五管差模3]
+        \includegraphics[scale=0.58]{build/Chapter05C_01_5.fig.pdf}
+    \end{FigureSub} \hspace{0.2cm}
+    \begin{FigureSub}[$M_4$管;五管差模4]
+        \includegraphics[scale=0.58]{build/Chapter05C_01_6.fig.pdf}
+    \end{FigureSub}
+    %----------------------------------%
+\end{Figure}
+
+\xref{fig:五管运算跨导放大器的差模特性}中，关于各MOS管的端口特性曲线，务必注意NMOS和PMOS的差异
+\begin{itemize}
+    \item 绿线代表$V_{DS}$，紫线代表$V_{GS}-V_{TH}$
+    \item 对于NMOS，饱和区的判据是$V_{DS}>V_{GS}-V_{TH}$，绿线在紫线上为饱和区。
+    \item 对于PMOS，饱和区的判据是$V_{DS}<V_{GS}-V_{TH}$，绿线在紫线下为饱和区。
+\end{itemize}
+
+\xref{fig:五管运算跨导放大器的差模特性}使用电路的参数如下
+\begin{framed}
+    \begin{Equation}*
+        V_{DD}=4\si{V}\qquad
+        V_{b}=1.2\si{V}\qquad 
+        V_{in,CM}=V_{DD}/2=2\si{V}
+    \end{Equation}
+\end{framed}
+
+我们分析如下\footnote{这里PMOS的$I_{D3},I_{D4}$的方向顺从其串联NMOS的$I_{D1},I_{D3}$的方向，自上而下，而不是由漏至源。}
+\begin{itemize}
+    \item 在平衡点$V_{in1}=V_{in2}=V_{in,CM}$附近，$M_2,M_4$管均处于饱和区。
+    \item 若$V_{in}$略微增大，$V_{in1}$增大使$I_{D1}$增大，$V_{in2}$减小使$I_{D2}$减小，而$M_3$会通过电流镜使通过$M_4$的电流$I_{D4}$增大，然而应有$I_{D4}=I_{D2}$，但两者变化趋势相反，此时电流较小的$I_{D2}$将“取胜”，$M_4$被拖入线性区使$I_{D4}$降低，这意味着$V_{out}$将被迅速上拉至$V_{DD}$。
+    \item 若$V_{in}$略微减小，$V_{in1}$减小使$I_{D1}$减小，$V_{in2}$增大使$I_{D2}$增大，而$M_3$会通过电流镜使通过$M_4$的电流$I_{D4}$减小，然而应有$I_{D4}=I_{D2}$，但两者变化趋势相反，此时电流较小的$I_{D4}$将“取胜”，$M_2$被拖入线性区使$I_{D2}$降低，这意味着$V_{out}$将被迅速下拉至$V_{P}$。
+    \item 若$V_{in}$很大，则$M_2$管将截止。
+    \item 若$V_{in}$很小，则$M_1$管将截止，期间还会经历$M_5$管由饱和区转变为线性区。
+    \item \xref{fig:五管运算跨导放大器的差模特性}中，饱和--线性边界由黑点标识，饱和--截止边界由灰点标识。
+\end{itemize}
+
+现在我们进行定量分析，目标是解算$A_{DM}$，方法是分别求出$G_m$和$R_{out}$的表达式。分析电路如\xref{fig:五管运算跨导放大器的差模分析}所示\footnote{这里PMOS的$I_{D3},I_{D4}$的方向是符合习惯的由漏至源。}，计算$G_m$时短接输出考察$I_{out}/V_{in}$，计算$R_{out}$时短接输入考察$V_{out}/I_{out}$。
+
+第一步，计算转移电导$G_m$，如\xref{fig:计算转移电导OTA差模}所示，首先我们注意到
+\begin{Equation}
+    I_{D1}=+g_{m1}V_{in}/2\qquad I_{D2}=-g_{m2}V_{in}/2
+\end{Equation}
+这是MOS管的基本原理，其中的正负号和$1/2$都是来自$M_1,M_2$的输入电压$\pm V_{in}/2$。
+
+由于$I_{D3}$和$I_{D1}$是串联线路上的同一电流，但取向相反
+\begin{Equation}
+    I_{D3}=-I_{D1}=-g_{m1}V_{in}/2
+\end{Equation}
+由于$I_{D3}$和$I_{D4}$间的电流镜关系
+\begin{Equation}
+    I_{D4}=+I_{D3}=-g_{m1}V_{in}/2
+\end{Equation}
+
+\begin{Figure}[五管运算跨导放大器的差模分析]
+    \begin{FigureSub}[计算转移电导;计算转移电导OTA差模]
+        \includegraphics[scale=0.8]{build/Chapter05C_04.fig.pdf}
+    \end{FigureSub}
+    \hspace{0.25cm}
+    \begin{FigureSub}[计算输出电阻;计算输出电阻OTA差模]
+        \includegraphics[scale=0.8]{build/Chapter05C_05.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+这里有疑问，这里$M_1,M_3$串联，而$M_2,M_4$也串联，为什么$I_{D3}=-I_{D1}$但$I_{D4}\neq -I_{D2}$？这是因为$M_2$和$M_4$间还有来自输出端口的$I_{out}$，所以显然不等，相反，$I_{out}$可以表示为
+\begin{Equation}
+    I_{out}=I_{D4}+I_{D2}=-(g_{m1}+g_{m2})V_{in}/2
+\end{Equation}
+改记$g_{m1}=g_{m2}=g_{m1,2}$
+\begin{Equation}
+    I_{out}-g_{m1,2}V_{in}
+\end{Equation}
+因此
+\begin{Equation}
+    G_m=\frac{I_{out}}{V_{in}}=-g_{m1,2}
+\end{Equation}
+这是相当简洁的一个结论，这种简洁性，很大程度上来自我们在\xref{fig:计算转移电导OTA差模}中假定节点$V_P$是接地的。照道理作为电流源，节点$V_P$应该与地断路，但由于$V_P$近似不变，可认为其“虚地”。
+\begin{BoxFormula}[五管运放的转移电导]
+    五管运放的转移电导$G_m$为
+    \begin{Equation}
+        G_m=-g_{m1,2}
+    \end{Equation}
+\end{BoxFormula}\setpeq{OTA输出电阻}
+
+第二步，计算输出电阻$R_{out}$，如\xref{fig:计算输出电阻OTA差模}所示，这一次我们不再认为$V_P$虚地了。在更准确的计算前，首先我们先做一些比较粗糙的分析，姑且认为$V_F$不变是一个虚地点，当$I_{out}$进入后，沿着$M_2\to M_1\to V_F$和$M_4\to V_{DD}$两条路径到达地，两者电阻分别为$r_{O2}+r_{O1}$和$r_{O4}$
+\begin{Equation}
+    R_{out}=(r_{O2}+r_{O1})\parallel r_{O4}
+\end{Equation}
+改记$r_{O1}=r_{O2}=r_{O1,2}$，改记$r_{O3}=r_{O4}=r_{O3,4}$
+\begin{Equation}
+    R_{out}=2r_{O1,2}\parallel r_{O3,4}
+\end{Equation}
+
+然而认为$V_F$虚地是不准确的，我们需要更严格的分析过程。由于$V_F$不再接地，电流$I_{D2}$的路径会由$M_2\to M_1\to V_F$扩展至$M_2\to M_1\to M_3\to V_{DD}$，其中，$M_2,M_1$的电阻仍然分别是$r_{O2},r_{O2}$，$M_3$是二极管接法的MOS管，通过其的电阻为$r_{O3}\parallel g_{m3}^{-1}$，故$I_{D2}$就可以表示为
+\begin{Equation}&[1]
+    I_{D2}=\frac{V_{out}}{r_{O1}+r_{O2}+r_{O3}\parallel g_{m3}^{-1}}
+\end{Equation}
+
+这里$I_{D4}$要复杂些，因为$M_4$的栅压仍在变化，是有源的，故
+\begin{Equation}&[2]
+    I_{D4}=\frac{V_{out}}{r_{O4}}+g_{m4}V_{GS4}
+\end{Equation}
+这里$V_{GS4}$如何计算，由于$V_{GS4}=V_{GS3}=V_{DS3}$，而后者就是$I_{D2}$在$M_3$上的压降
+\begin{Equation}&[3]
+    V_{GS4}=I_{D2}(r_{O3}\parallel g_{m3}^{-1})
+\end{Equation}
+将\xrefpeq{1}代入\xrefpeq{3}
+\begin{Equation}&[4]
+    V_{GS4}=\frac{V_{out}}{r_{O1}+r_{O2}+r_{O3}\parallel g_{m3}^{-1}}(r_{O3}\parallel g_{m3}^{-1})
+\end{Equation}
+将\xrefpeq{4}代入\xrefpeq{2}
+\begin{Equation}&[5]
+    I_{D4}=\frac{V_{out}}{r_{O1}+r_{O2}+r_{O3}\parallel g_{m3}^{-1}}(r_{O3}\parallel g_{m3}^{-1})g_{m4}+\frac{V_{out}}{r_{O4}}
+\end{Equation}
+总电流$I_{out}=I_{D2}+I_{D4}$中代入\xrefpeq{1}和\xrefpeq{5}
+\begin{Equation}&[6]
+    \qquad\qquad
+    I_{out}=\frac{V_{out}}{r_{O1}+r_{O2}+r_{O3}\parallel g_{m3}^{-1}}+\frac{V_{out}}{r_{O1}+r_{O2}+r_{O3}\parallel g_{m3}^{-1}}(r_{O3}\parallel g_{m3}^{-1})g_{m4}+\frac{V_{out}}{r_{O4}}
+    \qquad\qquad
+\end{Equation}
+化简
+\begin{Equation}
+    I_{out}=\frac{V_{out}}{r_{O1}+r_{O2}+r_{O3}\parallel g_{m3}^{-1}}\qty[1+(r_{O3}\parallel g_{m3}^{-1})g_{m4}]+\frac{V_{out}}{r_{O4}}
+\end{Equation}
+做一些近似，我们认为$r_{O1}+r_{O2}\gg r_{O3}\parallel g_{m3}^{-1}$以及$(r_{O3}\parallel g_{m3^{-1}})g_{m4}=1$
+\begin{Equation}
+    I_{out}=\frac{2V_{out}}{r_{O1}+r_{O2}}+\frac{V_{out}}{r_{O4}}
+\end{Equation}
+改记$r_{O1}=r_{O2}=r_{O1,2}$，改记$r_{O3}=r_{O4}=r_{O3,4}$
+\begin{Equation}
+    I_{out}=\frac{V_{out}}{r_{O1,2}}+\frac{V_{out}}{r_{O3,4}}
+\end{Equation}
+因此
+\begin{Equation}
+    G_{out}=\frac{I_{out}}{V_{out}}=\frac{1}{r_{O1,2}}+\frac{1}{r_{O3,4}}
+\end{Equation}
+进而得到（倒数和的倒数等于并联）
+\begin{Equation}
+    R_{out}=r_{O1,2}\parallel r_{O3,4}
+\end{Equation}
+由此可见，$R_{out}$正确的结果是$r_{O1,2}\parallel r_{O3,4}$而不是前面的$2r_{O1,2}\parallel r_{O3,4}$，不过很讽刺的是，假如这里我们同样认为$V_P$虚地，则可以立即通过观察得到$R_{out}=r_{O1,2}\parallel r_{O3,4}$的正确结论。
+\begin{BoxFormula}[五管运放的输出电阻]
+    五管运放的输出电阻$R_{out}$为
+    \begin{Equation}
+        R_{out}=r_{O1,2}\parallel r_{O3,4}
+    \end{Equation}
+\end{BoxFormula}
+
+综上，根据\fancyref{fml:五管运放的转移电导}和\fancyref{fml:五管运放的输出电阻}，得到
+\begin{BoxFormula}[五管运放的差模增益]
+    五管运放的差模增益$A_{DM}$为
+    \begin{Equation}
+        A_{DM}=g_{m1,2}(r_{O1,2}\parallel r_{O3,4})
+    \end{Equation}
+\end{BoxFormula}
+
+\subsection{五管运算跨导放大器的共模特性}
+\xref{fig:五管运算跨导放大器的共模特性}给出了OTA的共模特性的仿真，我们注意到，当$V_{in,CM}$从$V_{DD}/2$处开始增大时，输出电压$V_{out}$略微的减小，因而该结构是存在共模增益$A_{CM}$的。在进一步讨论之前，我们要指出的是，由于这里是差分输入$V_{in1},V_{in2}$单端输出$V_{out}$，因此，共模增益$A_{CM}$和共模--差模增益$A_{CM-DM}$两个概念发生了简并，仍采用$A_{CM}$的记号。故稍后计算共模抑制比CMRR时，请不要为$\te{CMRR}=\abs{A_{DM}/A_{CM}}$的公式感到惊讶，现在$A_{CM}$和$A_{CM-DM}$是同一回事了。
+
+\xref{fig:五管运算跨导放大器的共模特性}还指出了一个有趣的现象，尽管电路不完全对称，例如$M_3$采用了二极管接法但其对位的$M_4$没有采用。但是共模输入时，电路两侧的所有的电压和电流都完全相同，这意味着此处完全可以采用对称差分电路的共模分析结论。分析电路如\xref{fig:五管运算跨导放大器的共模分析}所示，$V_F$和$V_{out}$的短接是对称性的结果（这也意味着$M_3,M_4$现在都是二极管接法），$R_{SS}=r_{O5}$作为尾电流源的并联电阻被考虑，这里我们在方法上不再弯弯绕绕的弄什么$G_m$和$R_{out}$，而是直接计算增益$A_{CM}$。
+\begin{Figure}[五管运算跨导放大器的共模分析]
+    \includegraphics[scale=0.8]{build/Chapter05C_06.fig.pdf}
+\end{Figure}
+
+\clearpage
+
+\begin{Figure}[五管运算跨导放大器的共模特性]
+    \begin{FigureSub}[电压特性;五管共模电压]
+        \includegraphics[scale=0.58]{build/Chapter05C_02_0.fig.pdf}
+    \end{FigureSub} \hspace{0.2cm}
+    \begin{FigureSub}[增益特性;五管共模增益]
+        \includegraphics[scale=0.58]{build/Chapter05C_02_1.fig.pdf}
+    \end{FigureSub} \\ \vspace{0.5cm}
+    %----------------------------------%
+    \begin{FigureSub}[电流特性;五管共模电流]
+        \includegraphics[scale=0.58]{build/Chapter05C_02_2.fig.pdf}
+    \end{FigureSub} \hspace{0.2cm}
+    \begin{FigureSub}[$M_5$管;五管共模5]
+        \includegraphics[scale=0.58]{build/Chapter05C_02_7.fig.pdf}
+    \end{FigureSub} \\ \vspace{0.5cm}
+    %----------------------------------%
+    \begin{FigureSub}[$M_1$管;五管共模1]
+        \includegraphics[scale=0.58]{build/Chapter05C_02_3.fig.pdf}
+    \end{FigureSub} \hspace{0.2cm}
+    \begin{FigureSub}[$M_2$管;五管共模2]
+        \includegraphics[scale=0.58]{build/Chapter05C_02_4.fig.pdf}
+    \end{FigureSub} \\ \vspace{0.5cm}
+    %----------------------------------%
+    \begin{FigureSub}[$M_3$管;五管共模3]
+        \includegraphics[scale=0.58]{build/Chapter05C_02_5.fig.pdf}
+    \end{FigureSub} \hspace{0.2cm}
+    \begin{FigureSub}[$M_4$管;五管共模4]
+        \includegraphics[scale=0.58]{build/Chapter05C_02_6.fig.pdf}
+    \end{FigureSub}
+    %----------------------------------%
+\end{Figure}\setpeq{OTA共模增益}
+
+直接算$A_{CM}$是因为可以套用\fancyref{fml:差分放大器的共模增益}的结论
+\begin{Equation}&[1]
+    A_{CM}=-\frac{R_D/2}{R_{SS}+(2_{g_m})^{-1}}
+\end{Equation}
+这个例子中
+\begin{Equation}&[2]
+    R_{D}=r_{O3}\parallel g_{m3,4}^{-1}\qquad R_{SS}=r_{O5}\qquad g_{m}=g_{m1,2}
+\end{Equation}
+将\xrefpeq{2}代入\xrefpeq{1}
+\begin{Equation}
+    A_{CM}=-\frac{(r_{O3,4}\parallel g_{m3,4}^{-1})/2}{r_{O5}+(2g_{m1,2})^{-1}}
+\end{Equation}
+做一些化简，上下同乘$2g_{m1,2}$，并近似认为$r_{O3,4}\parallel g_{m3,4}^{-1}=g_{m3,4}^{-1}$
+\begin{Equation}
+    A_{CM}=-\frac{g_{m1,2}g_{m3,4}^{-1}}{1+2g_{m1,2}r_{O5}}
+\end{Equation}
+或者记作
+\begin{Equation}
+    A_{CM}=-\frac{1}{1+2g_{m1,2}r_{O5}}\frac{g_{m1,2}}{g_{m3,4}}
+\end{Equation}
+整理结论如下
+\begin{BoxFormula}[五管运放的共模增益]
+    五管运放的共模增益$A_{CM}$为
+    \begin{Equation}
+        A_{CM}=-\frac{1}{1+2g_{m1,2}r_{O5}}\frac{g_{m1,2}}{g_{m3,4}}
+    \end{Equation}
+\end{BoxFormula}
+从\xref{fig:五管共模增益}和\xref{fig:五管差模增益}的对比上可以看出，五管运放的差模增益$A_{CM}$要比共模增益$A_{DM}$大的多，但是，我们还是希望能对共模抑制比$\te{CMRR}=|A_{DM}/A_{CM}|$的数量级有一些直观认知。
+
+根据\fancyref{fml:五管运放的差模增益}和\fancyref{fml:五管运放的共模增益}
+\begin{Equation}
+    \te{CMRR}=\abs{\frac{A_{DM}}{A_{CM}}}=g_{m1,2}(r_{O1,2}\parallel r_{O3,4})(1+2g_{m1,2}r_{O5})\frac{g_{m3,4}}{g_{m1,2}}
+\end{Equation}
+约掉一个$g_{m1,2}$
+\begin{Equation}
+    \te{CMRR}=g_{m3,4}(r_{O1,2}\parallel r_{O3,4})(1+2g_{m1,2}r_{O5})
+\end{Equation}
+作为数量级估计，假定所有的$g_{mx}=g_m$，假定所有的$r_{Ox}=r_{O}$
+\begin{Equation}
+    \te{CMRR}=g_{m}(r_O/2)\qty(1+2g_{m}r_O)
+\end{Equation}
+有理由相信$2g_{m}r_{O}\gg 1$
+\begin{Equation}
+    \te{CMRR}=(g_mr_{O})^2
+\end{Equation}
+这个结果是相当不错的，即五管运放的CMRR可以达到$g_mr_O$的平方的数量级。
+\begin{BoxFormula}[五管运放的共模抑制比]
+    五管运放的共模抑制比CMRR为
+    \begin{Equation}
+        \te{CMRR}=(g_mr_O)^2
+    \end{Equation}
+\end{BoxFormula}

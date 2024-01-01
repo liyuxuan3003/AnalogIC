@@ -78,6 +78,13 @@ $V_{in}$使$V_{DS2}\leq V_{GS2}-V_{TH2}$的条件先达到，即$M_2$管先进�
 \end{Equation}
 由此可见，共栅管$M_2$可以将共源管$M_1$的输出电阻自$r_{O1}$放大$r_{O2}(g_{m2}+g_{mb2})$倍。我们知道，当$R_D$很大时，增益要修正为$A_V=-g_m(R_{O}\parallel R_D)$并最终取决于$A_V=-g_mR_O$，换言之，输出电阻限制了通过增大负载电阻所能达到的增益上限，共源共栅提高了输出电阻，也就提高了这种上限，增益可以从$A_V=-g_{m1}r_{O1}$提升至$A_V=-g_{m1}(g_{m2}+g_{mb2})r_{O1}r_{O2}$，若近似认为$g_{m1}\approx g_{m2}+g_{mb2}$及$r_{O1}\approx r_{O2}$，即有：\empx{共源共栅可以将本征增益提高至原来的平方}。
 
+\begin{BoxFormula}[共源共栅放大器的输出电阻]
+    共源共栅级放大，输出电阻为
+    \begin{Equation}
+        R_{O}=(g_{m2}+g_{mb2})r_{O1}r_{O2}
+    \end{Equation}
+\end{BoxFormula}
+
 \subsection{折叠式共源共栅}
 共源共栅的设计思路是，将输入电压转化为电流作为共栅的输入，然而，输入器件和共源共栅器件不一定是同一种类型的，更确切的说，不必都是NMOS的，可以用PMOS和NMOS组合完成功能。这种器件选择上的变化，就让我们从套筒式共源共栅得到了折叠式共源共栅。
 
@@ -99,16 +106,6 @@ $V_{in}$使$V_{DS2}\leq V_{GS2}-V_{TH2}$的条件先达到，即$M_2$管先进�
 折叠式共源共栅中的“折叠式”是指，电流从VDD或GND出发，折叠一圈后又回到原位。
 
 现在我们来分析折叠式共源共栅的大信号特性，\xref{fig:折叠式共源共栅放大器的特性}给出了\xref{fig:使用PMOS作输入器件}全面的仿真结果。
-
-$M_1$管的代换关系是
-\begin{Equation}
-    V_{GS1}=V_{in}-V_{DD}\qquad V_{DS1}=V_X-V_{DD}\qquad V_{BS1}=0
-\end{Equation}
-$M_2$管的代换关系是
-\begin{Equation}
-    V_{GS2}=V_{b}-V_X\qquad V_{DS2}=V_{out}-V_X\qquad V_{BS2}=-V_X
-\end{Equation}
-这一点上，折叠式Cascode和套筒式Cascode完全一致。
 
 \begin{Figure}[套筒式共源共栅放大器的特性]
     \begin{FigureSub}[中间电压;中间电压套筒4]
@@ -164,6 +161,16 @@ $M_2$管的代换关系是
         \includegraphics[scale=0.58]{build/Chapter03D_02_7.fig.pdf}
     \end{FigureSub}
 \end{Figure}
+
+$M_1$管的代换关系是
+\begin{Equation}
+    V_{GS1}=V_{in}-V_{DD}\qquad V_{DS1}=V_X-V_{DD}\qquad V_{BS1}=0
+\end{Equation}
+$M_2$管的代换关系是
+\begin{Equation}
+    V_{GS2}=V_{b}-V_X\qquad V_{DS2}=V_{out}-V_X\qquad V_{BS2}=-V_X
+\end{Equation}
+这一点上，折叠式Cascode和套筒式Cascode完全一致。
 
 折叠式Cascode的大信号分析可以重点关注电流，写出节点X的电流方程
 \begin{Equation}

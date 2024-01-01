@@ -1,0 +1,103 @@
+\section{基本电流镜}
+电流镜的结构和功能我们在模拟电路中其实已经很熟悉了，它可以复制出一个电流源。嗯，搞出一个电流源，这听上去很酷，不是吗！毕竟，在实际生活中，我们很容易想象一个电阻或电压源，它们可以是一节金属或一块干电池，但电流源则似乎只是一些仅存在于电路图纸中的理想符号。但是，电流镜之所以如此重要并不是因为其能产生一个电流源。要知道，在晶体管电路中，遍地都是电流源！任何一个MOS管加适当偏置$V_b$进入饱和区后，都可以视为一个相当不错的电流源，如\xref{fig:朴素电流源}所示，这里偏置电压$V_b$由电阻$R_1,R_2$对电源$V_{DD}$分压得到。
+
+\vspace{0.25cm}
+\begin{Figure}[朴素电流源]
+    \includegraphics[scale=0.8]{build/Chapter05A_03.fig.pdf}
+\end{Figure}
+\vspace{0.25cm}
+
+那\xref{fig:朴素电流源}有什么问题吗？我们或许会说$R_1,R_2$上会通过一定电流，产生功耗。确实如此，但这其实不是重点。若要理解这个问题，我们就要充分理解模拟集成电路的设计背景——PVT。\goodbreak
+
+我们总说，PVT是悬在模拟集成电路上的一把键，PVT怎样怎样重要，但什么是PVT？\nopagebreak
+\begin{itemize}
+    \item P代表Process，代表电路加工过程的工艺波动，晶体管的尺寸和阈值可能会发生偏差。
+    \item V代表Voltage，代表电路的供电$V_{DD}$可能会发生波动（想想快用完的干电池）。
+    \item T代表Tempreature，代表电路所处的环境温度可能也会发生波动。
+\end{itemize}
+在\xref{fig:朴素电流源}中，我们产生的$I_{out}$的表达式为
+\begin{Equation}
+    I_{out}=\frac{1}{2}\mu_nC_{ox}(W/L)\qty(\frac{R_2}{R_1+R_2}V_{DD}-V_{TH})^2
+\end{Equation}
+但该式表明$I_{out}$是PVT的强函数，P意味着$V_{TH}$的波动，V意味着$V_{DD}$的波动，T则会影响$\mu_n$和$V_{TH}$的值。总而言之，这样的电流源，面对PVT的波动会产生相当大的误差。
+
+由此可见，模拟集成电路的设计并不是提出一个理论上可行的电路就可以了，我们的电路在设计上必须要考虑PVT波动的耐受，否则是脱离实际毫无意义的。我们可以提出，该电路需要工作在某个温度范围和电压范围内，但不能要求必须多少伏或多少度，这是不切实际的。
+
+电流镜的设计是基于对基准电流的“复制”，当然，这样做的前提是，已经存在一个精确的基准电流源可供利用。然而，这可能会导致一个无休止的循环，第一个电流源从哪里来？这就要谈到一个有趣的话题，当今，即便在模拟集成电路中，MOS管也已经基本取代了原先BJT的所有应用，比如我们不会再用BJT构建放大器。那么，BJT是否不再被需要了？答案是否定的，事实上，基准电流源需要通过一个相对复杂，被称为“带隙基准”的电路产生，这其中仍需要用到BJT。当然，本章并不关心基准电流源是怎么来的，我们只关心如何精确的复制它。
+
+\begin{Figure}[基本电流镜]
+    \includegraphics[scale=0.8]{build/Chapter05A_04.fig.pdf}
+\end{Figure}
+
+电流镜的结构如\xref{fig:基本电流镜}，这是一个最基本的结构，$M_1$管和$M_2$管分别位于左右。$M_1$管采用二极管接法并串联了基准电流源$I_{REF}$。$M_2$管在输出端处复制了电流$I_{out}=I_{REF}$，且该电流基本不随输出端的电压$V_{out}$的变化而变化。那么，现在的问题是，这种复制是如何完成的？
+
+关键在于，对于饱和区的MOS管，若我们记$I_{D}=f(V_{GS})$，则有$V_{GS}=f^{-1}(I_D)$。
+
+在\xref{fig:基本电流镜}中，$M_1$管完成了电流电压的转化，使得$V_{GS1}=f^{-1}(I_{REF})$，由于两管栅极短接，栅压相等，使得$V_{GS2}=f^{-1}(I_{REF})$，此时只要输出电压$V_{DS2}=V_{out}$不太小能使$M_2$管处于饱和区，$M_2$管就可以将电压还原为电流，使得$I_{out}=f[f^{-1}(I_{REF})]=I_{REF}$，从而完成镜像。
+
+我们也可以用表达式来证明这一点，较一般的说，$M_1$管和$M_2$管的宽长比可以不同。\setpeq{电流镜}
+
+$M_1$管遵从的方程是
+\begin{Equation}&[1]
+    I_{D1}=I_{REF}=\frac{1}{2}\mu_nC_{ox}(W/L)_1\qty(V_{GS1}-V_{TH})^2
+\end{Equation}
+$M_2$管遵从的方程是
+\begin{Equation}&[2]
+    I_{D2}=I_{out}=\frac{1}{2}\mu_nC_{ox}(W/L)_2\qty(V_{GS2}-V_{TH})^2
+\end{Equation}
+而考虑到$V_{GS1}=V_{GS2}$，将\xrefpeq{2}与\xrefpeq{1}作比，得到
+\begin{Equation}
+    I_{out}=\frac{(W/L)_2}{(W/L)_1}I_{REF}
+\end{Equation}
+换言之，输出端的电流$I_{out}$按照$M_2,M_1$间的器件尺寸比复制$I_{REF}$，特别的，如果$M_2,M_1$尺寸相同，则有$I_{out}=I_{REF}$，这种设计就可以很好的抵御PVT的波动，例如工艺波动使得尺寸发生变化，但是两个邻近的晶体管的尺寸波动通常是一致的，尺寸比不会发生变化，从而确保了电流复制的精确性。这是很重要的，若复制本身受PVT影响，这一切就都没有意义了。
+
+\begin{BoxFormula}[电流镜的复制关系]
+    电流镜的输出电流$I_{out}$和基准电流$I_{REF}$的关系是
+    \begin{Equation}
+        I_{out}=\frac{(W/L)_2}{(W/L)_1}I_{REF}
+    \end{Equation}
+\end{BoxFormula}
+
+关于基本电流镜，常见的一个问题是为什么$M_1$需要二极管接法，考虑\xref{fig:无效电流镜}的电路
+\begin{Figure}[无效电流镜]
+    \includegraphics[scale=0.8]{build/Chapter05A_06.fig.pdf}
+\end{Figure}
+在这个例子中，$M_1$的栅极未与漏极短接，而是接了$V_b$的偏置。然而这个电流镜其实是无法正常工作，尽管两管都工作在饱和区。这里$M_2$上的电流$I_{out}$仅受$V_b$控制，而$M_1$处出现了两个电流源串联的情况，即$I_{REF}$和由$V_b$控制的$I_{D1}$，这是不合法的。实际会发生的情况是
+\begin{itemize}
+    \item 若$V_b=V_{GS1}$使$I_{D1}>I_{REF}$，那么$V_{DS1}$会减低将其拖入线性区（使电流比预期小）。
+    \item 若$V_b=V_{GS1}$使$I_{D1}<I_{REF}$，那么$V_{DS1}$会增加以增强沟道调制（使电流比预期大）。
+\end{itemize}
+简而言之，我们不能过约束一个饱和区MOS管，即同时控制栅源电压和漏电流。
+
+\begin{Figure}[基本电流镜的特性]
+    \begin{FigureSub}[电流特性;基本电流镜电流特性]
+        \includegraphics[scale=0.58]{build/Chapter05A_01_0.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[节点电压;基本电流镜节点电压]
+        \includegraphics[scale=0.58]{build/Chapter05A_01_1.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.25cm}
+    \begin{FigureSub}[$M_2$管端口;基本电流镜M2管端口]
+        \includegraphics[scale=0.58]{build/Chapter05A_01_2.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+在\xref{fig:基本电流镜的特性}中我们给出了基本电流镜的仿真结果，我们注意到
+\begin{itemize}
+    \item 若忽略沟道调制效应，即$\lambda=0$，如\xref{fig:基本电流镜电流特性}的灰虚线所示，随着$V_{out}$增大电流$I_{out}$最终趋于$I_{REF}$，这与预期相符，因为$V_{out}$必须增大至能使$M_1$管由线性区进入饱和区。
+    \item 若考虑沟道调制效应，即$\lambda=0$，如\xref{fig:基本电流镜电流特性}的黑线所示，注意到即便输出电压$V_{out}$增大至使$M_1$管进入饱和区，此时$I_{out}$仍然会随$V_{out}$的增大而变化，这是偏离理想电流源特性的。问题的根源在于，先前讨论忽略了沟道调制，认为饱和区有$I_D=f(V_{GS})$，但沟道调制使得即便在饱和区仍有$I_D=f(V_{GS},V_{DS})$，这里$V_{DS1}$固定，但$V_{DS2}=V_{out}$则会随输出端口所加的电压而变化。故$V_{DS}$的偏差就会导致经过$f$和$f^{-1}$电流发生偏离。
+\end{itemize}
+
+通过表达式，我们也可以看出沟道调制效应是如何破坏电流镜的特性的。\setpeq{电流镜问题}\goodbreak
+
+$M_1$管遵从的方程是
+\begin{Equation}&[1]
+    I_{D1}=I_{REF}=\frac{1}{2}\mu_nC_{ox}(W/L)_1\qty(V_{GS1}-V_{TH})^2(1+\lambda V_{DS1})
+\end{Equation}
+$M_2$管遵从的方程是
+\begin{Equation}&[2]
+    I_{D2}=I_{out}=\frac{1}{2}\mu_nC_{ox}(W/L)_2\qty(V_{GS2}-V_{TH})^2(1+\lambda V_{DS2})
+\end{Equation}
+这里仍有$V_{GS1}=V_{GS2}$，将\xrefpeq{2}与\xrefpeq{1}作比，得到
+\begin{Equation}
+    I_{out}=\frac{(W/L)_2}{(W/L)_1}\frac{1+\lambda V_{DS2}}{1+\lambda V_{DS1}}I_{REF}
+\end{Equation}
+容易看出$V_{DS1}\neq V_{DS2}$将导致电流复制的偏差，那如何解决该问题呢？且看下一节的讨论。

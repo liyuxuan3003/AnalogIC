@@ -1,0 +1,52 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-1.5]
+\xValDefine{xR}[+1.5]
+\xValMiddle{xC}{xL}{xR}
+
+\xSetY
+\xValDefine{yB}[-3]
+\xValDefine{yA}[+3]
+\xValDefine{yC}{yB}{yA}
+\foreach \x/\s in {0/A,1/B,2/C,3/D}
+{
+    \xValPropor{yP\s}{yA}{yB}[\x/3]
+    \ifthenelse{\x=3}{}{\xValOffpro{yQ\s}{yP\s}{yA}{yB}[1/6]}
+}
+
+
+\draw (xL|-yQC) node[nmos,xscale=-1] (M1) {\ctikzflipx{$M_1$}};
+\draw (xL|-yQB) node[nmos,xscale=-1] (M3) {\ctikzflipx{$M_3$}};
+\path (xR|-yQC) node[nmos] (M2) {$M_2$};
+\path (xR|-yQB) node[nmos] (M4) {$M_4$};
+
+\draw (M1.G) -- (M2.G);
+\draw (M3.G) -- (M4.G);
+
+\draw (M3.S) -- (M1.D);
+\draw (M4.S) -- (M2.D);
+
+\draw (M1.S) to[short,i=$I_{REF}$] (M1.S|-yB) node[ground] {};
+\draw (M2.S) to[short,i=$I_{out}$] (M2.S|-yB) node[ground] {};
+\draw (M1.D) node[circ] {} -| (M1.G) node[circ] {};
+\draw (M3.D) node[circ] {} -| (M3.G) node[circ] {};
+
+\draw (M3.D|-yPA) node[vdd] {$V_{DD}$} to[isource,l=$I_{REF}$] (M1.D|-yPB) -- (M3.D);
+\draw (M4.D|-yQA) node[above] {$V_{out}$} to[short,o-] (M4.D);
+
+\path (M1.D) node[above right] {$V_{D1}$};
+\path (M3.D) node[above right] {$V_{D3}$};
+
+\path (M2.D) node[above left]  {$V_{D2}$};
+\path (M4.D) node[above left]  {$V_{D4}$};
+
+\path (M3.G) node[above right] {$V_b$};
+
+\xValBorder{xL}[-0.85]{xR}[+0.95]{yB}[-0.8]{yA}[+1.1]*
+
+\end{tikzpicture}
+\end{document}
