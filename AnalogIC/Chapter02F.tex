@@ -1,0 +1,206 @@
+\section{MOS的寄生电容}
+
+有时，MOS的寄生电容也必须加以考虑，以研究高频特性。MOS共有四个端子，MOS的寄生电容存在于四个端子的任意两个间，不过源和漏间的电容是可以忽略的，如\xref{fig:MOS的寄生电容}所示。
+\begin{Figure}[MOS的寄生电容]
+    \includegraphics[scale=0.8]{build/Chapter02F_02.fig.pdf}
+\end{Figure}
+
+简而言之，MOS中的电容可以分为两部分
+\begin{itemize}
+    \item 栅相关的电容：$C_{GS}$，$C_{GD}$，$C_{GB}$。
+    \item 体相关的电容：$C_{BS}$，$C_{BD}$。
+\end{itemize}
+电极间的电容不是凭空出现的，而是和MOS的结构有密切关系的，下面的工作可以分为两个步骤，第一步弄清MOS中的哪些结构存在电容，第二步搞清这些电容在电极间的分配。
+
+\subsection{栅氧电容}
+栅极和沟道间存在氧化层电容，其可以表示为
+\begin{Equation}
+    C_1=WLC_{ox}
+\end{Equation}
+其中$C_{ox}=\varepsilon_{ox}/t_{ox}$是栅氧的单位面积电容，而$W,L$和分别为沟道的长和宽。
+\begin{BoxFormula}[栅氧电容]
+    栅氧电容$C_1$的公式为
+    \begin{Equation}
+        C_1=WLC_{ox}
+    \end{Equation}
+\end{BoxFormula}
+
+\subsection{覆盖电容}
+栅极在理想情况下，应刚好与沟道边沿平齐，然而，扩散或离子注入形成源和漏时，水平扩散将不可避免的发生，致使栅也一定程度上会覆盖在源和漏上，这就是覆盖电容。按照\xref{subsec:MOS的结构}中的规定，横向扩散长度为$L_D$，因此，我们可能会理所当然的认为覆盖电容应表示为
+\begin{Equation}
+    C_2=WL_DC_{ox}
+\end{Equation}
+但由于覆盖电容位于电场边缘，电场线在横向上分布不均匀，这样计算并不准确。解决方案是，引入覆盖区的单位宽度电容$C_{ov}$（若边缘电场均匀，这里$C_{ov}$就是$C_{ox}L_D$），有
+\begin{Equation}
+    C_{ov}=WC_{ov}
+\end{Equation}
+其中$C_{ov}$是覆盖区的单位宽度电容，具体可能会记为$C_{ov}=C_{GSO}$或$C_{ov}=C_{GDO}$。
+
+\begin{BoxFormula}[覆盖电容]
+    覆盖电容$C_2$的公式为
+    \begin{Equation}
+        C_2=WC_{ov}
+    \end{Equation}
+\end{BoxFormula}
+
+\subsection{耗尽电容}
+沟道和栅极间的氧化层存在电容，沟道和衬底间的耗尽区同样存在电容，这就是耗尽区电容
+\begin{Equation}
+    C_3=WL\sqrt{q\varepsilon_{si}N_{sub}/(4\Phi_F)}
+\end{Equation}
+这里$N_{sub}$是衬底的掺杂浓度，而$\Phi_F$是费米势。
+\begin{BoxFormula}[耗尽电容]
+    耗尽电容$C_3$的公式为
+    \begin{Equation}
+        C_3=WL\sqrt{q\varepsilon_{si}N_{sub}/(4\Phi_F)}
+    \end{Equation}
+\end{BoxFormula}
+
+\subsection{结电容}
+结电容来自源漏与衬底间的PN结的势垒电容，这可以分为两个部分
+\begin{itemize}
+    \item 与结底部相关的极板电容$C_j$，$C_j$是一个单位面积电容。
+    \item 与结四周相关的侧壁电容$C_{jsw}$，$C_{jsw}$是一个单位深度电容。
+\end{itemize}
+结电容$C_4$因此可以表示为
+\begin{Equation}
+    C_4=WEC_{j}+2(W+E)C_{jsw}
+\end{Equation}
+结的宽度可以认为与沟道宽度$W$一致，结的长度$E$则是一个新的自由变量。实践中，有时给出的是结的面积$A=WE$和结的周长$P=2(W+E)$，此时有$C_3=AC_j+PC_{jsw}$成立。
+
+\begin{BoxFormula}[结电容]
+    结电容$C_4$的公式为
+    \begin{Equation}
+        C_4=WEC_{j}+2(W+E)C_{jsw}
+    \end{Equation}
+    其中$C_j$和$C_{jsw}$分别满足
+    \begin{Equation}
+        C_{j}=C_{j0}/\qty[1+V_R/\Phi_B]^m\qquad
+        C_{jsw}=C_{jsw0}/\qty[1+V_R/\Phi_B]^m
+    \end{Equation}
+    其中$V_R$为该结上的反偏电压。
+\end{BoxFormula}
+
+\subsection{MOS的寄生电容}
+现在的问题是$C_1,C_2,C_3,C_4$是如何分配至$C_{GB},C_{GS},C_{GD},C_{BS},C_{BD}$上的呢？
+\begin{itemize}
+    \item 结电容$C_4$是较独立的，始终有$C_{BS}=C_4$和$C_{BD}=C_4$，但$C_{BS},C_{BD}$却未必是相同的，因为$V_R$不同。若衬底和源短接，$C_{BS}$中$V_R=V_{SB}=0$，$C_{BD}$中$V_R=V_{DB}=V_{DS}$。
+    \item 覆盖电容$C_2$始终是$C_{GB}$和$C_{GD}$的一部分。
+    \item 截止区，沟道未形成，栅氧电容$C_1$和耗尽电容$C_3$串接在栅和衬底间，构成$C_{GB}$。
+    \item 线性区，沟道形成，栅氧电容$C_1$平均的分配给$C_{GS},C_{GD}$。
+    \item 饱和区，沟道夹断且与漏断开，栅氧电容$C_1$折损至$2/3$且仅分配给$C_{GS}$。
+    \item 栅氧电容$C_2$分配给$C_{GS},C_{GD}$的部分与其固有的覆盖电容$C_2$并联，即相加。
+    \item 耗尽电容$C_3$在线性区和饱和区中不再被考虑，这些工作区中认为$C_{GB}=0$。
+\end{itemize}
+综上，我们可以总结出以下的公式。
+
+\begin{BoxFormula}[栅--源电容]
+    在截止区，栅--源电容$C_{GS}$仅包含覆盖电容$C_2$
+    \begin{Equation}
+        C_{GS}=C_2
+    \end{Equation}
+    在线性区，栅--源电容$C_{GS}$是覆盖电容$C_2$和栅氧电容$C_1/2$的并联
+    \begin{Equation}
+        C_{GS}=C_2+C_1/2
+    \end{Equation}
+    在饱和区，栅--源电容$C_{GS}$是覆盖电容$C_2$和栅氧电容$2C_1/3$的并联
+    \begin{Equation}
+        C_{GS}=C_2+2C_1/3
+    \end{Equation}
+\end{BoxFormula}
+
+\begin{BoxFormula}[栅--漏电容]
+    在截止区，栅--漏电容$C_{GD}$仅包含覆盖电容$C_2$
+    \begin{Equation}
+        C_{GD}=C_2
+    \end{Equation}
+    在线性区，栅--漏电容$C_{GD}$是覆盖电容$C_2$和栅氧电容$C_1/2$的并联
+    \begin{Equation}
+        C_{GD}=C_2+C_1/2
+    \end{Equation}
+    在饱和区，栅--漏电容$C_{GD}$是覆盖电容$C_2$
+    \begin{Equation}
+        C_{GD}=C_2
+    \end{Equation}
+\end{BoxFormula}
+
+\begin{BoxFormula}[栅--衬电容]
+    在截止区，栅--衬电容$C_{GB}$是栅氧电容$C_1$和耗尽电容$C_3$的串联
+    \begin{Equation}
+        C_{GB}=\frac{C_1C_3}{C_1+C_3}
+    \end{Equation}
+    在线性区和饱和区，栅--衬电容$C_{GB}$为零
+    \begin{Equation}
+        C_{GB}=0
+    \end{Equation}
+\end{BoxFormula}
+
+\begin{BoxFormula}[衬--源电容]
+    衬--源电容$C_{BS}$即源极和体的结电容$C_4$
+    \begin{Equation}
+        C_{BS}=C_4\qquad (V_R=V_{SB}=0)
+    \end{Equation}
+\end{BoxFormula}
+
+\begin{BoxFormula}[衬--漏电容]
+    衬--漏电容$C_{BD}$即漏极和体的结电容$C_4$
+    \begin{Equation}
+        C_{BD}=C_4\qquad (V_R=V_{DB}=V_{DS})
+    \end{Equation}
+\end{BoxFormula}
+
+然而，我们可能会注意到一个严重的问题，对于$C_{GS},C_{GD},C_{GB}$，其表达式在三个工作区间是不连续的，这会导致收敛性问题，下面的结论改写了线性区$C_{GS},C_{GD}$的表达式，使线性区和饱和区间能平滑的过渡，这部分解决了该问题。耗尽区边界仍然将出现不连续的现象。
+\begin{BoxFormula}[栅--源电容的线性区修正]
+    在线性区，栅--源电容$C_{GS}$可以修正为
+    \begin{Equation}
+        C_{GS}=C_2+2C_1/3\qty{1-\frac{(V_{GS}-V_{DS}-V_{TH})^2}{\qty[2(V_{GS}-V_{TH})-V_{DS}]^2}}
+    \end{Equation}
+\end{BoxFormula}
+
+\begin{BoxFormula}[栅--源电容的线性区修正]
+    在线性区，栅--漏电容$C_{GD}$可以修正为
+    \begin{Equation}
+        C_{GS}=C_2+2C_1/3\qty{1-\frac{(V_{GS}-V_{TH})^2}{\qty[2(V_{GS}-V_{TH})-V_{DS}]^2}}
+    \end{Equation}
+\end{BoxFormula}
+
+\xref{fig:MOS的寄生电容}是基于上述成果绘制的$C_{GS},C_{GD},C_{GB},C_{BS},C_{BD}$，关于这些图像，我们要说明两点。首先，源区和漏区的长度$E$是一个自由变量，这里我们取$E=2L=1.0\si{um}$。其次，耗尽电容$C_3$在绘图时被选择性忽略，因为计算发现$C_3\ll C_1$，若考虑$C_3$，则$C_{GB}$处于耗尽区时看起来也几乎为零（$C_{GB}$在线性区和饱和区本身就是零了），使$C_{GB}$的图像变得非常乏味。\goodbreak
+
+\begin{Figure}[MOS的寄生电容]
+    \begin{FigureSub}[栅--源电容]
+        \includegraphics[scale=0.68]{build/Chapter02F_01a.fig}
+        \includegraphics[scale=0.5]{build/Chapter02F_01f.fig}
+    \end{FigureSub}
+    \hspace{0.1cm}
+    \begin{FigureSub}[栅--漏电容]
+        \includegraphics[scale=0.68]{build/Chapter02F_01b.fig}
+        \includegraphics[scale=0.5]{build/Chapter02F_01f.fig}
+    \end{FigureSub}\\ \vspace{0.2cm}
+    \begin{FigureSub}[栅--体电容]
+        \includegraphics[scale=0.7]{build/Chapter02F_01c.fig}
+        \includegraphics[scale=0.5]{build/Chapter02F_01f.fig}
+    \end{FigureSub}\\ \vspace{0.2cm}
+    \begin{FigureSub}[衬--源电容]
+        \includegraphics[scale=0.68]{build/Chapter02F_01d.fig}
+        \includegraphics[scale=0.5]{build/Chapter02F_01f.fig}
+    \end{FigureSub}
+    \hspace{0.1cm}
+    \begin{FigureSub}[衬--漏电容]
+        \includegraphics[scale=0.68]{build/Chapter02F_01e.fig}
+        \includegraphics[scale=0.5]{build/Chapter02F_01f.fig}
+    \end{FigureSub}
+\end{Figure}
+
+\xref{fig:MOS的寄生电容}指出，MOS的电容大约在$\si{fF}$量级，是非常小的。在模拟集成电路中，我们通常只关心MOS处于饱和区时的电容。注意到$C_{GS}>C_{GD},C_{BD},C_{BS}$和$C_{GB}=0$。其中$C_{GS}$比较大是因为MOS中最大的电容来自栅氧电容，而处于饱和区时，只有$C_{GS}$会包含部分栅氧电容。
+
+\begin{Tablex}[MOS处于饱和区（$V_{DS}=V_{GS}=3\si{V}$）时的参数值;MOS处于饱和区时的参数值]{XX}
+    <项&值\\>
+    $C_{GS}$&$\SI{8.3947}{fF}$\\
+    $C_{GD}$&$\SI{2.0000}{fF}$\\
+    $C_{GB}$&$\SI{0.0000}{fF}$\\
+    $C_{BS}$&$\SI{2.8406}{fF}$\\
+    $C_{BD}$&$\SI{1.4777}{fF}$\\
+    $g_m$&$\SI{0.3089}{mS}$\\
+\end{Tablex}
+
+\xref{tab:MOS处于饱和区时的参数值}是在$V_{DS}=3\si{V}$和$V_{GS}=3\si{V}$时，计算的一组电容和跨导值。这些参数将在\xref{chap:频率响应}讨论频率响应时（需在偏置点未给定时进行小信号分析），作为电容和跨导间的相对数量级参考。

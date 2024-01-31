@@ -61,6 +61,7 @@ xCox=eox e0/tox;
 xmu=350 100^(-2);
 xW=0.5 10^(-6);
 xL=0.5 10^(-6);
+xE=1.0 10^(-6);
 xlambda=0.1;
 xalpha=2 mu Cox (xi VT)^2/Exp[2];
 xxi=1.5;
@@ -76,7 +77,7 @@ xCov=0.4 10^(-9);
 xVTH=VTH0+gamma(Sqrt[2PhiF-VBS]-Sqrt[2PhiF]);
 listVal={VTH0->xVTH0,VTH->xVTH,kB->xkB,q->xq,T->xT,VT->xVT,
 	tox->xtox,eox->xeox,e0->xe0,Cox->xCox,
-	mu->xmu,W->xW,L->xL,alpha->xalpha,xi->xxi,
+	mu->xmu,W->xW,L->xL,E->xE,alpha->xalpha,xi->xxi,
 	gamma->xgamma,PhiF->xPhiF,LD->xLD,
 	PB->xPB,Cj0->xCJ0,Cjsw0->xCJSW0,MJ->xMJ,MJSW->xMJSW,
 	Cov->xCov
@@ -88,7 +89,7 @@ xgm=mu Cox (W/L)(VGS-VTH)
 
 xC1=W L Cox
 xC2=W Cov
-xC3=W LD Cj+2(W+LD)Cjsw
+xC4=W E Cj+2(W+LD)Cjsw
 xCj=Cj0/(1-VD/PB)^MJ
 xCjsw=Cjsw0/(1-VD/PB)^MJSW
 
@@ -123,25 +124,25 @@ xCGB=Piecewise[{
 }];
 
 
-xCSB=C3//.{C3->xC3,Cjsw->xCjsw,Cj->xCj,VD->VBS};
+xCBS=C4//.{C4->xC4,Cjsw->xCjsw,Cj->xCj,VD->VBS};
 
 
-xCDB=C3//.{C3->xC3,Cjsw->xCjsw,Cj->xCj,VD->VBS-VDS};
+xCBD=C4//.{C4->xC4,Cjsw->xCjsw,Cj->xCj,VD->VBS-VDS};
 
 
 listFunc={
 	gm->xgm,
-	C1->xC1,C2->xC2,C3->xC3,Cj->xCj,Cjsw->xCjsw,
+	C1->xC1,C2->xC2,C4->xC4,Cj->xCj,Cjsw->xCjsw,
 	CGSoff->xCGSoff,CGSlin->xCGSlin,CGSsat->xCGSsat,CGS->xCGS,
 	CGDoff->xCGDoff,CGDlin->xCGDlin,CGDsat->xCGDsat,CGD->xCGD,
 	CGBoff->xCGBoff,CGBlin->xCGBlin,CGBsat->xCGBsat,CGB->xCGB,
-	CSB->xCSB,
-	CDB->xCDB,
+	CBS->xCBS,
+	CBD->xCBD,
 	VBS->0
 };
 
 
-{xCGSsat,xCGDsat,xCSB,xCDB}//.listFunc
+{xCGSsat,xCGDsat,xCBS,xCBD}//.listFunc
 
 
 f=10^(-15);
@@ -159,36 +160,52 @@ leval=Join[listFunc,listVal,{VDS->3,VGS->3}];
 xvCGS=CGS//.leval
 xvCGD=CGD//.leval
 xvCGB=CGB//.leval
-xvCSB=CSB//.leval
-xvCDB=CDB//.leval
+xvCBS=CBS//.leval
+xvCBD=CBD//.leval
 xvgm=gm//.leval
 xRD=20k;
-lval={CGS->xvCGS,CGD->xvCGD,CGB->xvCGB,CSB->xvCSB,CDB->xvCDB,gm->xvgm,RD->xRD};
+lval={CGS->xvCGS,CGD->xvCGD,CGB->xvCGB,CBS->xvCBS,CBD->xvCBD,gm->xvgm,RD->xRD};
 
 
 PR=((#1 #2)/(#1+#2))&
 
 
-xH=((CGD s-gm)RD)/(RS RD (CGS CGD+CGS CDB+CGD CDB)s^2+(RS(1+gm RD)CGD+RS CGS+RD(CGD+CDB))s+1);
+xH=((CGD s-gm)RD)/(RS RD (CGS CGD+CGS CBD+CGD CBD)s^2+(RS(1+gm RD)CGD+RS CGS+RD(CGD+CBD))s+1);
 xHPoles=FunctionPoles[xH,s];
 xHZeros=FunctionPoles[xH^(-1),s];
 xwp1=xHPoles[[2]][[1]]
 xwp2=xHPoles[[1]][[1]]
 xwz1=xHZeros[[1]][[1]]
 xwp1mi=1/(RS(CGS+(1+gm RD)CGD));
-xwp2mi=1/(RD(CDB+CGD));
-xwp2rsh=FullSimplify[1/(PR[RD,(1/gm)((CGD+CGS)/(CGD))](CDB+PR[CGD,CGS]))]
-xwp1dh=1/(RS(CGS+(1+gm RD)CGD)+RD(CGD+CDB));
-xwp2dh=1/(RS RD (CGS CGD+CGS CDB+CGD CDB)) 1/xwp1dh;
+xwp2mi=1/(RD(CBD+CGD));
+xwp2rsh=FullSimplify[1/(PR[RD,(1/gm)((CGD+CGS)/(CGD))](CBD+PR[CGD,CGS]))]
+xwp1dh=1/(RS(CGS+(1+gm RD)CGD)+RD(CGD+CBD));
+xwp2dh=1/(RS RD (CGS CGD+CGS CBD+CGD CBD)) 1/xwp1dh;
 
 
-{CGS RS,RS(1+gm RD)CGD+RD(CGD+CDB)}//.lval//.{RS->20k}
+(* ::InheritFromParent:: *)
+(*(-CBD RD-CGD RD-CGD RS-CGS RS-CGD gm RD RS+\[Sqrt](-4 (CBD CGD RD RS+CBD CGS RD RS+CGD CGS RD RS)+(CBD RD+CGD RD+CGD RS+CGS RS+CGD gm RD RS)^2))/(2 (CBD CGD RD RS+CBD CGS RD RS+CGD CGS RD RS))*)
 
 
-LogLogPlot[Evaluate[Abs/@{xwp1,xwp1mi,xwp1dh,xwp2,xwp2mi,xwp2rsh,xwp2dh,xwz1}//.lval],{RS,100,1M},Evaluate@xFigConfig]
+(* ::InheritFromParent:: *)
+(*(-CBD RD-CGD RD-CGD RS-CGS RS-CGD gm RD RS-\[Sqrt](-4 (CBD CGD RD RS+CBD CGS RD RS+CGD CGS RD RS)+(CBD RD+CGD RD+CGD RS+CGS RS+CGD gm RD RS)^2))/(2 (CBD CGD RD RS+CBD CGS RD RS+CGD CGS RD RS))*)
+
+
+(* ::InheritFromParent:: *)
+(*(CGD+CGS+CGD gm RD)/(CBD CGD RD+CBD CGS RD+CGD CGS RD)*)
+
+
+{CGS RS,RS(1+gm RD)CGD+RD(CGD+CBD)}//.lval//.{RS->20k}
+
+
+LogLogPlot[Evaluate[Abs/@{xwp1,xwp1mi,xwp2,xwp2mi,xwp2rsh}//.lval],{RS,100,1M},Evaluate@xFigConfig]
 
 
 xwp1
+
+
+(* ::InheritFromParent:: *)
+(*(-CBD RD-CGD RD-CGD RS-CGS RS-CGD gm RD RS+\[Sqrt](-4 (CBD CGD RD RS+CBD CGS RD RS+CGD CGS RD RS)+(CBD RD+CGD RD+CGD RS+CGS RS+CGD gm RD RS)^2))/(2 (CBD CGD RD RS+CBD CGS RD RS+CGD CGS RD RS))*)
 
 
 LogLogPlot[Evaluate[Abs/@{xwp1,xwp1mi,xwp2,xwp2mi,xwp2rsh}//.lval],{RS,100,1M},Evaluate@xFigConfig]
