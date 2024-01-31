@@ -307,16 +307,19 @@ fig5b=LogPlot[Evaluate[{xIDsub,xID//.{VDS->4}}//.listValSTD],{VGS,0.00,4},
 	Evaluate@xFigConfig]
 
 
+plotColor={ColorFunction->Function[{x,y,z},ColorData["GreenBrownTerrain"][z/(0.6m)]],ColorFunctionScaling->False};
+
+
 fig6a=Plot3D[xgm//.listValSTD,{VDS,0,4},{VGS,0,4},
 	Exclusions->{(VGS==VTH)//.listVal,(VDS==VGS-VTH)//.listVal},
-	ColorFunction->ColorData["GreenBrownTerrain"],
+	Evaluate@plotColor,
 	Evaluate@xFig3DConfig,
 	Evaluate@xFig3DLabel["V_{DS}~(\\si{V})","V_{GS}~(\\si{V})","g_m~(\\si{mS})"],
 	PlotRange->{-0.05m,0.65m},
 	Ticks->{xTicks[{0,4,1},{2,1}],xTicks[{0,4,1},{2,1}],xTicksProp[{0,0.6,0.2},{2,1},m]}]
 fig6b=Plot3D[xgo//.listValSTD,{VDS,0,4},{VGS,0,4},
 	Exclusions->{(VGS==VTH)//.listVal,(VDS==VGS-VTH)//.listVal},
-	ColorFunction->ColorData["GreenBrownTerrain"],
+	Evaluate@plotColor,
 	Evaluate@xFig3DConfig,
 	Evaluate@xFig3DLabel["V_{DS}~(\\si{V})","V_{GS}~(\\si{V})","g_O~(\\si{mS})"],
 	PlotRange->{-0.05m,0.65m},
@@ -325,14 +328,14 @@ fig6b=Plot3D[xgo//.listValSTD,{VDS,0,4},{VGS,0,4},
 
 fig7a=Plot3D[xgm//.listValLAM,{VDS,0,4},{VGS,0,4},
 	Exclusions->{(VGS==VTH)//.listVal,(VDS==VGS-VTH)//.listVal},
-	ColorFunction->ColorData["GreenBrownTerrain"],
+	Evaluate@plotColor,
 	Evaluate@xFig3DConfig,
 	Evaluate@xFig3DLabel["V_{DS}~(\\si{V})","V_{GS}~(\\si{V})","g_m~(\\si{mS})"],
 	PlotRange->{-0.05m,0.65m},
 	Ticks->{xTicks[{0,4,1},{2,1}],xTicks[{0,4,1},{2,1}],xTicksProp[{0,0.6,0.2},{2,1},m]}]
 fig7b=Plot3D[xgo//.listValLAM,{VDS,0,4},{VGS,0,4},
 	Exclusions->{(VGS==VTH)//.listVal,(VDS==VGS-VTH)//.listVal},
-	ColorFunction->ColorData["GreenBrownTerrain"],
+	Evaluate@plotColor,
 	Evaluate@xFig3DConfig,
 	Evaluate@xFig3DLabel["V_{DS}~(\\si{V})","V_{GS}~(\\si{V})","g_O~(\\si{mS})"],
 	PlotRange->{-0.05m,0.65m},
@@ -424,7 +427,7 @@ fig9b=Plot[Evaluate@Table[Simplify@Piecewise[{{xgo^(-1),VGS>VTH},{10M,True}}]//.
 		Text[xLaTeX["\\textcolor{gray}{V_{TH}}",0.9],{VTH-0.18,475k}]//.listVal
 	},
 	Evaluate@xFigConfig,
-	Evaluate@xFigLabel["V_{GS}~(\\si{V})","r_O~(\\si{k\ohm})"]]
+	Evaluate@xFigLabel["V_{GS}~(\\si{V})","r_O~(\\si{k\\ohm})"]]
 
 
 fig10=Plot[xVTHBody//.listVal,{VBS,-4,+1},

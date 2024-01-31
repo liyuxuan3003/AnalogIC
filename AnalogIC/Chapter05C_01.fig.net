@@ -1,0 +1,17 @@
+* d:\Learning\20231117-AnalogIC\AnalogIC\Chapter05C_01.fig.asc
+M1 VQ Vin1 VP 0 NMOS
+M2 Vout Vin2 VP 0 NMOS
+VDD N001 0 4
+VinCM1 VinCM 0 2
+Vin1 Vin1 VinCM 0
+B§VinCM2 N003 0 V=V(VinCM)
+B§Vin2 Vin2 N003 V=-(V(Vin1)-V(VinCM))
+M3 VQ VQ N001 N001 PMOS
+M4 Vout VQ N001 N001 PMOS
+M5 VP N002 0 NC_01 NMOS
+Vb N002 0 1
+.model NMOS NMOS
+.model PMOS PMOS
+.lib C:\Users\liyuxuan\AppData\Local\LTspice\lib\cmp\standard.mos
+.backanno
+.end
