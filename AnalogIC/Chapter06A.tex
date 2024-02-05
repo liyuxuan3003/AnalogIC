@@ -1,0 +1,194 @@
+\section{频率响应的基本概念}
+
+\subsection{频率响应与零点和极点}
+我们可能会这样抱怨：MOS管已经足够复杂了！再考虑那些到处变来变去的电容可真是没完没了！但事实是，我们只需要了解最基本的RC电路的频率响应就够了。\xref{fig:低通滤波}和\xref{fig:高通滤波}是我们在电路基础中都非常熟悉的低通滤波和高通滤波电路，两者的系统函数很容易求出来。
+
+\begin{Figure}[基本RC电路]
+    \begin{FigureSub}[低通滤波电路]
+        \includegraphics[scale=0.8]{build/Chapter06A_03.fig.pdf}
+    \end{FigureSub}
+    \hspace{1cm}
+    \begin{FigureSub}[低通滤波电路]
+        \includegraphics[scale=0.8]{build/Chapter06A_04.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+对于低通滤波，输出是电容$C$上的分压
+\begin{Equation}[低通滤波]
+    A=\frac{V_{out}}{V_{in}}=\frac{(sC)^{-1}}{R+(sC)^{-1}}=\frac{1}{1+sRC}
+\end{Equation}
+对于高通滤波，输出是电阻$R$上的分压
+\begin{Equation}[高通滤波]
+    A=\frac{V_{out}}{V_{in}}=\frac{R}{R+(sC)^{-1}}=\frac{sRC}{1+sRC}
+\end{Equation}
+上述计算我们很熟悉，但这一次，我们将换一个角度来考虑问题。我们知道，拉普拉斯域上的函数$H(s)$是一个复变函数，在数学物理方法中，曾提及过复变函数的极点和零点的定义。
+
+\begin{itemize}
+    \item 复变函数$H(s)$的极点，是指那些令该复变函数$H(s)$取值为无穷大的点$s=s_p$
+    \item 复变函数$H(s)$的零点，是指那些令该复变函数$H(s)$取值为零的点$s=s_z$
+\end{itemize}
+
+低通滤波电路具有一个极点$\omega_p$
+\begin{Equation}[低通滤波零极点]
+    \omega_p=-1/RC
+\end{Equation}
+高通滤波电路具有一个极点$\omega_p$和一个位于原点处的零点$\omega_z$
+\begin{Equation}[高通滤波零极点]
+    \omega_p=-1/RC\qquad \omega_z=0
+\end{Equation}
+
+\begin{Figure}[基本RC电路的系统函数可视化]
+    \begin{FigureSub}[低通滤波的函数图]
+        \includegraphics[scale=0.8]{build/Chapter06A_02c.fig.pdf}
+    \end{FigureSub}
+    \hspace{1cm}
+    \begin{FigureSub}[高通滤波的函数图]
+        \includegraphics[scale=0.8]{build/Chapter06A_02d.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+
+那么，为何我们如此关心系统函数的极点和零点呢？\xref{fig:低通滤波的幅频响应}和\xref{fig:高通滤波的幅频响应}是低通滤波和高通滤波的幅频响应曲线。而事实上，极点和零点直接决定了幅频响应曲线的特性。有这样的断言
+\begin{itemize}
+    \item 每遇到一个极点，幅频曲线将以$\SI{20}{dB.dec^{-1}}$下降（变化率减小$\SI{20}{dB.dec^{-1}}$）。
+    \item 每遇到一个零点，幅频曲线将以$\SI{20}{dB.dec^{-1}}$上升（变化率增大$\SI{20}{dB.dec^{-1}}$）。
+\end{itemize}
+
+\begin{Figure}[基本RC电路的幅频响应]
+    \begin{FigureSub}[低通滤波的幅频响应]
+        \includegraphics[scale=0.8]{build/Chapter06A_02a.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[高通滤波的幅频响应]
+        \includegraphics[scale=0.8]{build/Chapter06A_02b.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+幅频响应常用$\si{dB}$作为增益$A$的单位，这是一种对数单位，定义为$20\log A$，换言之，一个数量级就对应了$20\si{dB}$。例如，\xref{fig:基本RC电路的幅频响应}的纵坐标没有采用$\si{dB}$，而是普通的对数坐标，但很容易将两者对应起来：$10^0$即$\SI{0}{dB}$，$10^{-1}$即$\SI{-20}{dB}$，$10^{-2}$即$\SI{-40}{dB}$，依此类推。让我们回到上面的断言，这样的提法其实很让人困惑，首先为什么是$\SI{20}{dB.dec^{-1}}$这样很突兀的数字，其次如\xref{fig:基本RC电路的零极点图}的零极点图（这类图中，极点标识为叉，零点标识为圈）所示，极点$\omega_p$和零点$\omega_z$都分布在实轴$\sigma$上（尽管用$\omega$标识），而探讨频率响应时，频率$\omega$的变化却反映为虚轴上的移动，那么，频率沿着虚轴增加又何谈“遇到”实轴上的零点和极点呢？这是需要我们解决的。
+
+\begin{Figure}[基本RC电路的零极点图]
+    \begin{FigureSub}[低通滤波的零极点图]
+        \includegraphics[scale=1]{build/Chapter06A_05.fig.pdf}
+    \end{FigureSub}
+    \hspace{1cm}
+    \begin{FigureSub}[高通滤波的零极点图]
+        \includegraphics[scale=1]{build/Chapter06A_06.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+以低通滤波为例，在\xrefeq{低通滤波}中依据\xrefeq{低通滤波零极点}的$\omega_p=-1/RC$代换\setpeq{20dB解释}
+\begin{Equation}&[1]
+    A=\frac{1}{1-s/\omega_p}
+\end{Equation}
+讨论频率响应时，令$s=\j\omega$
+\begin{Equation}&[2]
+    A=\frac{1}{1-\j\omega/\omega_p}
+\end{Equation}
+求幅值
+\begin{Equation}&[3]
+    |A|=\frac{1}{\sqrt{1+(\omega/\omega_p)^2}}
+\end{Equation}
+我们注意到，\xrefpeq{3}的意义是，幅值是频率点$\j\omega$至极点$\omega_p$的距离与$\omega_p$的比值的倒数。
+\begin{itemize}
+    \item 当$\omega\ll|\omega_p|$时，此时$|A|=1$，因为两者的距离近似等于$\omega_p$。
+    \item 当$\omega\hspace{0.027cm}=\hspace{0.027cm}|\omega_p|$时，此时$|A|=\sqrt{2}/2$，因为两者与原点构成了等腰直角三角形，斜边是直角边的$\sqrt{2}$倍，注意到$20 \log\sqrt{2}/2=\SI{-3}{dB}$，故频率达到极点频率时，出现$\SI{-3}{dB}$点。
+    \item 当$\omega\gg |\omega_p|$时，由于$(\omega/\omega_p)^2\gg 1$，此时$|A|\propto\omega^{-1}$，换言之，频率增加一个数量级，幅值减小一个数量级，幅值习惯上以$\si{dB}$为单位，而一个数量级对应$\SI{20}{dB}$，故有频率遇到极点后幅频曲线将以$\SI{20}{dB.dec^{-1}}$的速率下降的提法。通过上述讨论我们可以看出，极点$\omega_p$位于实轴，频率点$\j\omega$位于虚轴，因此，这里所谓的“遇到”并不是频率点触及了极点，而是指两者到原点距离的相同，即$\omega=|\omega_p|$。另外，遇到极点后以$\SI{20}{dB.dec^{-1}}$的速率下降本身也是近似的提法，从\xref{fig:低通滤波的幅频响应}或上一段讨论中都可以看出，遇到极点时幅度已经减小至原先的$\sqrt{2}/2$倍或$\SI{-3}{dB}$处了，但是，$\SI{20}{dB.dec^{-1}}$的线性近似在趋势上仍然是相当准确的，只需知道零点和极点的位置，就可以基于此大致的画出幅频曲线。
+\end{itemize}
+高通滤波和低通滤波很相似，但区别在于，高通滤波多了一个零点$\omega_z$，且该零点还恰好位于原点$\omega_z=0$处。这意味着两点：当$\omega=0$时幅度为零（感觉有些奇怪？请不要忘记$\omega$同样是以对数坐标画出的，最左端不是零），当$\omega>0$时，零点代表的$+\SI{20}{dB.dec^{-1}}$的增长立即生效，直至$\omega>\omega_p$时，极点生效，极点$-\SI{20}{dB.dec^{-1}}$的下降与零点$+\SI{20}{dB.dec^{-1}}$的上升相互抵消，幅频曲线因此保持恒定。至此，我们将零点和极点与幅频曲线的变化关联起来了。
+
+我们常考虑四类情况：左极点（LHP），右极点（RHP），左零点（LHZ），右零点（RHZ）。这里的LH和RH代表的是左半复平面Left Half和右半复平面Right Half，而P和Z则代表极点（Poles）和零点（Zeros）。区分左右的原因是相频响应。首先，无论左、右、零点、极点
+\begin{itemize}
+    \item 当$\omega\hspace{0.027cm}=\hspace{0.027cm}|\omega_p|,|\omega_z|$时，将产生$\pm \pi/4$的相移。
+    \item 当$\omega\gg|\omega_p|,|\omega_z|$时，将产生$\pm \pi/2$的相移。
+\end{itemize}
+我们也可以直接从\xref{fig:低通滤波的零极点图}这样的零极点图中通过“频率点--零极点--原点”的夹角直观的看出相移的绝对值，但问题在于，相移到底是正还是负，这就与左和右有关
+\begin{itemize}
+    \item 极点导致$-\SI{20}{dB.dec^{-1}}$的幅频响应，左极点导致负相移，右极点导致正相移。
+    \item 零点导致$-\SI{20}{dB.dec^{-1}}$的幅频响应，左零点导致正相移，右零点导致负相移。
+\end{itemize}
+
+\xref{tab:四种情况的幅频响应和相频响应}系统总结了上述特性
+\begin{Tablex}[四种情况的幅频响应和相频响应]{|Y|Y|Y|Y|}
+<左极点LHP&右极点RHP&左零点LHZ&右零点RHZ\\>
+\xcell<Y>[2ex][-3ex]{\includegraphics[scale=1.2]{build/Chapter06A_07.fig.pdf}}&
+\xcell<Y>[2ex][-3ex]{\includegraphics[scale=1.2]{build/Chapter06A_08.fig.pdf}}&
+\xcell<Y>[2ex][-3ex]{\includegraphics[scale=1.2]{build/Chapter06A_09.fig.pdf}}&
+\xcell<Y>[2ex][-3ex]{\includegraphics[scale=1.2]{build/Chapter06A_10.fig.pdf}}\\
+\xcell<Y>[2ex][-3ex]{\includegraphics[scale=0.8]{build/Chapter06A_02e.fig.pdf}}&
+\xcell<Y>[2ex][-3ex]{\includegraphics[scale=0.8]{build/Chapter06A_02f.fig.pdf}}&
+\xcell<Y>[2ex][-3ex]{\includegraphics[scale=0.8]{build/Chapter06A_02g.fig.pdf}}&
+\xcell<Y>[2ex][-3ex]{\includegraphics[scale=0.8]{build/Chapter06A_02h.fig.pdf}}\\
+\xcell<Y>[2ex][-3ex]{\includegraphics[scale=0.8]{build/Chapter06A_02i.fig.pdf}}&
+\xcell<Y>[2ex][-3ex]{\includegraphics[scale=0.8]{build/Chapter06A_02j.fig.pdf}}&
+\xcell<Y>[2ex][-3ex]{\includegraphics[scale=0.8]{build/Chapter06A_02k.fig.pdf}}&
+\xcell<Y>[2ex][-3ex]{\includegraphics[scale=0.8]{build/Chapter06A_02l.fig.pdf}}\\
+\end{Tablex}
+
+\subsection{频率响应与放大器}
+现在让我们回到放大器，\xref{fig:放大器的频率响应模型}是一个考虑放大器的频率响应的模型，其中$A$是一个理想的全通放大器，其前的$R_1,C_1$和其后的$R_2,C_2$分别构成两个独立的低通滤波电路，这些电阻和电容通常不是故意添加的，可能来自，放大器本身的输入输出电阻、放大器中MOS管的寄生电容、输入内阻、输出负载电阻等。根据之前的知识，我们可以很容易的写出系统函数为
+\begin{Equation}
+    A(s)=A_0\cdot\frac{1}{1-s/\omega_1}\frac{1}{1-s/\omega_2}
+\end{Equation}
+其中$\omega_1$和$\omega_2$分别是
+\begin{Equation}
+    \omega_1=-1/R_1C_1\qquad \omega_2=-1/R_2C_2
+\end{Equation}
+这是一个很重要的想法：放大器中的一个节点代表了一个极点的存在。
+
+\begin{Figure}[放大器的频率响应模型]
+    \includegraphics[scale=0.8]{build/Chapter06A_11.fig.pdf}
+\end{Figure}
+
+\subsection{频率响应与米勒定理}
+当然，并非所有放大器都恰好是\xref{fig:放大器的频率响应模型}这种最简单的形式，很多时候，完整的电路分析仍然是必要的。\xref{fig:放大器节点间的跨间电容}就是一个不符合\xref{fig:放大器的频率响应模型}的例子，两个节点间的跨接电容$C_3$使我们无法处理。
+
+\begin{Figure}[放大器节点间的跨间电容]
+    \includegraphics[scale=0.8]{build/Chapter06A_12.fig.pdf}
+\end{Figure}
+
+米勒定理提供了一种手段，使我们可以将节点间的跨接阻抗转换为对地阻抗，如\xref{fig:米勒定理}所示。
+
+\begin{Figure}[米勒定理]
+    \begin{FigureSub}[等效前]
+        \includegraphics[scale=0.8]{build/Chapter06A_13.fig.pdf}
+    \end{FigureSub}
+    \hspace{1cm}
+    \begin{FigureSub}[等效后]
+        \includegraphics[scale=0.8]{build/Chapter06A_14.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+如\xref{fig:等效前}所示，理想放大器$A$上不通电流，但$V_1,V_2$节点间又有电势差，因此必然有电流$I$流过$Z$，对于$V_1$节点有电流$I$流出，对于$V_2$节点有电流$I$流入。而阻抗等效的关键就在于，令等效的接地阻抗$Z_1,Z_2$能模仿出上述“$V_1$有电流$I$流出，$V_2$有电流$I$流入”。\setpeq{米勒等效}
+
+首先，电流$I$依据等效前的电路应当表示为
+\begin{Equation}&[1]
+    I=\frac{V_1-V_2}{Z}
+\end{Equation}
+等效后，阻抗$Z_1$上流过的电流$I$为（由$V_1$至地）
+\begin{Equation}&[2]
+    I=+\frac{V_1}{Z_1}
+\end{Equation}
+等效后，阻抗$Z_2$上流过的电流$I$为（由地至$V_2$）
+\begin{Equation}&[3]
+    I=-\frac{V_2}{Z_2}
+\end{Equation}
+联立\xrefpeq{1}和\xrefpeq{2}，可以解出$Z_1$
+\begin{Equation}
+    \frac{V_1-V_2}{Z}=
+    \frac{V_1}{Z_1}\qquad
+    Z_1=\frac{ZV_1}{V_1-V_2}=\frac{Z}{1-V_2/V_1}=\frac{Z}{1-A}
+\end{Equation}
+联立\xrefpeq{1}和\xrefpeq{3}，可以解出$Z_2$
+\begin{Equation}
+    \frac{V_2-V_1}{Z}=
+    \frac{V_2}{Z_2}\qquad
+    Z_2=\frac{ZV_2}{V_2-V_1}=\frac{Z}{1-V_1/V_2}=\frac{Z}{1-A^{-1}}
+\end{Equation}
+在多数情况下，由于$A\gg 1$，输出等效阻抗$Z_2$往往被进一步近似为$Z$。
+\begin{BoxTheorem}[米勒定理]
+    \uwave{米勒定理}（Miller Theorem）是指，跨接阻抗$Z$可以转换为对地阻抗$Z_1,Z_2$
+    \begin{Equation}
+        Z_1=\frac{1}{1-A}\qquad Z_2=\frac{Z}{1-A^{-1}}\approx Z
+    \end{Equation}
+\end{BoxTheorem}
+
+应当指出的是，尽管上述分析相当严密，但实践中，米勒定理实质上具有近似属性。这是因为我们假定了$V_{out}/V_{in}$恒等于$A$，然而，跨接阻抗$Z$势必对$V_{out}/V_{in}$存在影响，米勒定理的等效则使这种影响被近似忽略，从而造成不准确的结果。米勒定理能否适用要取决于实际情况。

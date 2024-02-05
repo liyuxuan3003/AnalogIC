@@ -1,0 +1,22 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-2]
+\xValDefine{xR}[+2]
+\xValPropor{xG}{xL}{xR}[2/3]
+
+\xSetY
+\xValDefine{yB}[-1]
+\xValDefine{yA}[+1]
+
+\draw (xL|-yA) node[left] {$V_{in}$} to[R=$R$,o-] (xG|-yA) to[short,-o] (xR|-yA) node[right] {$V_{out}$};
+
+\draw (xG|-yA) to[C=$C$] (xG|-yB) node[ground] {};
+
+\xValBorder{xL}[-0.8]{xR}[+0.95]{yB}[-0.8]{yA}[+0.92]*
+
+\end{tikzpicture}
+\end{document}

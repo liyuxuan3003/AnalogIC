@@ -1,0 +1,26 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-1]
+\xValDefine{xR}[+1]
+\xValDefine{xP}[+0.5]
+\xValMiddle{xC}{xL}{xR}
+
+\xSetY
+\xValDefine{yB}[-1]
+\xValDefine{yA}[+1]
+\xValDefine{yP}[+0.5]
+\xValMiddle{yC}{yB}{yA}
+
+\draw[->,gray] (xL|-yC) -- (xR|-yC) node[above] {$\sigma$};
+\draw[->,gray] (xC|-yB) -- (xC|-yA) node[right] {$\j\omega$};
+
+\draw (xP|-yC) node {$\times$};
+
+\xValBorder{xL}{xR}{yB}{yA}*
+
+\end{tikzpicture}
+\end{document}

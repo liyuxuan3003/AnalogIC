@@ -79,7 +79,7 @@ xNsub=9 10^(14);
 xVTH=VTH0+gamma(Sqrt[2PhiF-VBS]-Sqrt[2PhiF]);
 listVal={VTH0->xVTH0,VTH->xVTH,kB->xkB,q->xq,T->xT,VT->xVT,
 	tox->xtox,eox->xeox,esi->xesi,e0->xe0,Cox->xCox,
-	mu->xmu,W->xW,L->xL,E->xE,alpha->xalpha,xi->xxi,
+	mu->xmu,W->xW,L->xL,Ex->xE,alpha->xalpha,xi->xxi,
 	gamma->xgamma,PhiF->xPhiF,LD->xLD,Nsub->xNsub,
 	PB->xPB,Cj0->xCJ0,Cjsw0->xCJSW0,MJ->xMJ,MJSW->xMJSW,
 	Cov->xCov
@@ -89,7 +89,7 @@ listVal={VTH0->xVTH0,VTH->xVTH,kB->xkB,q->xq,T->xT,VT->xVT,
 xC1=W L Cox
 xC2=W Cov
 xC3=W L Sqrt[q esi e0 Nsub/(4 PhiF)]
-xC4=W E Cj+2(W+E)Cjsw
+xC4=W Ex Cj+2(W+Ex)Cjsw
 xCj=Cj0/(1-VD/PB)^MJ
 xCjsw=Cjsw0/(1-VD/PB)^MJSW
 

@@ -77,7 +77,7 @@ xCov=0.4 10^(-9);
 xVTH=VTH0+gamma(Sqrt[2PhiF-VBS]-Sqrt[2PhiF]);
 listVal={VTH0->xVTH0,VTH->xVTH,kB->xkB,q->xq,T->xT,VT->xVT,
 	tox->xtox,eox->xeox,e0->xe0,Cox->xCox,
-	mu->xmu,W->xW,L->xL,E->xE,alpha->xalpha,xi->xxi,
+	mu->xmu,W->xW,L->xL,Ex->xE,alpha->xalpha,xi->xxi,
 	gamma->xgamma,PhiF->xPhiF,LD->xLD,
 	PB->xPB,Cj0->xCJ0,Cjsw0->xCJSW0,MJ->xMJ,MJSW->xMJSW,
 	Cov->xCov
@@ -89,7 +89,7 @@ xgm=mu Cox (W/L)(VGS-VTH)
 
 xC1=W L Cox
 xC2=W Cov
-xC4=W E Cj+2(W+LD)Cjsw
+xC4=W Ex Cj+2(W+Ex)Cjsw
 xCj=Cj0/(1-VD/PB)^MJ
 xCjsw=Cjsw0/(1-VD/PB)^MJSW
 
@@ -173,48 +173,179 @@ PR=((#1 #2)/(#1+#2))&
 xH=((CGD s-gm)RD)/(RS RD (CGS CGD+CGS CBD+CGD CBD)s^2+(RS(1+gm RD)CGD+RS CGS+RD(CGD+CBD))s+1);
 xHPoles=FunctionPoles[xH,s];
 xHZeros=FunctionPoles[xH^(-1),s];
-xwp1=xHPoles[[2]][[1]]
-xwp2=xHPoles[[1]][[1]]
-xwz1=xHZeros[[1]][[1]]
+xwp1=xHPoles[[2]][[1]];
+xwp2=xHPoles[[1]][[1]];
+xwz1=xHZeros[[1]][[1]];
 xwp1mi=1/(RS(CGS+(1+gm RD)CGD));
 xwp2mi=1/(RD(CBD+CGD));
-xwp2rsh=FullSimplify[1/(PR[RD,(1/gm)((CGD+CGS)/(CGD))](CBD+PR[CGD,CGS]))]
+xwp2rsh=FullSimplify[1/(PR[RD,(1/gm)((CGD+CGS)/(CGD))](CBD+PR[CGD,CGS]))];
 xwp1dh=1/(RS(CGS+(1+gm RD)CGD)+RD(CGD+CBD));
 xwp2dh=1/(RS RD (CGS CGD+CGS CBD+CGD CBD)) 1/xwp1dh;
-
-
-(* ::InheritFromParent:: *)
-(*(-CBD RD-CGD RD-CGD RS-CGS RS-CGD gm RD RS+\[Sqrt](-4 (CBD CGD RD RS+CBD CGS RD RS+CGD CGS RD RS)+(CBD RD+CGD RD+CGD RS+CGS RS+CGD gm RD RS)^2))/(2 (CBD CGD RD RS+CBD CGS RD RS+CGD CGS RD RS))*)
-
-
-(* ::InheritFromParent:: *)
-(*(-CBD RD-CGD RD-CGD RS-CGS RS-CGD gm RD RS-\[Sqrt](-4 (CBD CGD RD RS+CBD CGS RD RS+CGD CGS RD RS)+(CBD RD+CGD RD+CGD RS+CGS RS+CGD gm RD RS)^2))/(2 (CBD CGD RD RS+CBD CGS RD RS+CGD CGS RD RS))*)
-
-
-(* ::InheritFromParent:: *)
-(*(CGD+CGS+CGD gm RD)/(CBD CGD RD+CBD CGS RD+CGD CGS RD)*)
 
 
 {CGS RS,RS(1+gm RD)CGD+RD(CGD+CBD)}//.lval//.{RS->20k}
 
 
-LogLogPlot[Evaluate[Abs/@{xwp1,xwp1mi,xwp2,xwp2mi,xwp2rsh}//.lval],{RS,100,1M},Evaluate@xFigConfig]
+fig1=LogLogPlot[Evaluate[Abs/@{xwp1,xwp2,xwz1,xwp1dh,xwp2dh}//.lval],{RS,100,1M},
+PlotRange->{5 10^(7),2 10^(13)},
+FrameTicks->{xTicksLog[{2,6,1}],xTicksLog[{8,13,1}]},
+GridLines->{xGridsLog[{2,6,1},{100,1M}],xGridsLog[{8,13,1},{10^(8),10^(13)}]},
+Evaluate@xFigLabel["R_S~(\\si{\\ohm})","|\\omega|"],
+PlotStyle->{
+	Red,Blue,Gray,
+	Directive[Darker[Red],Dashed,Thickness[0.003]],
+	Directive[Darker[Blue],Dashed,Thickness[0.003]]},
+PlotLegends->Placed[LineLegend[{
+		xLaTeX["-\\omega_{p1}",0.7],
+		xLaTeX["-\\omega_{p2}",0.7],
+		xLaTeX["+\\omega_z",0.7],
+		xLaTeX["-\\omega_{p1}~\\text{Dominant Pole}",0.7],
+		xLaTeX["-\\omega_{p2}~\\text{Dominant Pole}",0.7]
+	},
+	LegendMarkerSize->{{22,1}},
+	LegendFunction->"Panel",
+	LegendLayout -> {"Column",2}],{Left,Bottom}],
+Evaluate@xFigConfig]
 
 
-xwp1
+fig2=LogLogPlot[Evaluate[Abs/@{xwp1,xwp2,xwp2rsh,xwp1mi,xwp2mi}//.lval],{RS,100,1M},
+PlotRange->{5 10^(7),2 10^(13)},
+FrameTicks->{xTicksLog[{2,6,1}],xTicksLog[{8,13,1}]},
+GridLines->{xGridsLog[{2,6,1},{100,1M}],xGridsLog[{8,13,1},{10^(8),10^(13)}]},
+Evaluate@xFigLabel["R_S~(\\si{\\ohm})","|\\omega|"],
+PlotStyle->{
+	Red,Blue,Directive[Lighter[Blue],Dashed,Thickness[0.004]],
+	Directive[Red,Dashed,Thickness[0.004]],
+	Directive[Blue,Dashed,Thickness[0.004]]},
+PlotLegends->Placed[LineLegend[{
+		xLaTeX["-\\omega_{p1}",0.7],
+		xLaTeX["-\\omega_{p2}",0.7],
+		xLaTeX["-\\omega_{p2}~R_S\\to\\infty",0.7],
+		xLaTeX["-\\omega_{p1}~\\text{Miller}",0.7],
+		xLaTeX["-\\omega_{p2}~\\text{Miller}",0.7]
+	},
+	LegendMarkerSize->{{22,1}},
+	LegendFunction->"Panel",
+	LegendLayout -> {"Column",2}],{Left,Bottom}],
+Evaluate@xFigConfig]
 
 
-(* ::InheritFromParent:: *)
-(*(-CBD RD-CGD RD-CGD RS-CGS RS-CGD gm RD RS+\[Sqrt](-4 (CBD CGD RD RS+CBD CGS RD RS+CGD CGS RD RS)+(CBD RD+CGD RD+CGD RS+CGS RS+CGD gm RD RS)^2))/(2 (CBD CGD RD RS+CBD CGS RD RS+CGD CGS RD RS))*)
+xBF1=1;
+xBF2=(Abs[xwp1]^1/(w)^1)(xBF1/.{w->Abs[xwp1]});
+xBF3=(Abs[xwp2]^2/(w)^2)(xBF2/.{w->Abs[xwp2]});
+xBF4=(Abs[xwz1]^1/(w)^1)(xBF3/.{w->Abs[xwz1]});
+xBode=Piecewise[{
+	{xBF1,0<w<=Abs[xwp1]},
+	{xBF2,Abs[xwp1]<w<=Abs[xwp2]},
+	{xBF3,Abs[xwp2]<w<=Abs[xwz1]},
+	{xBF4,Abs[xwz1]<w}
+}];
 
 
-LogLogPlot[Evaluate[Abs/@{xwp1,xwp1mi,xwp2,xwp2mi,xwp2rsh}//.lval],{RS,100,1M},Evaluate@xFigConfig]
+xRS=20k;
+lB=Join[lval,{RS->xRS}];
+xH0=Re[xH/.lB/.{s->I w}/.{w->1}];
+xAbs=Abs[(xH/xH0)//.lB/.{s->I w}];
+xAbsAppr=xBode//.lB;
+listw=Table[x//.lB,{x,{xwp1,xwp2,xwz1}}];
 
 
-RBColorList=Table[Blend[{Red,Blue},x],{x,0,1,1/(#1-1)}]&;
+Table[ScientificForm[x//.lB,4],{x,{xwp1,xwp2,xwz1}}]
 
 
-fig={}
+fig3=LogLogPlot[{xAbsAppr,xAbs},{w,10^9,10^(14)},
+PlotStyle->{Black,Directive[Red,Thickness[0.003]]},
+PlotRange->{5 10^(-6),2 10^(0)},
+FrameTicks->{xTicksLog[{9,14,1}],xTicksLog[{-5,0,1}]},
+GridLines->{xGridsLog[{9,14,1},{10^9,10^14}],xGridsLog[{-5,0,1},{10^(-5),10^(0)}]},
+Evaluate@xFigLabel["\\omega","|A/A_0|"],
+PlotLegends->Placed[LineLegend[{
+		xText["\:5e45\:9891\:54cd\:5e94\:ff08\:8fd1\:4f3c\:ff09",8],
+		xText["\:5e45\:9891\:54cd\:5e94\:ff08\:7cbe\:786e\:ff09",8]
+	},
+	LegendMarkerSize->{{22,1}},
+	LegendFunction->"Panel",
+	LegendLayout -> {"Column",1}],{Left,Bottom}],
+Prolog->{
+	Dashed,Gray,Thickness[0.002],
+	Table[Line[{{Log[Abs[x]],Log[2 10^0]},{Log[Abs[x]],Log[5 10^-6]}}]//.lval/.{RS->xRS},{x,{xwp1,xwp2,xwz1}}],
+	Text[xLaTeX["\\omega_{p1}=-2.003\\times 10^{10}",0.6],{Log[Abs[listw[[1]]/4]],Log[4 10^-1]}],
+	Text[xLaTeX["\\omega_{p2}=-3.824\\times 10^{11}",0.6],{Log[Abs[listw[[2]]/4]],Log[1.4 10^-2]}],
+	Text[xLaTeX["\\omega_{z}=+1.544\\times 10^{12}",0.6],{Log[Abs[listw[[3]] 4]],Log[1.4 10^-4]}],
+	Text[xLaTeX["-20\\mathrm{dB}\\cdot\\mathrm{dec}^{-1}",0.4],{Log[1 10^11],Log[8 10^-1]}],
+	Text[xLaTeX["-40\\mathrm{dB}\\cdot\\mathrm{dec}^{-1}",0.4],{Log[8 10^11],Log[8 10^-1]}],
+	Text[xLaTeX["-20\\mathrm{dB}\\cdot\\mathrm{dec}^{-1}",0.4],{Log[4.5 10^12],Log[8 10^-1]}],
+},
+Evaluate@xFigConfig]
+
+
+fig4=LogLinearPlot[Arg[xH//.lval/.{RS->xRS,s-> I w}]/Pi,{w,10^9,10^14},
+PlotStyle->{Black},
+PlotRange->{-1.1,1.1},
+FrameTicks->{xTicksLog[{9,14,1}],xTicksProp[{-1,1,0.25},{3,2},1]},
+GridLines->{xGridsLog[{9,14,1},{10^9,10^14}],xGrids[{-1,1,0.25}]},
+Evaluate@xFigLabel["\\omega","\\arg (A)/\\pi"],
+Epilog->{
+	Dashed,Gray,Thickness[0.002],
+	Table[Line[{{Log[Abs[x]],1.1 Pi},{Log[Abs[x]],-1.1}}]//.lB,{x,{xwp1,xwp2,xwz1}}],
+	Text[xLaTeX["\\omega_{p1}=-2.003\\times 10^{10}",0.6],{Log[Abs[listw[[1]]/4]],0.6}],
+	Text[xLaTeX["\\omega_{p2}=-3.824\\times 10^{11}",0.6],{Log[Abs[listw[[2]]/4]],0.1}],
+	Text[xLaTeX["\\omega_{z}=+1.544\\times 10^{12}",0.6],{Log[Abs[listw[[3]] 4]],-0.6}],
+},
+PlotLegends->Placed[LineLegend[{
+		xText["\:76f8\:9891\:54cd\:5e94",8]
+	},
+	LegendMarkerSize->{{22,1}},
+	LegendFunction->"Panel",
+	LegendLayout -> {"Column",1}],{Left,Bottom}],
+Evaluate@xFigConfig]
+
+
+(*xZin=(s CGS+ s RD(CGD+CBD)+1)/(s^2 CGS CGD (1+gm RD+s RD CBD));*)
+
+
+xZin=FullSimplify@PR[(1+s RD (CGD+CBD))/((1+gm RD+s RD CBD)s CGD),1/(s CGS)]
+
+
+xZinApx=FullSimplify@PR[1/((1+gm RD)s CGD),1/(s CGS)]
+
+
+xZinR=FullSimplify@PR[1/gm,RD]
+
+
+Re[xZin]//.lB/.{s->I w}//.{w->10^15}
+
+
+{Abs@Re[xZinApx]}//.lB/.{s->I w}/.{w->10^20}
+
+
+LogLinearPlot[Evaluate[{Abs@Re[xZinApx]}//.lB/.{s->I w}],
+{w,10^9,10^14},PlotRange->All,
+Evaluate@xFigConfig]
+
+
+fig5=LogLogPlot[Evaluate[{Abs@Re[xZin],5 10^-3,Abs@xZinR,Abs@Im[xZin],Abs@Im[xZinApx]}//.lB/.{s->I w}],
+{w,10^9,10^14},
+PlotRange->{2 10^-3,2 10^6},
+FrameTicks->{xTicksLog[{9,14,1}],xTicksLog[{-2,6,1}]},
+GridLines->{xGridsLog[{9,14,1},{10^9,10^14}],xGridsLog[{-2,6,1},{10^-2,10^6}]},
+PlotStyle->{Red,Directive[Red,Dashed],Directive[Darker[Red],Thickness[0.004]],Blue,Directive[Blue,Dashed]},
+PlotLegends->Placed[LineLegend[{
+		xLaTeX["+R_{in}",0.7],
+		xLaTeX["+R_{in}~\\text{Miller}=0",0.7],
+		xLaTeX["+R_{in}~C_{GD}\\to\\infty",0.7],
+		xLaTeX["-X_{in}",0.7],
+		xLaTeX["-X_{in}~\\text{Miller}",0.7]
+	},
+	LegendMarkerSize->{{22,1}},
+	LegendFunction->"Panel",
+	LegendLayout -> {"Column",2}],{Left,0.25}],
+Epilog->{Text[xLaTeX["\\textcolor{red}{+R_{in}~\\text{Miller}=0}",0.8],{Log[1.5 10^13],Log[1.2 10^-2]}]},
+Evaluate@xFigLabel["\\omega","Z_{in}~(\\si{\\ohm})"],
+Evaluate@xFigConfig]
+
+
+fig={fig1,fig2,fig3,fig4,fig5}
 
 
 figWithName=Transpose[{fig,nbPDFNameList[[1;;Length[fig]]]}];
