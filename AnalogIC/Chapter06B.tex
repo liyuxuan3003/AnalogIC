@@ -1,0 +1,423 @@
+\section{共源级放大器的频率响应}
+
+本节考虑共源级放大器的频率响应，\xref{fig:共源级放大器的频率响应}是考虑MOS寄生电容后的共源级放大器的电路，根据\xref{sec:MOS的寄生电容}，MOS在饱和区共需要考虑$C_{GD},C_{GS},C_{BD},C_{BS}$四个寄生电容，其中$C_{BS}$由于源接地被短接不需要考虑，其余三个电容均按预期呈现了。另外，这里的$R_S$是输入信号的内阻，这个电阻不是故意添加，而是代表了前级的输出电阻。现在，我们将要分析\xref{fig:共源级放大器的频率响应电路}的频率特性，通过三种不同方式：米勒定理近似、源电阻无穷大近似、基于小信号电路的精确分析。
+\begin{Figure}[共源级放大器的频率响应电路]
+    \includegraphics[scale=0.8]{build/Chapter06B_02.fig.pdf}
+\end{Figure}
+
+\subsection{基于米勒定理的近似分析}
+在\xref{fig:共源级放大器的频率响应电路}中电容$C_{GD}$跨接在输入和输出节点间，可以应用米勒近似将其分解。
+
+\begin{Figure}[共源级放大器的米勒近似电路]
+    \includegraphics[scale=0.8]{build/Chapter06B_03.fig.pdf}
+\end{Figure}
+
+\xref{fig:共源级放大器的米勒近似电路}中电容$C_1$是$C_{GS}$和$C_{GD}$在输入的等效电容的并联，根据\fancyref{thm:米勒定理}\setpeq{基于米勒定理近似的分析}
+\begin{Equation}&[1]
+    C_1=C_{GS}+C_{GD}(1-A)
+\end{Equation}
+根据\fancyref{fml:采用电阻负载的共源级}，电阻负载的共源级的增益$A=-g_mR_D$
+\begin{Equation}&[2]
+    C_1=C_{GS}+C_{GD}(1+g_mR_D)
+\end{Equation}
+\xref{fig:共源级放大器的米勒近似电路}中电容$C_2$是$C_{BD}$和$C_{GD}$在输出的等效电容的并联，根据\fancyref{thm:米勒定理}
+\begin{Equation}&[3]
+    C_2=C_{BD}+C_{GD}
+\end{Equation}
+至此，输入和输出的电容都已经确定了，现在依据节点对应极点的思想，计算两个极点频率。
+
+输入极点频率$\omega_{p1}$可以表示为下式，就$C_1$代入\xrefpeq{2}
+\begin{Equation}&[4]
+    \omega_{p1}=-\frac{1}{R_SC_1}=-\frac{1}{R_S[C_{GS}+C_{GD}(1+g_mR_D)]}
+\end{Equation}
+输出极点频率$\omega_{p2}$可以表示为下式，就$C_2$代入\xrefpeq{3}
+\begin{Equation}&[5]
+    \omega_{p2}=-\frac{1}{R_DC_2}=-\frac{1}{R_D[C_{BD}+C_{GD}]}
+\end{Equation}
+而最终的系统函数即为
+\begin{Equation}
+    A(s)=\frac{-g_mR_D}{(1-s/\omega_{p1})(1-s/\omega_{p2})}
+\end{Equation}
+这就是米勒近似下，共源级放大器的频率响应的分析，非常简洁。将结论整理如下。
+
+\begin{BoxFormula}[共源级频率响应--增益--米勒近似]
+    共源级放大器，依据米勒近似，具有两个左极点$\omega_{p1},\omega_{p2}$，系统函数为
+    \begin{Equation}
+        A(s)=\frac{-g_mR_D}{(1-s/\omega_{p1})(1-s/\omega_{p2})}
+    \end{Equation}
+    输入极点频率$\omega_{p1}$为（米勒近似）
+    \begin{Equation}
+        \omega_{p1}=-\frac{1}{R_S[C_{GS}+C_{GD}(1+g_mR_D)]}
+    \end{Equation} 
+    输出极点频率$\omega_{p2}$为（米勒近似）
+    \begin{Equation}
+        \omega_{p2}=-\frac{1}{R_D[C_{BD}+C_{GD}]}
+    \end{Equation}
+\end{BoxFormula}
+
+关于上述分析，有一个疑点。计算极点频率时的$-1/RC$中的$R$和$C$应当是串联至地的，然而在\xref{fig:共源级放大器的米勒近似电路}中计算输出极点频率时$R_D$和$C_2$却是并联至地的，如何调节这个矛盾？实际上这是一项巧合所致，首先应当注意的是，这里$M_1$和$R_D$是作为一个增益为$A=-g_mR_D$共源级放大器的整体出现的，这里的$R_D$是放大器的一部分，其实从最开始就根本不应该被考虑。
+
+但同时，这个共源级放大器并不是一个理想的放大器
+\begin{itemize}
+    \item 理想放大器有这样的特征，输入电阻为无穷大，输出电阻为零。
+    \item 理想放大器可以表示实际放大器（即具有非理想输入输出电阻的放大器），如\xref{fig:实际放大器的构成}所示。
+    \item 输入电阻是并联在理想放大器的输入端的。
+    \item 输出电阻是串联在理想放大器的输出端的。
+\end{itemize}
+\begin{Figure}[实际放大器的构成]
+    \includegraphics[scale=0.8]{build/Chapter06B_06.fig.pdf}
+\end{Figure}
+在这个例子中，输入电阻$R_{in}$确实是无穷大的，但是，输出电阻$R_{out}$则不是零，然而巧合的是，电阻负载的共源级的输出电阻$R_{out}=R_D$，而输出电阻$R_{out}=R_D$是串联在放大器输出端上的，它与输出端电容$C_{2}$串联后接地。这就解释了为何刚刚的“错误思路”答案是正确的。
+
+
+\subsection{基于源电阻无穷大的近似分析}
+这里还有另一种方法，可以简单的近似计算输出极点$\omega_2$，即假设源电阻$R_S$是无穷大的。
+\begin{Figure}[共源级放大器的源电阻无穷大近似电路]
+    \includegraphics[scale=0.8]{build/Chapter06B_04.fig.pdf}
+\end{Figure}
+
+输出节点的电容$C$，此时是$C_{BD}$并联$C_{GD},C_{GS}$的串联\setpeq{基于源电阻无穷大的近似分析}
+\begin{Equation}&[1]
+    C=C_{BD}+\frac{C_{GD}C_{GS}}{C_{GD}+C_{GS}}
+\end{Equation}
+通分
+\begin{Equation}&[2]
+    C=\frac{C_{GD}C_{GS}+C_{GS}C_{BD}+C_{BD}C_{GD}}{C_{GD}+C_{GS}}
+\end{Equation}
+输出节点的电阻$R$，一方面是$R_D$，一方面是$M_1$漏源间的等效电阻。这就是要问，$M_1$漏端的电压变化$V_{out}$能引发$M_1$漏源间多大的电流变化$I_D$呢？两者的比值就是$M_1$漏源的等效电阻。$M_1$的栅极是$V_{out}$在$C_{GS}$上的分压，即$V_{out}[C_{GD}/(C_{GS}+C_{GD})]$，其在漏源间引起的电流就是$g_mV_{out}[C_{GD}/(C_{GS}+C_{GD})]$，因此等效电阻就是$g_m^{-1}[(C_{GS}+C_{GD})/C_{GD}]$，故有
+\begin{Equation}&[3]
+    R=R_D\parallel\frac{C_{GS}+C_{GD}}{g_mC_{GD}}
+\end{Equation}
+化简结果为
+\begin{Equation}&[4]
+    R=\frac{R_D(C_{GD}+C_{GS})}{C_{GD}(1+g_m R_D)+C_{GS}}
+\end{Equation}
+结合\xrefpeq{2}和\xrefpeq{4}
+\begin{Equation}
+    \omega_{p2}=-\frac{1}{RC}=-\frac{C_{GD}(1+g_mR_D)+C_{GS}}{R_D[C_{GD}C_{GS}+C_{GS}C_{BD}+C_{BD}C_{GD}]}
+\end{Equation}
+整理如下
+\begin{BoxFormula}[共源级频率响应--增益--源电阻无穷大]
+    共源级放大器，依据源电阻无穷大近似，可以求得输出极点频率$\omega_{p2}$的另一表达式。
+    
+    输出极点频率$\omega_{p2}$为（源电阻无穷大近似）
+    \begin{Equation}
+        \omega_{p2}=-\frac{C_{GD}(1+g_mR_D)+C_{GS}}{R_D[C_{GD}C_{GS}+C_{GS}C_{BD}+C_{BD}C_{GD}]}
+    \end{Equation}
+\end{BoxFormula}
+
+\subsection{共源级放大器增益的频率特性}
+在这一小节，我们将用精确的方法分析共源级放大器的频率特性。米勒近似固然简便，但其存在两点问题，第一点是我们稍后会看到米勒近似对极点频率的估计并不精确，第二点是，共源级放大器实际存在两个极点和一个零点，米勒近似完全忽略了零点的存在，这是严重的错误。
+
+\begin{Figure}[共源级放大器的频率响应小信号电路]
+    \includegraphics[scale=0.8]{build/Chapter06B_05.fig.pdf}
+\end{Figure}
+
+\xref{fig:共源级放大器的频率响应小信号电路}是\xref{fig:共源级放大器的频率响应电路}对应的小信号电路，现对其进行分析。\setpeq{共源级放大器增益的频率特性}
+
+就\xref{fig:共源级放大器的频率响应小信号电路}中标注X处，应用KCL
+\begin{Equation}&[1]
+    (V_{GS}-V_{in})R_S^{-1}+V_{GS}C_{GS}s+(V_{GS}-V_{out})C_{GD}s=0
+\end{Equation}
+就\xref{fig:共源级放大器的频率响应小信号电路}中标注Y处，应用KCL
+\begin{Equation}&[2]
+    (V_{out}-V_{GS})C_{GD}s+V_{GS}g_m+V_{out}R_{D}^{-1}+V_{out}C_{BD}s=0
+\end{Equation}
+在\xrefpeq{1}中，将$V_{GS}$归并至左侧
+\begin{Equation}&[3]
+    V_{GS}(R_S^{-1}+C_{GS}s+C_{GD}s)=V_{in}R_S^{-1}+V_{out}C_{GD}s
+\end{Equation}
+在\xrefpeq{2}中，将$V_{GS}$归并至右侧
+\begin{Equation}&[4]
+    V_{GS}(C_{GD}s-g_m)=V_{out}(R_D^{-1}+C_{BD}s+C_{GD}s)
+\end{Equation}
+根据\xrefpeq{3}和\xrefpeq{4}，通过$V_{GS}$建立关于$V_{in},V_{out}$的方程
+\begin{Equation}&[5]
+    V_{GS}=\frac{V_{in}R_S^{-1}+V_{out}C_{GD}s}{(C_{GD}s+C_{GS}s+R_S^{-1})}=\frac{V_{out}(C_{GD}s+C_{BD}s+R_D^{-1})}{C_{GD}s-g_m}
+\end{Equation}
+即
+\begin{Equation}&[6]
+    \qquad\quad
+    V_{in}R_S^{-1}+V_{out}C_{GD}s=\frac{V_{out}(C_{GD}s+C_{BD}s+R_D^{-1})(C_{GD}s+C_{GS}s+R_S^{-1})}{C_{GD}s-g_m}
+    \qquad\quad
+\end{Equation}
+移项吗，两侧同乘$R_S$
+\begin{Equation}&[7]
+    V_{in}=\frac{V_{out}R_S(C_{GD}s+C_{BD}s+R_D^{-1})(C_{GD}s+C_{GS}s+R_S^{-1})-V_{out}R_SC_{GD}s(C_{GD}s-g_m)}{C_{GD}s-g_m}
+\end{Equation}
+计算$V_{out}/V_{in}$
+\begin{Equation}&[8]
+    A(s)=\frac{V_{out}}{V_{in}}=\frac{C_{GD}s-g_m}{R_S(C_{GD}s+C_{BD}s+R_D^{-1})(C_{GD}s+C_{GS}s+R_S^{-1})-R_SC_{GD}s(C_{GD}s-g_m)}
+\end{Equation}
+上下同乘$R_D$
+\begin{Equation}&[9]
+    A(s)=\frac{(C_{GD}s-g_m)R_D}{R_DR_S(C_{GD}s+C_{BD}s+R_D^{-1})(C_{GD}s+C_{GS}s+R_S^{-1})-R_SC_{GD}s(C_{GD}s-g_m)}
+\end{Equation}
+\xrefpeq{9}的分母相当复杂，但本质上不过是一个常数项为$1$的二次多项式
+\begin{Equation}&[10]
+    A(s)=\frac{(C_{GD}s-g_m)R_D}{As^2+Bs+1}
+\end{Equation}
+其中系数$A$为
+\begin{Equation}&[11]
+    A=R_DR_S(C_{GD}C_{GS}+C_{GS}C_{BD}+C_{BD}C_{GD})
+\end{Equation}
+其中系数$B$为
+\begin{Equation}&[12]
+    B=R_D(C_{GD}+C_{BD})+R_S(C_{GD}+C_{GS})+g_mR_DR_SC_{GD}
+\end{Equation}
+至此，系统函数被精确解出了，我们注意到，共源级放大器具有两个极点和一个零点，这个零点在先前应用米勒近似的分析中是未曾发现的！而接下来，我们的目的就是具体解算出两个极点$\omega_{p1},\omega_{p2}$和一个零点$\omega_z$的频率。为此，期望\xrefpeq{10}中的系统函数$A(s)$变换为以下形式
+\begin{Equation}&[13]
+    A(s)=\frac{-g_mR_D(1-s/\omega_z)}{(1-s/\omega_{p1})(1-s/\omega_{p2})}
+\end{Equation}
+分子部分的变化是容易的
+\begin{Equation}&[14]
+    \qquad\qquad\qquad
+    (C_{GD}s-g_m)R_D=-g_mR_D(1-sC_{GD}/g_m)=-g_mR_D(1-s/\omega_z)
+    \qquad\qquad\qquad
+\end{Equation}
+
+因此，很容易确定零点$\omega_z$为
+\begin{Equation}&[15]
+    \omega_z=\frac{g_m}{C_{GD}}
+\end{Equation}
+分母部分，我们注意到
+\begin{Equation}&[16]
+    (1-s/\omega_{p1})(1-s/\omega_{p2})=s^2\frac{1}{\omega_{p1}\omega_{p2}}-s\qty(\frac{1}{\omega_{p1}}+\frac{1}{\omega_{p2}})+1
+\end{Equation}
+因此
+\begin{Equation}&[17]
+    A=\frac{1}{\omega_{p1}\omega_{p2}}\qquad B=-\frac{1}{\omega_{p1}}-\frac{1}{\omega_{p2}}
+\end{Equation}
+据此，结合\xrefpeq{11}和\xrefpeq{12}给出的$A$和$B$的表达式，确定$\omega_{p1}$和$\omega_{p2}$是可行的，至少对于计算机而言是可行的。事实是通过这种方式得到$\omega_{p1}$和$\omega_{p2}$的固然无比精确，但表达式将无比负载。为了得到略微简洁一些的结果，考虑主极点近似，假设$\omega_{p1}\ll \omega_{p2}$，假设的意义是认为在两个极点频率相差很多，其中频率较低的极点$\omega_{p1}$起到主要作用，即所谓主极点。
+
+在主极点近似下，由于$\omega_{p1}\ll\omega_{p2}$使得$1/\omega_{p1}\gg 1/\omega_{p2}$，\xrefpeq{17}简化为
+\begin{Equation}&[18]
+    A=\frac{1}{\omega_{p1}\omega_{p2}}\qquad B=-\frac{1}{\omega_{p1}}
+\end{Equation}
+这个简化相当有效，因为它使得我们能仅通过$B$确定$\omega_{p1}$，依据\xrefpeq{12}
+\begin{Equation}&[19]
+    \qquad\qquad
+    \omega_{p1}=-\frac{1}{B}=-\frac{1}{R_D(C_{GD}+C_{BD})+R_S(C_{GD}+C_{GS})+g_mR_DR_SC_{GD}}
+    \qquad\qquad
+\end{Equation}
+这样$\omega_{p2}$就很容易求出了，由于$\omega_{p2}=1/(A\omega_{p1})=-B/A$
+\begin{Equation}&[20]
+    \qquad\qquad
+    \omega_{p2}=-\frac{B}{A}=-\frac{R_D(C_{GD}+C_{BD})+R_S(C_{GD}+C_{GS})+g_mR_DR_SC_{GD}}{R_DR_S(C_{GD}C_{GS}+C_{GS}C_{BD}+C_{BD}C_{GD})}
+    \qquad\qquad
+\end{Equation}
+整理如下
+\begin{BoxFormula}[共源级频率响应--增益--精确结果]
+    共源级放大器，具有两个左极点$\omega_{p1},\omega_{p2}$和一个右零点$\omega_z$，系统函数为
+    \begin{Equation}
+        A(s)=\frac{-g_mR_D(1-s/\omega_z)}{(1-s/\omega_{p1})(1-s/\omega_{p2})}
+    \end{Equation}
+    输入极点频率$\omega_{p1}$为（主极点近似）
+    \begin{Equation}
+        \qquad\qquad
+        \omega_{p1}=-\frac{1}{R_D(C_{GD}+C_{BD})+R_S(C_{GD}+C_{GS})+g_mR_DR_SC_{GD}}
+        \qquad\qquad
+    \end{Equation}
+    输出极点频率$\omega_{p2}$为（主极点近似）
+    \begin{Equation}
+        \qquad\qquad
+        \omega_{p2}=-\frac{R_D(C_{GD}+C_{BD})+R_S(C_{GD}+C_{GS})+g_mR_DR_SC_{GD}}{R_DR_S(C_{GD}C_{GS}+C_{GS}C_{BD}+C_{BD}C_{GD})}
+        \qquad\qquad
+    \end{Equation}
+    零点频率$\omega_z$为（精确解）
+    \begin{Equation}
+        \omega_z=\frac{g_m}{C_{GD}}
+    \end{Equation}
+\end{BoxFormula}
+
+让我们总结一下我们目前得到的版本众多的零极点公式
+\begin{itemize}
+    \item 输入极点$\omega_{p1}$：精确解（未写出表达式）、主极点近似、米勒近似。
+    \item 输出极点$\omega_{p2}$：精确解（未写出表达式）、主极点近似、米勒近似、源电阻无穷大近似。
+    \item 零点$\omega_z$：精确解。
+\end{itemize}
+为了对各零极点$\omega_z,\omega_{p1},\omega_{p2}$进行数量级和相对大小的感知，以及直观感受极点$\omega_{p1},\omega_{p2}$的各种版本的近似公式的优劣，我们将对$\omega_z,\omega_{p1},\omega_{p2}$进行作图，选定源电阻$R_S$作为自变量，包括跨导和电容$g_m,C_{GD},C_{GS},C_{BD}$的参数取\xref{tab:MOS处于饱和区时的参数值}的结果，而漏极电阻$R_{D}$取$R_D=\SI{20}{k\ohm}$。\goodbreak
+
+\xref{fig:共源级放大器的零极点频率精确结果}展示了$\omega_{p1},\omega_{p2},\omega_z$的精确解和$\omega_{p1},\omega_{p2}$的主极点近似的结果
+\begin{itemize}
+    \item 当$R_S$较大时，$\omega_{p1},\omega_{p2},\omega_z$的相对关系是是$|\omega_{p1}|<|\omega_{p2}|<|\omega_{z}|$。
+    \item 当$R_S$很小时，$\omega_{p1},\omega_{p2},\omega_z$的相对关系是是$|\omega_{p1}|<|\omega_{z}|<|\omega_{p2}|$。
+    \item $\omega_{p1},\omega_{p2}$的主极点近似效果极佳，在全域上几乎都完全贴合精确解。
+\end{itemize}
+\xref{fig:共源级放大器的零极点频率近似结果}对比了$\omega_{p1},\omega_{p2}$的米勒近似和$\omega_{p2}$的源电阻无穷大近似与其精确解的差异
+
+\begin{itemize}
+    \item $\omega_{p1},\omega_{p2}$的米勒近似都是在$R_S$较大时才与精确解比较接近，但两者的“接近”程度是不同的：$\omega_{p1}$的米勒近似是比较准确的，$\omega_{p2}$的米勒近似却仍然低估了精确值若干倍。这表明，米勒近似除了会漏掉可能存在的零点，米勒得出的极点频率可能也没那么准确。
+    \item $\omega_{p2}$的源电阻无穷大近似在$R_S$较大时是比较准确的，比$\omega_{p2}$的米勒近似效果好。
+\end{itemize}
+\begin{Figure}[共源级放大器的零极点频率]
+    \begin{FigureSub}[精确结果;共源级放大器的零极点频率精确结果]
+        \includegraphics[scale=0.8]{build/Chapter06B_01a.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[近似结果;共源级放大器的零极点频率近似结果]
+        \includegraphics[scale=0.8]{build/Chapter06B_01b.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+\xref{fig:共源级放大器的频率响应}展示了基于$R_S=R_D=\SI{20}{k\ohm}$参数设定的幅频响应和相频响应曲线，由于随着频率增加，先后遇到的是极点、极点、零点，因此幅频特性经历了$-20,-40,-20\;\si{dB.dec^{-1}}$的变化趋势。但另外一方面，零点在幅频上虽然可以抵消一个极点的作用，然而，作为右零点其与左极点在相频上的作用是叠加的（每个$-\pi/2$），三者一共造成了$-3\pi/2$的相位延迟。由于共源级放大器本身就是反相的，因此，其相频响应曲线从最初的$\pi$随着频率增加最终趋近于$-\pi/2$。
+\begin{Figure}[共源级放大器的频率响应]
+    \begin{FigureSub}[幅频响应;共源级放大器的频率响应幅频响应]
+        \includegraphics[scale=0.8]{build/Chapter06B_01c.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[相频响应;共源级放大器的频率响应相频响应]
+        \includegraphics[scale=0.8]{build/Chapter06B_01d.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+有趣的是，\xref{fml:共源级频率响应--增益--精确结果}的精确结果，是可以通过一定假设退回到米勒近似\xref{fml:共源级频率响应--增益--米勒近似}的结果的。
+
+\xref{fml:共源级频率响应--增益--精确结果}中的$\omega_{p1}$为
+\begin{Equation}
+    \qquad\qquad\qquad
+    \omega_{p1}=-\frac{1}{R_D(C_{GD}+C_{BD})+R_S(C_{GD}+C_{GS})+g_mR_DR_SC_{GD}}
+    \qquad\qquad\qquad
+\end{Equation}
+若认为$R_D(C_{GD}+C_{BD})$相较分母其他项足够小
+\begin{Equation}
+    \omega_{p1}=-\frac{1}{R_S(C_{GD}+C_{GS})+g_mR_DR_SC_{GD}}
+\end{Equation}
+整理得到
+\begin{Equation}
+    \omega_{p1}=-\frac{1}{R_S[C_{GS}+C_{GD}(1+g_mR_D)]}
+\end{Equation}
+这就是\xref{fml:共源级频率响应--增益--米勒近似}中米勒近似下的$\omega_{p1}$的表达式。
+
+\xref{fml:共源级频率响应--增益--精确结果}中的$\omega_{p2}$为
+\begin{Equation}
+    \qquad\qquad\qquad
+    \omega_{p2}=-\frac{R_D(C_{GD}+C_{BD})+R_S(C_{GD}+C_{GS})+g_mR_DR_SC_{GD}}{R_DR_S(C_{GD}C_{GS}+C_{GS}C_{BD}+C_{BD}C_{GD})}
+    \qquad\qquad\qquad
+\end{Equation}
+若认为$C_{GS}$很大，以至于分子仅保留$R_SC_{GS}$，而分母仅保留含$C_{GS}$的项
+\begin{Equation}
+    \omega_{p2}=-\frac{R_SC_{GS}}{R_DR_S(C_{GD}C_{GS}+C_{GS}C_{BD})}
+\end{Equation}
+约掉$R_SC_{GS}$
+\begin{Equation}
+    \omega_{p2}=-\frac{1}{R_D[C_{GD}+C_{BD}]}
+\end{Equation}
+这就是\xref{fml:共源级频率响应--增益--米勒近似}中米勒近似下的$\omega_{p2}$的表达式。当然，此处$C_{GS}$很大的假设并不正确，因为在MOS寄生电容中，最大的电容是$C_{GD}$而非$C_{GS}$，这也是为什么$\omega_{p2}$的米勒近似并不可靠。
+
+\subsection{共源级放大器阻抗的频率特性}
+在这一小节，我们将考虑共源级放大器输入阻抗的频率特性。这一点相当重要，因为在低频时，由于栅极不导电，我们认为由于共源级的输入电阻是无穷大的。但是，在高频下，容抗会逐渐减小，MOS的电容的影响将不能再忽略，换言之，MOS的电容使高频下栅不再绝缘。
+
+在分析输入阻抗时，我们不再考虑输入端的源电阻$R_S$的影响，这不是放大器的一部分。
+
+如\xref{fig:共源级放大器的输入阻抗米勒近似}所示，先用米勒近似对输入阻抗做近似分析，输入端唯一的阻抗就是$C_1$，故
+\begin{Equation}
+    Z_{in}=\frac{1}{sC_1}=\frac{1}{s[C_{GS}+(1+g_mR_D)C_{GD}]}
+\end{Equation}
+这表明，在米勒近似下，输入阻抗在任何频率下都是完全容性的。
+\begin{BoxFormula}[共源级频率响应--输入阻抗--米勒近似]
+    共源级放大器，输入阻抗$Z_{in}$的米勒近似是
+    \begin{Equation}
+        Z_{in}=\frac{1}{s[C_{GS}+(1+g_mR_D)C_{GD}]}
+    \end{Equation}
+\end{BoxFormula}
+如\xref{fig:共源级放大器的输入阻抗精确分析}所示，现在对输入阻抗进行精确分析，由于$C_{GS}$是孤立的，简洁起见，我们可以暂时忽略$C_{GS}$的影响，最终将结果并联其阻抗$1/sC_{GS}$即可。输入端进入的电流为$I_{in}$，而由于$C_{GS}$被暂时忽略，这些电流$I_{in}$全部从$C_{GD}$上通过，同时$M_1$上通过的电流是$g_mV_{in}$，因此$R_D$和$C_{BD}$的并联支路上通过的总电流就是$I_{in}-g_mV_{in}$。接下来将基于此进行分析。
+\begin{Figure}[共源级放大器的输入阻抗]
+    \begin{FigureSub}[米勒近似;共源级放大器的输入阻抗米勒近似]
+        \includegraphics[scale=0.8]{build/Chapter06B_08.fig.pdf}
+    \end{FigureSub}
+    \hspace{1cm}
+    \begin{FigureSub}[精确分析;共源级放大器的输入阻抗精确分析]
+        \includegraphics[scale=0.8]{build/Chapter06B_07.fig.pdf}
+    \end{FigureSub}
+\end{Figure}\setpeq{共源级放大器阻抗的频率特性}
+
+输入节点电压$V_{out}$，是$R_D$和$C_{BD}$的并联支路的对地电压
+\begin{Equation}&[1]
+    V_{out}=(I_{in}-g_mV_{in})\qty(R_D\parallel\frac{1}{sC_{BD}})
+\end{Equation}
+即
+\begin{Equation}&[2]
+    V_{out}=(I_{in}-g_mV_{in})\frac{R_D}{1+sR_DC_{BD}}
+\end{Equation}
+输入节点电压$V_{in}$，是$C_{GD}$上的电压加上$V_{out}$
+\begin{Equation}&[3]
+    V_{in}=V_{out}+I_{in}\frac{1}{sC_{GD}}
+\end{Equation}
+将\xrefpeq{2}代入\xrefpeq{3}
+\begin{Equation}
+    V_{in}=(I_{in}-g_mV_{in})\frac{R_D}{1+sR_DC_{BD}}+I_{in}\frac{1}{sC_{GD}}
+\end{Equation}
+整理得到
+\begin{Equation}
+    V_{in}\qty(1+\frac{g_mR_D}{1+sR_DC_{BD}})=I_{in}\qty(\frac{R_D}{1+sR_DC_{BD}}+\frac{1}{sC_{GD}})
+\end{Equation}
+通分
+\begin{Equation}
+    V_{in}\frac{1+sR_DC_{BD}+g_mR_D}{(1+sR_DC_{BD})}=I_{in}\frac{1+sR_DC_{BD}+sR_DC_{GD}}{sC_{GD}(1+sR_DC_{BD})}
+\end{Equation}
+即
+\begin{Equation}
+    V_{in}\frac{1+sR_DC_{BD}+g_mR_D}{(1+sR_DC_{BD})}=I_{in}\frac{1+sR_D(C_{GD}+C_{BD})}{sC_{GD}(1+sR_DC_{BD})}
+\end{Equation}
+求得阻抗为
+\begin{Equation}
+    Z_{in}=\frac{1+sR_D(C_{GD}+C_{BD})}{sC_{GD}(1+sR_DC_{BD}+g_mR_D)}
+\end{Equation}
+但是正如我们前面所说，在这个基础上，还需要并联$1/sC_{GS}$
+\begin{Equation}
+    Z_{in}=\frac{1+sR_D(C_{GD}+C_{BD})}{sC_{GD}(1+sR_DC_{BD}+g_mR_D)}\parallel\frac{1}{sC_{GS}}
+\end{Equation}
+整理如下
+\begin{BoxFormula}[共源级频率响应--输入阻抗--精确结果]
+    共源级放大器，输入阻抗$Z_{in}$的精确结果是
+    \begin{Equation}
+        Z_{in}=\frac{1+sR_D(C_{GD}+C_{BD})}{sC_{GD}(1+sR_DC_{BD}+g_mR_D)}\parallel\frac{1}{sC_{GS}}
+    \end{Equation}
+\end{BoxFormula}
+值得注意的是，\xref{fml:共源级频率响应--输入阻抗--精确结果}的精确结果同样是可以退回至\xref{fml:共源级频率响应--输入阻抗--精确结果}的米勒近似。
+
+在\xref{fml:共源级频率响应--输入阻抗--精确结果}中，假设$|sR_D(C_{GD}+C_{BD})|\ll 1$和$|sR_DC_{BD}|\ll 1$，则有
+\begin{Equation}
+    Z_{in}=\frac{1}{sC_{GD}(1+g_mR_D)}\parallel\frac{1}{sC_{GS}}
+\end{Equation}
+即
+\begin{Equation}
+    Z_{in}=\frac{1}{sC_{GD}(1+g_mR_D)+sC_{GS}}
+\end{Equation}
+或
+\begin{Equation}
+    Z_{in}=\frac{1}{s[C_{GS}+C_{GD}(1+g_mR_D)]}
+\end{Equation}
+这就是\xref{fml:共源级频率响应--增益--米勒近似}的结果。
+
+除此之外，我们还有一个有趣的方法，可以估测一下输入阻抗中的电阻成分，思路是$C_{GD}$足够大，使其容抗相当于短路，此时，$M_1$是二极管连接，故$R_{in}$就是$R_D$和$g_m^{-1}$的并联
+\begin{Equation}
+    R_{in}=R_D\parallel g_m^{-1}=\frac{R_D}{1+g_mR_D}
+\end{Equation}
+\begin{BoxFormula}[共源级频率响应--输入阻抗--电阻估计]
+    共源级放大器，输入阻抗$Z_{in}$中的电阻成分$R_{in}$可以估计为
+    \begin{Equation}
+        R_{in}=R_D\parallel g_m^{-1}=\frac{R_D}{1+g_mR_D}
+    \end{Equation}
+\end{BoxFormula}
+
+现对$Z_{in}$的精确结果和米勒近似，以及$R_{in}$的估测进行作图，参数选取和之前一致。
+
+\begin{Figure}[共源级放大器的输入阻抗]
+    \begin{FigureSub}[电阻和电抗;共源级放大器的输入阻抗电阻和电抗]
+        \includegraphics[scale=0.8]{build/Chapter06B_01e.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[阻抗的幅值;共源级放大器的输入阻抗幅值]
+        \includegraphics[scale=0.8]{build/Chapter06B_01f.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[阻抗的相角;共源级放大器的输入阻抗相角]
+        \includegraphics[scale=0.8]{build/Chapter06B_01g.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+\xref{fig:共源级放大器的输入阻抗电阻和电抗}绘制了$Z_{in}$的精确结果和米勒近似的电阻和电抗，以及$C_{GD}\to\infty$下的电阻估测
+\begin{itemize}
+    \item 在低频阶段，输入电阻保持恒定，在$\SI{1e3}{\ohm}$数量级，输入电抗则非常大，但是随频率的增加而逐渐减小。在阻抗中，容性成分最初非常高，直到分界点附近，容性成分仍然略大于阻性成分，\xref{fig:共源级放大器的输入阻抗相角}也展示了这点，最初相角是$-\pi/2$，最大处也未超过$-\pi/4$。
+    \item 在高频阶段，输入电抗以相同速率继续减小（值得注意的是，在分界点附近，输入电抗的减小速率曾有所减缓，但随后又恢复），同时，输入电阻也开始减小，且电阻的减小速率比电抗快，因此，容性成分的比例再次逐渐提高，相角从接近$-pi/4$恢复到$-\pi/2$。
+    \item 米勒近似的结果，对于电抗，在低频阶段相当准确，在高频阶段则有些偏差，相对精确值小了若干倍，但趋势是基本正确的。然而，值得注意的是，米勒近似得到的输入阻抗是纯容性的，换言之，对于电阻，米勒近似认为恒定是零，这与事实是严重不符的。但是，考虑到大部分情况下输入电抗都远大于输入电阻，这种近似结果也勉强能接受。
+    \item 通过$C_{GD}\to\infty$估测的输入电阻，比较准确的反映了低频阶段的输入电阻。
+\end{itemize}
+\xref{fig:共源级放大器的输入阻抗幅值}和\xref{fig:共源级放大器的输入阻抗相角}分别展示了$Z_{in}$的幅频特性和相频特性。

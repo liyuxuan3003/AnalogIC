@@ -1,0 +1,287 @@
+\section{共漏级放大器的频率响应}
+本节考虑共漏级放大器的频率响应，如\xref{fig:共漏级放大器的频率响应电路}所示。注意到两点：首先为简化分析这里使用电流源而不是电阻作为负载，其次这里电容仅出现了$C_{GS},C_{GD},C_{BS}$，其中，$C_{BD}$由于漏接电源被短接。另外，$C_{GD}$表现为栅的接地电容也是因为漏接了电源，在小信号下就相当于地。
+
+\begin{Figure}[共漏级放大器的频率响应电路]
+    \includegraphics[scale=0.8]{build/Chapter06C_02.fig.pdf}
+\end{Figure}
+
+\subsection{共漏级放大器增益的的频率特性}
+顺着之前的思路，我们会很自然的想，这里能否同样将$C_{GS}$运用米勒定理等效？理论上是可以，但实际情况是，这里的输入输出节点间通过$C_{GS}$有很强的相互作用，使用米勒定理等效将造成极大的偏差。因此，如\xref{fig:共源级放大器的频率响应小信号电路}所示，我们直接绘制\xref{fig:共漏级放大器的频率响应电路}的小信号电路进行分析。
+
+\begin{Figure}[共源级放大器的频率响应小信号电路]
+    \includegraphics[scale=0.8]{build/Chapter06C_03.fig.pdf}
+\end{Figure}\setpeq{共漏级放大器增益的的频率特性}
+就\xref{fig:共源级放大器的频率响应小信号电路}中标注X处，应用KCL
+\begin{Equation}&[1]
+    (V_{GS}+V_{out}-V_{in})R_S^{-1}+V_{GS}C_{GS}s+(V_{GS}+V_{out})C_{GD}s=0
+\end{Equation}
+就\xref{fig:共源级放大器的频率响应小信号电路}中标注Y处，应用KCL
+\begin{Equation}&[2]
+    V_{out}C_{BS}s-V_{GS}C_{GS}s-V_{GS}g_m=0
+\end{Equation}
+整理\xrefpeq{2}得到
+\begin{Equation}&[3]
+    V_{out}C_{BS}s-V_{GS}(C_{GS}s+g_m)=0
+\end{Equation}
+将$V_{GS}$用$V_{out}$表示
+\begin{Equation}&[4]
+    V_{GS}=\frac{C_{BS}s}{C_{GS}s+g_m}V_{out}
+\end{Equation}
+整理\xrefpeq{1}得到
+\begin{Equation}&[5]
+    V_{GS}(R_S^{-1}+C_{GD}s+C_{GS}s)=V_{in}R_S^{-1}-V_{out}C_{GD}s-V_{out}R_S^{-1}
+\end{Equation}
+将\xrefpeq{4}代入\xrefpeq{5}
+\begin{Equation}&[6]
+    V_{out}\frac{C_{BS}s(R_S^{-1}+C_{GD}s+C_{GS}s)}{C_{GS}s+g_m}=V_{in}R_S^{-1}-V_{out}C_{GD}s-V_{out}R_S^{-1}
+\end{Equation}
+将所有$V_{out}$都移至左侧，并通分
+\begin{Equation}&[7]
+    \qquad\qquad
+    V_{out}\frac{C_{BS}s(R_S^{-1}+C_{GD}s+C_{GS}s)+(C_{GD}s+R_S^{-1})(C_{GS}s+g_m)}{C_{GS}s+g_m}=V_{in}R_S^{-1}
+    \qquad\qquad
+\end{Equation}
+即得
+\begin{Equation}&[8]
+    \qquad
+    A(s)=\frac{V_{out}}{V_{in}}=\frac{C_{GS}s+g_m}{R_S[C_{BS}s(R_S^{-1}+C_{GD}s+C_{GS}s)+(C_{GD}s+R_S^{-1})(C_{GS}s+g_m)]}
+    \qquad
+\end{Equation}
+不妨上下同乘$g_m^{-1}$，这样的目的是将分母的常数项凑成$1$
+\begin{Equation}&[9]
+    \qquad\qquad
+    A(s)=\frac{C_{GS}g_m^{-1}s+1}{R_Sg_m^{-1}[C_{BS}s(R_S^{-1}+C_{GD}s+C_{GS}s)+(C_{GD}s+R_S^{-1})(C_{GS}s+g_m)]}
+    \qquad\qquad
+\end{Equation}
+\xrefpeq{9}必然可以转化为以下形式
+\begin{Equation}&[10]
+    A(s)=\frac{C_{GS}g_m^{-1}s+1}{As^2+Bs+1}
+\end{Equation}
+其中系数$A$为
+\begin{Equation}&[11]
+    A=R_Sg_m^{-1}(C_{GD}C_{GS}+C_{GS}C_{BS}+C_{BS}C_{GD})
+\end{Equation}
+其中系数$B$为
+\begin{Equation}&[12]
+    B=R_SC_{GD}+g_m^{-1}(C_{GS}+C_{BS})
+\end{Equation}
+将\xrefpeq{10}转化为可以凸显零点和极点的形式
+\begin{Equation}&[13]
+    A(s)=\frac{1-s/\omega_z}{(1-s/\omega_{p1})(1-s/\omega_{p2})}
+\end{Equation}
+其中$\omega_z$为
+\begin{Equation}
+    \omega_z=-\frac{g_m}{C_{GS}}
+\end{Equation}
+其中$\omega_{p1}$应用主极点近似，参照\xrefpeq[共源级放大器增益的频率特性]{19}
+\begin{Equation}
+    \omega_{p1}=-\frac{1}{B}=-\frac{1}{R_SC_{GD}+g_m^{-1}(C_{GS}+C_{BS})}
+\end{Equation}
+其中$\omega_{p2}$应用主极点近似，参照\xrefpeq[共源级放大器增益的频率特性]{20}
+\begin{Equation}
+    \omega_{p2}=-\frac{B}{A}=-\frac{R_SC_{GD}+g_m^{-1}(C_{GS}+C_{BS})}{R_Sg_m^{-1}(C_{GD}C_{GS}+C_{GS}C_{BS}+C_{BS}C_{GD})}
+\end{Equation}
+整理如下
+\begin{BoxFormula}[共漏级频率响应--增益--精确结果]
+    共漏级放大器，具有两个左极点$\omega_{p1},\omega_{p2}$和一个左零点$\omega_z$，系统函数为
+    \begin{Equation}
+        A(s)=\frac{1-s/\omega_z}{(1-s/\omega_{p1})(1-s/\omega_{p2})}
+    \end{Equation}
+    输入极点频率$\omega_{p1}$为（主极点近似）
+    \begin{Equation}
+        \omega_{p1}=-\frac{1}{R_SC_{GD}+g_m^{-1}(C_{GS}+C_{BS})}
+    \end{Equation}
+    输出极点频率$\omega_{p2}$为（主极点近似）
+    \begin{Equation}
+        \omega_{p2}=-\frac{R_SC_{GD}+g_m^{-1}(C_{GS}+C_{BS})}{R_Sg_m^{-1}(C_{GD}C_{GS}+C_{GS}C_{BS}+C_{BS}C_{GD})}
+    \end{Equation}
+    零点频率$\omega_z$为（精确解）
+    \begin{Equation}
+        \omega_z=-\frac{g_m}{C_{GS}}
+    \end{Equation}
+\end{BoxFormula}
+若对比\xref{fml:共漏级频率响应--增益--精确结果}和\xref{fml:共源级频率响应--增益--精确结果}，我们注意到
+\begin{itemize}
+    \item 共漏级放大器的零点$\omega_z=-g_m/C_{GS}$是一个左零点（另有两个左极点）。
+    \item 共源级放大器的零点$\omega_z=+g_m/C_{GD}$是一个右零点（另有两个左极点）。
+\end{itemize}
+
+\xref{fig:共漏级放大器的零极点频率}展示了共漏级放大器的零极点频率，分析如下
+\begin{itemize}
+    \item 当$R_S$较大时，$\omega_{p1},\omega_{p2},\omega_z$的相对关系是是$|\omega_{p1}|<|\omega_{p2}|<|\omega_{z}|$。
+    \item 当$R_S$较小时，$\omega_{p1},\omega_{p2},\omega_z$的相对关系是是$|\omega_{p1}|<|\omega_{z}|<|\omega_{p2}|$。
+    \item 当$R_S$适中时，这时出现了一些非常特殊的情况，此时$\omega_{p1}$和$\omega_{p2}$不再是实数，而是一组共轭复根，具有相同的实部和相反的虚部，若从零极点图上看，两者表现为左半复平面上关于实轴对称的两个点。同时注意到，该阶段$\omega_{p1},\omega_{p2}$的实部和虚部大小基本相同。
+    \item 主极点近似效果仍然相当不错，但显然并不适用于$\omega_{p1},\omega_{p2}$共轭复根的情况。
+\end{itemize}
+
+\begin{Figure}[共漏级放大器的零极点频率]
+    \includegraphics[scale=0.8]{build/Chapter06C_01a.fig.pdf}
+\end{Figure}
+
+\subsection{共漏级放大器阻抗的的频率特性}
+\xref{fig:共源级放大器的输入阻抗}将帮助我们分析共漏级放大器的输入阻抗，考虑体效应，暂时忽略$C_{GD}$，介于它是直接并联在输入上，可以在最后并联到结果上。另外，计算输入阻抗时无需考虑$R_S$的影响。
+
+\begin{Figure}[共漏级放大器的输入阻抗]
+    \includegraphics[scale=0.8]{build/Chapter06C_04.fig.pdf}
+\end{Figure}\setpeq{共漏级放大器的输入阻抗}
+
+输入节点$V_{in}$可以表示为下式
+\begin{Equation}&[1]
+    V_{in}=I_{in}\frac{1}{sC_{GS}}+V_{out}
+\end{Equation}
+即
+\begin{Equation}&[2]
+    V_{out}=V_{in}-I_{in}\frac{1}{sC_{GS}}
+\end{Equation}
+输出节点$V_{out}$可以表示为下式
+\begin{Equation}&[3]
+    V_{out}=(I_{in}+g_mV_{in}-g_mV_{out}-g_{mb}V_{out})\frac{1}{sC_{BS}}
+\end{Equation}
+将\xrefpeq{2}代入\xrefpeq{3}
+\begin{Equation}&[4]
+    \qquad\qquad
+    V_{in}-I_{in}\frac{1}{sC_{GS}}=\qty[I_{in}+g_mV_{in}-(g_m+g_{mb})\qty(V_{in}-I_{in}\frac{1}{sC_{GS}})]\frac{1}{sC_{BS}}
+    \qquad\qquad
+\end{Equation}
+整理，注意到$g_mV_{in}$被约掉了
+\begin{Equation}&[5]
+    V_{in}-I_{in}\frac{1}{sC_{GS}}=\qty[I_{in}-g_{mb}V_{in}-I_{in}(g_m+g_{mb})\frac{1}{sC_{GS}}]\frac{1}{sC_{BS}}
+\end{Equation}
+将$V_{in}$和$I_{in}$的项分别置于等式两侧
+\begin{Equation}&[6]
+    V_{in}\qty(1+g_{mb}\frac{1}{sC_{BS}})=I_{in}\qty(\frac{1}{sC_{BS}}+\frac{1}{sC_{GS}}+\frac{g_m+g_{mb}}{s^2C_{GS}C_{BS}})
+\end{Equation}
+通分
+\begin{Equation}&[7]
+    V_{in}\frac{sC_{BS}+g_{mb}}{sC_{BS}}=I_{in}\frac{sC_{GS}+sC_{BS}+g_m+g_{mb}}{s^2C_{GS}C_{BS}}
+\end{Equation}
+由此即得$Z_{in}$
+\begin{Equation}&[8]
+    Z_{in}=\frac{V_{in}}{I_{in}}=\frac{sC_{GS}+sC_{BS}+g_m+g_{mb}}{sC_{GS}(sC_{BS}+g_{mb})}
+\end{Equation}
+该基础上，我们还要并上$1/sC_{GD}$
+\begin{Equation}&[9]
+    Z_{in}=\frac{sC_{GS}+sC_{BS}+g_m+g_{mb}}{sC_{GS}(sC_{BS}+g_{mb})}\parallel\frac{1}{sC_{GD}}
+\end{Equation}
+整理如下
+\begin{BoxFormula}[共漏级频率响应--输入阻抗--精确结果]
+    共漏级放大器，输入阻抗$Z_{in}$的精确结果是
+    \begin{Equation}
+        Z_{in}=\frac{sC_{GS}+sC_{BS}+g_m+g_{mb}}{sC_{GS}(sC_{BS}+g_{mb})}\parallel\frac{1}{sC_{GD}}
+    \end{Equation}
+\end{BoxFormula}
+在低频时，有$|C_{BS}s|\ll g_{mb}$（下式暂时略去$1/sC_{GD}$）
+\begin{Equation}
+    Z_{in}=\frac{sC_{GS}+g_m+g_{mb}}{sC_{GS}g_{mb}}=\frac{1}{sC_{GS}}\qty(1+\frac{g_m}{g_{mb}})+\frac{1}{g_m}
+\end{Equation}
+在高频时，有$|C_{BS}s|\gg g_{mb}$（下式暂时略去$1/sC_{GD}$）
+\begin{Equation}
+    Z_{in}=\frac{sC_{GS}+sC_{BS}+g_m}{s^2C_{GS}C_{BS}}=\frac{1}{sC_{GS}}+\frac{1}{sC_{BS}}+\frac{g_m}{s^2C_{GS}C_{BS}}
+\end{Equation}
+整理如下
+\begin{BoxFormula}[共漏级频率响应--输入阻抗--近似结果]
+    共漏级放大器，输入阻抗$Z_{in}$在低频下的近似为
+    \begin{Equation}
+        Z_{in}=\qty[\frac{1}{sC_{GS}}\qty(1+\frac{g_m}{g_{mb}})+\frac{1}{g_m}]\parallel\frac{1}{sC_{GD}}
+    \end{Equation}
+    共漏级放大器，输入阻抗$Z_{in}$在高频下的近似为
+    \begin{Equation}
+        Z_{in}=\qty[\frac{1}{sC_{GS}}+\frac{1}{sC_{BS}}+\frac{g_m}{s^2C_{GS}C_{BS}}]\parallel\frac{1}{sC_{GD}}
+    \end{Equation}
+\end{BoxFormula}
+
+\xref{fig:共漏级放大器的输入阻抗}展示了共漏级放大器的输入阻抗特性，分析如下
+\begin{itemize}
+    \item \xref{fml:共漏级频率响应--输入阻抗--近似结果}的低频近似和高频近似，对电抗$X_{in}$和阻抗的模$|Z_{in}|$而言很可靠。
+    \begin{itemize}
+        \item 低频近似用虚线表示，注意到其在低频段汇入实线（精确解）。
+        \item 高频近似用点线表示，注意到其在高频段汇入实线（精确解）。
+    \end{itemize}
+    \item 共漏级放大器的一个特殊之处在于，其输入阻抗中的电阻成分是负的，这种负阻特性可能引起不稳定，需要注意。另外，应明确的是，\xref{fml:共漏级频率响应--输入阻抗--近似结果}给出的低频近似和高频近似不适用于电阻，其中，低频近似给出了正电阻，高频近似给出了高了一个数量级的负电阻。
+\end{itemize}
+\begin{Figure}[共漏级放大器的输入阻抗]
+    \begin{FigureSub}[电阻和电抗;共漏级放大器的输入阻抗电阻和电抗]
+        \includegraphics[scale=0.8]{build/Chapter06C_01b.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[阻抗的幅值;共漏级放大器的输入阻抗幅值]
+        \includegraphics[scale=0.8]{build/Chapter06C_01c.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[阻抗的相角;共漏级放大器的输入阻抗相角]
+        \includegraphics[scale=0.8]{build/Chapter06C_01d.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
+
+\xref{fig:共漏级放大器的输出阻抗}将帮助我们分析共漏级放大器的输出阻抗，考虑体效应，暂时忽略$C_{BS}$，介于它是直接并联在输出上，可以最后并联到结果上。同时，为了计算简洁，我们不考虑$C_{GD}$的影响。\setpeq{共漏级放大器的输出阻抗}
+
+首先$R_S$和$1/sC_{GS}$的串联阻抗为
+\begin{Equation}&[1]
+    R_S+\frac{1}{sC_{GS}}=\frac{1+sC_{GS}R_S}{sC_{GS}}
+\end{Equation}
+
+\begin{Figure}[共漏级放大器的输出阻抗]
+    \includegraphics[scale=0.8]{build/Chapter06C_05.fig.pdf}
+\end{Figure}
+我们注意到$V_{G}$是$V_{out}$在$R_S$上的分压
+\begin{Equation}&[2]
+    V_G=\frac{sC_{GS}R_S}{1+sC_{GS}R_S}
+\end{Equation}
+我们可以将$V_{out}$表示为$R_S$和$C_{GS}$的串联支路上的压降
+\begin{Equation}&[3]
+    V_{out}=\qty[I_{out}+g_m(V_{G}-V_{out})-g_{mb}V_{out}]\frac{1+sC_{GS}R_S}{sC_{GS}}
+\end{Equation}
+整理
+\begin{Equation}&[4]
+    V_{out}=\qty[I_{out}+g_mV_{G}-(g_m+g_{mb})V_{out}]\frac{1+sC_{GS}R_S}{sC_{GS}}
+\end{Equation}
+将$V_{G}$用\xrefpeq{2}代换
+\begin{Equation}&[5]
+    V_{out}=\qty[I_{out}+g_m\frac{sC_{GS}R_S}{1+sC_{GS}R_S}-(g_m+g_{mb})V_{out}]\frac{1+sC_{GS}R_S}{sC_{GS}}
+\end{Equation}
+展开
+\begin{Equation}&[6]
+    \qquad\qquad\qquad
+    V_{out}=I_{out}\frac{1+sC_{GS}R_S}{sC_{GS}}+g_mR_SV_{out}-(g_m+g_{mb})\frac{1+sC_{GS}R_S}{sC_{GS}}V_{out}
+    \qquad\qquad\qquad
+\end{Equation}
+整理
+\begin{Equation}&[7]
+    V_{out}\qty[1-g_mR_S+(g_m+g_{mb})\frac{1+sC_{GS}R_S}{sC_{GS}}]=I_{out}\frac{1+sC_{GS}R_S}{sC_{GS}}
+\end{Equation}
+通分
+\begin{Equation}
+    V_{out}\frac{sC_{GS}+g_{mb}(1+sC_{GS}R_S)+g_m}{sC_{GS}}=I_{out}\frac{1+sC_{GS}R_S}{sC_{GS}}
+\end{Equation}
+由此即得$Z_{out}$
+\begin{Equation}
+    Z_{out}=\frac{1+sC_{GS}R_S}{sC_{GS}(1+g_{mb}R_S)+g_m+g_{mb}}
+\end{Equation}
+该基础上，我们还要并上$1/sC_{BS}$
+\begin{Equation}
+    Z_{out}=\frac{1+sC_{GS}R_S}{sC_{GS}(1+g_{mb}R_S)+g_m+g_{mb}}\parallel\frac{1}{sC_{BS}}
+\end{Equation}
+整理如下
+\begin{BoxFormula}[共漏级频率响应--输出阻抗--精确结果]
+    共漏级放大器，输出阻抗$Z_{out}$的精确结果是
+    \begin{Equation}
+        Z_{out}=\frac{1+sC_{GS}R_S}{sC_{GS}(1+g_{mb}R_S)+g_m+g_{mb}}\parallel\frac{1}{sC_{BS}}
+    \end{Equation}
+\end{BoxFormula}
+\xref{fig:共漏级放大器的输出阻抗}展示了共漏级放大器的输出阻抗特性，分析如下
+\begin{itemize}
+    \item 如\xref{fig:共漏级放大器的输出阻抗幅值}所示，低频下，共漏级的输出阻抗为$1/(g_m+g_{mb})$，符合认知。
+    \item 当$R_S$较小时，共漏放大器的输出阻抗中，电阻为正，电抗为负。
+    \item 当$R_S$较大时，共漏放大器的输出阻抗中，电阻为正，电抗的正负则与频率有关，我们注意到，频率较小时电抗为正，频率较大时电抗为负。这表明，输出阻抗随着频率增加经历了感性到容性的转化，尽管放大器中并不存在电感。这一特性可用于实现有源电感。
+    \item 阻抗模值$|Z_{in}|$的高频特性与$R_S$有关，这大致取决于$R_S$和$1/(gm+g_{mb})$之间的相对大小关系，若$R_S$较小则$|Z_{in}|$是单调减小的，若$R_S$较大则$|Z_{in}|$会先增大后减小。
+\end{itemize}
+
+\begin{Figure}[共漏级放大器的输出阻抗]
+    \begin{FigureSub}[电阻和电抗;共漏级放大器的输出阻抗电阻和电抗]
+        \includegraphics[scale=0.8]{build/Chapter06C_01e.fig.pdf}
+    \end{FigureSub}\\ \vspace{0.5cm}
+    \begin{FigureSub}[阻抗的幅值;共漏级放大器的输出阻抗幅值]
+        \includegraphics[scale=0.8]{build/Chapter06C_01f.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[阻抗的相角;共漏级放大器的输出阻抗相角]
+        \includegraphics[scale=0.8]{build/Chapter06C_01g.fig.pdf}
+    \end{FigureSub}
+\end{Figure}

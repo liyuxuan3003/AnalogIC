@@ -1,0 +1,49 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-6]
+\xValDefine{xR}[+6]
+\xValPropor{xVGS}{xL}{xR}[2/10]
+\xValPropor{xCGS}{xL}{xR}[3/10]
+\xValPropor{xGM}{xL}{xR}[5.5/10]
+\xValPropor{xVDS}{xL}{xR}[8.5/10]
+\xValPropor{xCBD}{xL}{xR}[7.7/10]
+\xValPropor{xRD}{xL}{xR}[9.0/10]
+
+\xSetY
+\xValDefine{yB}[-2]
+\xValDefine{yA}[+2]
+\xValMiddle{yC}{yA}{yB}
+
+\draw (xR|-yA) -- (xR|-yB);
+
+\draw (xL|-yB) node[left] {B} to[short,o-o] (xR|-yB) node[right] {B};
+\draw (xVGS|-yC) node[left] {S} to[short,o-o] (xVDS|-yC);
+\draw (xL|-yA) to[R=$R_{S}$,o-] (xVGS|-yA) to[short] (xCGS|-yA) to[C=$C_{GD}$] (xGM|-yA) to[short,-o] (xR|-yA) node[right] {D};
+
+\path (xVGS|-yA) node[above] {G};
+
+\draw (xCGS|-yA) to[C=$C_{GS}$,*-*] (xCGS|-yC);
+\draw (xCGS|-yC) to[C=$C_{BS}$,-*] (xCGS|-yB);
+\draw (xGM|-yA) to[cisource,l=$g_mV_{GS}$,*-*] (xGM|-yC);
+
+\draw (xCGS|-yB) node[ground] {};
+
+\xDrawVoltage{B}(xL|-yA)(xL|-yB)[$V_{in}$];
+\xDrawVoltage{B}(xVDS|-yC)(xVDS|-yB)[$V_{out}$];
+\xDrawVoltage{B}(xVGS|-yA)(xVGS|-yC)[$V_{GS}$];
+\xDrawVoltage{A}(xVGS|-yB)(xVGS|-yC)[$V_{BS}$];
+\xDrawVoltage{B}(xVDS|-yA)(xVDS|-yC)[$V_{DS}$];
+
+\path (xCGS|-yA) node[above] {\small [X]};
+\path (xCGS|-yC) node[above right] {\small [Y]};
+
+
+\xValBorder{xL}[-0.75]{xR}[+0.75]{yB}[-0.8]{yA}[+1.0]*
+
+
+\end{tikzpicture}
+\end{document}

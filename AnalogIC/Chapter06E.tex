@@ -1,0 +1,46 @@
+\section{共源共栅级放大器的频率响应}
+本节考虑共源共栅级放大器的频率响应，如\xref{fig:共源共栅级放大器的频率响应电路}所示。
+\begin{Figure}[共源共栅级放大器的频率响应电路]
+    \includegraphics[scale=0.8]{build/Chapter06E_02.fig.pdf}
+\end{Figure}
+
+\subsection{共源共栅级放大器增益的的频率特性}
+共源共栅级的频率响应分析思路和共栅级类似，但有三个节点。
+
+输入节点的电阻是$R_S$，电容是$C_{GS1}$和$C_{GD1}$在输入侧的米勒等效电容，这里共源级的增益是$-g_{m1}(g_{m2}+g_{mb2})^{-1}$，其中$(g_{m2}+g_{mb2})^{-1}$是共栅级的输入电阻，其充当了共源级负载
+\begin{Equation}
+    \omega_{p1}=-\frac{1}{R_S(C_{GS}+(1+g_{m1}(g_{m2}+g_{mb2})^{-1})C_{GD1})}
+\end{Equation}
+输出节点的电阻是$R_D$，电容是$C_{BD2}$和$C_{GD2}$
+\begin{Equation}
+    \omega_{p2}=-\frac{1}{R_D\qty(C_{BD2}+C_{GD2})}
+\end{Equation}
+中间节点的电阻是$(g_{m2}+g_{mb2})^{-1}$即共栅级的输入电阻，电容是$C_{BD1},C_{BD2},C_{BS2},C_{GS2}$以及$C_{GD1}$在输出侧的米勒等效电容（仍等于$C_{GD1}$），因此有
+\begin{Equation}
+    \omega_{p3}=-\frac{g_{m2}+g_{mb2}}{C_{GD1}+C_{GS2}+C_{BD1}+C_{BD2}+C_{BS2}}
+\end{Equation}
+\begin{Figure}[共源共栅级放大器的零极点频率]
+    \includegraphics[scale=0.8]{build/Chapter06E_01a.fig.pdf}
+\end{Figure}
+整理如下
+\begin{BoxFormula}[共源共栅级频率响应--增益--米勒近似]*
+    共源共栅级放大器，依据米勒近似，具有三个左极点$\omega_{p1},\omega_{p2},\omega_{p3}$，系统函数为
+    \begin{Equation}
+        A(s)=\frac{-g_mR_D}{(1-s/\omega_{p1})(1-s/\omega_{p2})(1-s/\omega_{p3})}
+    \end{Equation}
+    输入极点频率$\omega_{p1}$为（米勒近似）
+    \begin{Equation}
+        \omega_{p1}=-\frac{1}{R_S(C_{GS}+(1+g_{m1}(g_{m2}+g_{mb2})^{-1})C_{GD1})}
+    \end{Equation}
+    输出极点频率$\omega_{p2}$为（精确结果）
+    \begin{Equation}
+        \omega_{p2}=-\frac{1}{R_D\qty(C_{BD2}+C_{GD2})}
+    \end{Equation}
+    中间极点频率$\omega_{p3}$为（米勒近似）
+    \begin{Equation}
+        \omega_{p3}=-\frac{1}{C_{GD1}+C_{GS2}+C_{BD1}+C_{BD2}+C_{BS2}}
+    \end{Equation}
+\end{BoxFormula}
+\xref{fig:共源共栅级放大器的零极点频率}展示了共源共栅级放大器的零极点频率，通常而言中间极点$\omega_{p3}$的频率最大。
+
+

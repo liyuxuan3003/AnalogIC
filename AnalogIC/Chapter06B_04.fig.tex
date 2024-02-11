@@ -1,0 +1,37 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-3]
+\xValDefine{xR}[+3]
+\xValMiddle{xC}{xL}{xR}
+\xValPropor{xCGS}{xL}{xR}[2/6]
+\xValPropor{xRD}{xL}{xR}[4/6]
+\xValPropor{xCBD}{xL}{xR}[5.5/6]
+
+\xSetY
+\xValDefine{yB}[-3]
+\xValDefine{yA}[+3]
+\xValPropor{yI}{yB}{yA}[1/3]
+\xValPropor{yO}{yB}{yA}[2/3]
+
+\path (xRD|-yI) node[nmos] (M1) {$M_1$};
+
+\draw (xL|-yI) node[left] {$V_{in}$} to[open,o-] (xCGS|-yI) to[short] (M1.G);
+
+\draw (xRD|-yA) node[vdd] {$V_{DD}$} to[R=$R_D$] (xRD|-yO) to[short] (M1.D);
+
+\draw (xRD|-yB) node[ground] {} to[short] (M1.S);
+
+\draw (xCGS|-yI) to[C=$C_{GS}$] (xCGS|-yB) node[ground] {};
+
+\draw (xCGS|-yI) to[short,*-] (xCGS|-yO) to[C=$C_{GD}$,-*] (xRD|-yO) to[short,-o] (xR|-yO) node[right] {$V_{out}$};
+
+\draw (xCBD|-yO) to[C=$C_{BD}$,*-] (xCBD|-yB) node[ground] {};
+
+\xValBorder{xL}[-0.85]{xR}[+0.95]{yB}[-0.8]{yA}[+1.1]*
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,43 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-3.2]
+\xValDefine{xR}[+3.2]
+\xValMiddle{xC}{xL}{xR}
+\xValPropor{xCGS}{xL}{xR}[1.0/4]
+\xValPropor{xRD}{xL}{xR}[2.2/4]
+\xValPropor{xCBS}{xL}{xR}[2.9/4]
+
+\xSetY
+\xValDefine{yB}[-3.7]
+\xValDefine{yA}[+3.7]
+\xValPropor{yMS}{yB}{yA}[0.4/4]
+\xValPropor{yMG}{yB}{yA}[2.35/4]
+
+\path (xRD|-yMS) node[nmos] (M1) {$M_1$};
+\path (xRD|-yMG) node[nmos] (M2) {$M_2$};
+\draw (M1.D) -- (M2.S);
+\draw (M1.S) to (M1.S|-yB) node[ground] {};
+\draw (M2.D) to[R,l_=$R_D$] (M2.D|-yA) node[vdd] {$V_{DD}$};
+
+\draw (xL|-yMS) node[left] {$V_{in}$} to[R=$R_S$,o-] (xCGS|-yMS) to[short] (M1.G);
+
+\draw (xCGS|-yMS) to[C=$C_{GS1}$] (xCGS|-yB) node[ground] {};
+\draw (xCGS|-yMS) to[short,*-] (xCGS|-M1.D) to[C=$C_{GD1}$,-*] (M1.D);
+
+\draw (xL|-yMG) node[left] {$V_{b}$} to[short,o-] (M2.G);
+
+\draw (xCGS|-yMG) to[short,*-] (xCGS|-M2.D) to[C=$C_{GD2}$,-*] (M2.D);
+\draw (xCGS|-yMG) to[short,*-] (xCGS|-M2.S) to[C,l_=$C_{GS\hspace{0.07em}2}$,-*] (M2.S);
+
+\draw (M1.D) -- (xCBS|-M1.D) to[C=$C_{BD1}+C_{BS2}$] (xCBS|-yB) node[ground] {};
+\draw (M2.D) to[short,-o] (xR|-M2.D) node[right] {$V_{out}$};
+\draw (xCBS|-M2.D) to[C=$C_{BD2}$] (xCBS|-M2.S) node[ground] {};
+
+\xValBorder{xL}[-0.85]{xR}[+1]{yB}[-0.8]{yA}[+1.1]*
+
+\end{tikzpicture}
+\end{document}

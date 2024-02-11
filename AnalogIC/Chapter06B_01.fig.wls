@@ -183,50 +183,56 @@ xwp1dh=1/(RS(CGS+(1+gm RD)CGD)+RD(CGD+CBD));
 xwp2dh=1/(RS RD (CGS CGD+CGS CBD+CGD CBD)) 1/xwp1dh;
 
 
+xwp2rsh
+
+
+FullSimplify@PR[RD,(1/gm)((CGD+CGS)/(CGD))]
+
+
 {CGS RS,RS(1+gm RD)CGD+RD(CGD+CBD)}//.lval//.{RS->20k}
 
 
 fig1=LogLogPlot[Evaluate[Abs/@{xwp1,xwp2,xwz1,xwp1dh,xwp2dh}//.lval],{RS,100,1M},
-PlotRange->{5 10^(7),2 10^(13)},
-FrameTicks->{xTicksLog[{2,6,1}],xTicksLog[{8,13,1}]},
-GridLines->{xGridsLog[{2,6,1},{100,1M}],xGridsLog[{8,13,1},{10^(8),10^(13)}]},
-Evaluate@xFigLabel["R_S~(\\si{\\ohm})","|\\omega|"],
+PlotRange->{5 10^(8),2 10^(14)},
+FrameTicks->{xTicksLog[{2,6,1}],xTicksLog[{9,14,1}]},
+GridLines->{xGridsLog[{2,6,1},{100,1M}],xGridsLog[{9,14,1},{10^(9),10^(14)}]},
+Evaluate@xFigLabel["R_S~(\\si{\\ohm})","\\omega"],
 PlotStyle->{
 	Red,Blue,Gray,
-	Directive[Darker[Red],Dashed,Thickness[0.003]],
-	Directive[Darker[Blue],Dashed,Thickness[0.003]]},
+	Directive[Darker[Darker[Red]],Dashed,Thickness[0.003]],
+	Directive[Darker[Darker[Blue]],Dashed,Thickness[0.003]]},
 PlotLegends->Placed[LineLegend[{
-		xLaTeX["-\\omega_{p1}",0.7],
-		xLaTeX["-\\omega_{p2}",0.7],
-		xLaTeX["+\\omega_z",0.7],
-		xLaTeX["-\\omega_{p1}~\\text{Dominant Pole}",0.7],
-		xLaTeX["-\\omega_{p2}~\\text{Dominant Pole}",0.7]
+		xLaTeX["-\\Re\\omega_{p1}",0.7],
+		xLaTeX["-\\Re\\omega_{p2}",0.7],
+		xLaTeX["+\\Re\\omega_z",0.7],
+		xLaTeX["-\\Re\\omega_{p1}~\\text{Dominant Pole}",0.7],
+		xLaTeX["-\\Re\\omega_{p2}~\\text{Dominant Pole}",0.7]
 	},
 	LegendMarkerSize->{{22,1}},
 	LegendFunction->"Panel",
-	LegendLayout -> {"Column",2}],{Left,Bottom}],
+	LegendLayout -> {"Column",2}],{Right,0.81}],
 Evaluate@xFigConfig]
 
 
 fig2=LogLogPlot[Evaluate[Abs/@{xwp1,xwp2,xwp2rsh,xwp1mi,xwp2mi}//.lval],{RS,100,1M},
-PlotRange->{5 10^(7),2 10^(13)},
-FrameTicks->{xTicksLog[{2,6,1}],xTicksLog[{8,13,1}]},
-GridLines->{xGridsLog[{2,6,1},{100,1M}],xGridsLog[{8,13,1},{10^(8),10^(13)}]},
-Evaluate@xFigLabel["R_S~(\\si{\\ohm})","|\\omega|"],
+PlotRange->{5 10^(8),2 10^(14)},
+FrameTicks->{xTicksLog[{2,6,1}],xTicksLog[{9,14,1}]},
+GridLines->{xGridsLog[{2,6,1},{100,1M}],xGridsLog[{9,14,1},{10^(9),10^(14)}]},
+Evaluate@xFigLabel["R_S~(\\si{\\ohm})","\\omega"],
 PlotStyle->{
-	Red,Blue,Directive[Lighter[Blue],Dashed,Thickness[0.004]],
+	Red,Blue,Directive[Blend[{Blue,Green},0.5],Dashed,Thickness[0.004]],
 	Directive[Red,Dashed,Thickness[0.004]],
 	Directive[Blue,Dashed,Thickness[0.004]]},
 PlotLegends->Placed[LineLegend[{
-		xLaTeX["-\\omega_{p1}",0.7],
-		xLaTeX["-\\omega_{p2}",0.7],
-		xLaTeX["-\\omega_{p2}~R_S\\to\\infty",0.7],
-		xLaTeX["-\\omega_{p1}~\\text{Miller}",0.7],
-		xLaTeX["-\\omega_{p2}~\\text{Miller}",0.7]
+		xLaTeX["-\\Re\\omega_{p1}",0.7],
+		xLaTeX["-\\Re\\omega_{p2}",0.7],
+		xLaTeX["-\\Re\\omega_{p2}~R_S\\to\\infty",0.7],
+		xLaTeX["-\\Re\\omega_{p1}~\\text{Miller}",0.7],
+		xLaTeX["-\\Re\\omega_{p2}~\\text{Miller}",0.7]
 	},
 	LegendMarkerSize->{{22,1}},
 	LegendFunction->"Panel",
-	LegendLayout -> {"Column",2}],{Left,Bottom}],
+	LegendLayout -> {"Column",2}],{Right,0.81}],
 Evaluate@xFigConfig]
 
 
@@ -329,7 +335,7 @@ fig5=LogLogPlot[Evaluate[{Abs@Re[xZin],5 10^-3,Abs@xZinR,Abs@Im[xZin],Abs@Im[xZi
 PlotRange->{2 10^-3,2 10^6},
 FrameTicks->{xTicksLog[{9,14,1}],xTicksLog[{-2,6,1}]},
 GridLines->{xGridsLog[{9,14,1},{10^9,10^14}],xGridsLog[{-2,6,1},{10^-2,10^6}]},
-PlotStyle->{Red,Directive[Red,Dashed],Directive[Darker[Red],Thickness[0.004]],Blue,Directive[Blue,Dashed]},
+PlotStyle->{Red,Directive[Red,Dashed,Thickness[0.004]],Directive[Darker[Red],Thickness[0.004]],Blue,Directive[Blue,Dashed,Thickness[0.004]]},
 PlotLegends->Placed[LineLegend[{
 		xLaTeX["+R_{in}",0.7],
 		xLaTeX["+R_{in}~\\text{Miller}=0",0.7],
@@ -341,11 +347,46 @@ PlotLegends->Placed[LineLegend[{
 	LegendFunction->"Panel",
 	LegendLayout -> {"Column",2}],{Left,0.25}],
 Epilog->{Text[xLaTeX["\\textcolor{red}{+R_{in}~\\text{Miller}=0}",0.8],{Log[1.5 10^13],Log[1.2 10^-2]}]},
-Evaluate@xFigLabel["\\omega","Z_{in}~(\\si{\\ohm})"],
+Evaluate@xFigLabel["\\omega","R_{in}~X_{in}~(\\si{\\ohm})"],
 Evaluate@xFigConfig]
 
 
-fig={fig1,fig2,fig3,fig4,fig5}
+fig6=LogLogPlot[Evaluate[{Abs@xZin,Abs@xZinApx}//.lB/.{s->I w}],
+{w,10^9,10^14},
+PlotRange->{2 10^-3,2 10^6},
+FrameTicks->{xTicksLog[{9,14,1}],xTicksLog[{-2,6,1}]},
+GridLines->{xGridsLog[{9,14,1},{10^9,10^14}],xGridsLog[{-2,6,1},{10^-2,10^6}]},
+PlotStyle->{Black,Directive[Black,Dashed,Thickness[0.004]]},
+PlotLegends->Placed[LineLegend[{
+		xLaTeX["|Z_{in}|",0.7],
+		xLaTeX["|Z_{in}|~\\text{Miller}",0.7]
+	},
+	LegendMarkerSize->{{22,1}},
+	LegendFunction->"Panel",
+	LegendLayout -> {"Column",1}],{Right,Top}],
+Evaluate@xFigLabel["\\omega","|Z_{in}|~(\\si{\\ohm})"],
+Evaluate@xFigConfig]
+
+
+fig7=LogLinearPlot[Evaluate[{Arg[xZin]/Pi,Arg[xZinApx]/Pi}//.lB/.{s->I w}],
+{w,10^9,10^14},
+PlotRange->{-1.1,1.1},
+FrameTicks->{xTicksLog[{9,14,1}],xTicksProp[{-1,1,0.25},{3,2},1]},
+GridLines->{xGridsLog[{9,14,1},{10^9,10^14}],xGrids[{-1,1,0.25}]},
+Evaluate@xFigLabel["\\omega","\\arg(Z_{in})/\\pi"],
+PlotStyle->{Black,Directive[Black,Dashed,Thickness[0.004]]},
+PlotLegends->Placed[LineLegend[{
+		xLaTeX["\\arg(Z_{in})",0.7],
+		xLaTeX["\\arg(Z_{in})~\\text{Miller}",0.7]
+	},
+	LegendMarkerSize->{{22,1}},
+	LegendFunction->"Panel",
+	LegendLayout -> {"Column",1}],{Right,Top}],
+Evaluate@xFigLabel["\\omega","|Z_{in}|~(\\si{\\ohm})"],
+Evaluate@xFigConfig]
+
+
+fig={fig1,fig2,fig3,fig4,fig5,fig6,fig7}
 
 
 figWithName=Transpose[{fig,nbPDFNameList[[1;;Length[fig]]]}];

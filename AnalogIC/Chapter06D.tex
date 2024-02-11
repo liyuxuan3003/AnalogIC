@@ -1,0 +1,42 @@
+\section{共栅级放大器的频率响应}
+本节考虑共栅级放大器的频率响应，如\xref{fig:共栅级放大器的频率响应电路}，由于栅接偏置$V_b$在小信号下就相当于地，因此栅电容$C_{GD},C_{GS}$和$C_{BD},C_{BS}$一样均表现为接地电容。请注意！输入$V_{in}$现在位于源极。
+
+\begin{Figure}[共栅级放大器的频率响应电路]
+    \includegraphics[scale=0.8]{build/Chapter06D_02.fig.pdf}
+\end{Figure}
+
+\subsection{共栅级放大器增益的的频率特性}
+共栅级放大器的频率响应是尤为简单的，因为其输入和输出节点是孤立的。
+
+输入节点的电阻是$R_S$和共栅级输入电阻$1/(g_m+g_{mb})$的并联
+\begin{Equation}
+    \omega_{p1}=-\frac{1}{\qty[R_S\parallel(g_m+g_{mb})^{-1}](C_{GS}+C_{BS})}
+\end{Equation}
+输出节点的电阻是共栅级输出电阻$R_D$
+\begin{Equation}
+    \omega_{p2}=-\frac{1}{R_D\qty(C_{GD}+C_{BD})}
+\end{Equation}
+整理如下
+\begin{BoxFormula}[共栅级频率响应--增益--精确结果]*
+    共栅级放大器，具有两个左极点$\omega_{p1},\omega_{p2}$，无零点，系统函数为
+    \begin{Equation}
+        A(s)=\frac{g_mR_D}{(1-s/\omega_{p1})(1-s/\omega_{p2})}
+    \end{Equation}
+    输入极点频率$\omega_{p1}$为（精确结果）
+    \begin{Equation}
+        \omega_{p1}=-\frac{1}{\qty[R_S\parallel(g_m+g_{mb})^{-1}](C_{GS}+C_{BS})}
+    \end{Equation}
+    输出极点频率$\omega_{p2}$为（精确结果）
+    \begin{Equation}
+        \omega_{p2}=-\frac{1}{R_D\qty(C_{GD}+C_{BD})}
+    \end{Equation}
+\end{BoxFormula}
+
+\xref{fig:共漏级放大器的零极点频率}展示了共栅级放大器的零极点频率，分析如下
+\begin{itemize}
+    \item 共栅级中，输出极点$\omega_{p2}$比输入极点$\omega_{p1}$频率更低，这与共源和共漏相反。
+    \item 共栅级中极点$\omega_{p1},\omega_{p2}$均随$R_S$增加趋于稳定，而不会持续减小。
+\end{itemize}
+\begin{Figure}[共栅级放大器的零极点频率]
+    \includegraphics[scale=0.8]{build/Chapter06D_01a.fig.pdf}
+\end{Figure}

@@ -1,0 +1,25 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-3]
+\xValDefine{xR}[+3]
+\xValPropor{xRI}{xL}{xR}[1/6]
+\xValPropor{xRX}{xL}{xR}[1.5/6]
+\xValPropor{xA}{xL}{xR}[4/6]
+\xValPropor{xRO}{xL}{xR}[6/6]
+
+\xSetY
+\xValDefine{yB}[-1]
+\xValDefine{yA}[+1]
+
+\draw (xL|-yA) node[left] {$V_{in}$} to[short,o-] (xRX|-yA) to[amp,t=$A$] (xA|-yA) to[R=$R_{out}$,-o] (xRO|-yA) node[right] {$V_{out}$};
+
+\draw (xRI|-yA) to[R=$R_{in}$,*-] (xRI|-yB) node[ground] {}; 
+
+\xValBorder{xL}[-0.8]{xR}[+0.95]{yB}[-0.8]{yA}[+0.92]*
+
+\end{tikzpicture}
+\end{document}

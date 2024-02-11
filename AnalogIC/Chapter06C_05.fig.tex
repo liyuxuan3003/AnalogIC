@@ -1,0 +1,38 @@
+\documentclass{xStandalone}
+
+\begin{document}
+\begin{tikzpicture}
+
+\xSetX
+\xValDefine{xL}[-3]
+\xValDefine{xR}[+3]
+\xValMiddle{xC}{xL}{xR}
+\xValPropor{xCGS}{xL}{xR}[2/6]
+\xValPropor{xRD}{xL}{xR}[4/6]
+\xValPropor{xCBD}{xL}{xR}[5.5/6]
+
+\xSetY
+\xValDefine{yB}[-3]
+\xValDefine{yA}[+3]
+\xValPropor{yI}{yB}{yA}[2/3]
+\xValPropor{yO}{yB}{yA}[1.2/3]
+
+\path (xRD|-yI) node[nmos] (M1) {$M_1$};
+
+\draw (xL|-yI) node[ground] {} to[R=$R_S$] (xCGS|-yI) node[above] {$V_G$} to[short] (M1.G);
+
+\draw (xRD|-yB) node[ground] {} to[I,l_=$I_S$,invert] (xRD|-yO) to[short] (M1.S);
+
+\draw (xRD|-yA) node[vdd] {$V_{DD}$} to[short,f_=$g_m(V_{G}-V_{out})-g_{mb}V_{out}$] (M1.D);
+
+\draw (xCGS|-yI) to[short,*-] (xCGS|-yO);
+
+\draw (xCGS|-yO) to[C=$C_{GS}$,-*] (xRD|-yO) to[short,-o,f<=$I_{out}$] (xR|-yO) node[right] {$V_{out}$};
+
+\draw[gray] (xCBD|-yO) to[C=$C_{BS}$,*-,color=gray] (xCBD|-yB) node[ground] {};  
+
+
+\xValBorder{xL}[-0.85]{xR}[+0.95]{yB}[-0.8]{yA}[+1.1]*
+
+\end{tikzpicture}
+\end{document}

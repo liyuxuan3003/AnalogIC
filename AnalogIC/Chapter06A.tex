@@ -191,4 +191,18 @@
     \end{Equation}
 \end{BoxTheorem}
 
-应当指出的是，尽管上述分析相当严密，但实践中，米勒定理实质上具有近似属性。这是因为我们假定了$V_{out}/V_{in}$恒等于$A$，然而，跨接阻抗$Z$势必对$V_{out}/V_{in}$存在影响，米勒定理的等效则使这种影响被近似忽略，从而造成不准确的结果。米勒定理能否适用要取决于实际情况。
+应当指出的是，尽管上述分析相当严密，但实践中，米勒定理实质上具有近似属性。这是因为我们假定了$V_{out}/V_{in}$恒等于$A$，然而，跨接阻抗$Z$势必对$V_{out}/V_{in}$存在影响，米勒定理的等效则使这种影响被近似忽略，从而造成不准确的结果。米勒定理能否适用要取决于实际情况。\goodbreak
+
+在实践中，米勒定理面对的浮动阻抗，往往是纯电阻或纯电容（尤其是纯电容），因此，直观的感受增益的变化对于等效结果的影响是有必要的，如\xref{fig:米勒定理的等效结果}所示，当增益的绝对值$|A|$较大时
+\begin{itemize}
+    \item 对于跨接电阻$R$，输入$R_1$趋近于$0$，输出$R_2$趋近于$R$。
+    \item 对于跨接电容$C$，输入$C_1$等于$C(1-A)$，输出$C_2$趋近于$C$。
+\end{itemize}
+\begin{Figure}[米勒定理的等效结果]
+    \begin{FigureSub}[电阻的米勒等效]
+        \includegraphics[scale=0.8]{build/Chapter06A_01a.fig.pdf}
+    \end{FigureSub}
+    \begin{FigureSub}[电容的米勒等效]
+        \includegraphics[scale=0.8]{build/Chapter06A_01b.fig.pdf}
+    \end{FigureSub}
+\end{Figure}
