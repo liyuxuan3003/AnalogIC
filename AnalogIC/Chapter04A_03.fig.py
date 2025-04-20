@@ -41,7 +41,8 @@ plt.rc('ytick', labelsize=6)
 plt.rcParams["axes.prop_cycle"]=xColorCycle
 
 runner=SimRunner(output_folder=folder,simulator=LTspice)
-netlist=SpiceEditor(fileASC)
+LTspice.create_netlist(fileASC)
+netlist=SpiceEditor(fileNET)
 netlist.add_instruction(xNMOS)
 netlist.add_instruction(xPMOS)
 netlist.set_component_value("RD1","10k")

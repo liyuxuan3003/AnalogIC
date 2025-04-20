@@ -19,6 +19,8 @@ OCTS_PDF:=$(addprefix ${BUILD_DIR}/,$(OCTS:.m=.pdf))
 WLSS_PDF:=$(addprefix ${BUILD_DIR}/,$(WLSS:.wls=.pdf))
 ASCS_PDF:=$(addprefix ${BUILD_DIR}/,$(ASCS:.py=.pdf))
 
+PYTHON:=~/.venvs/env-ltspice/bin/python
+
 default: ${BUILD_DIR} ${OUTPUT}
 	@echo Makefile: Done!
 
@@ -34,10 +36,10 @@ ${BUILD_DIR}/%.fig.pdf:%.fig.m
 	octave-cli $<
 
 ${BUILD_DIR}/%.fig.pdf:%.fig.wls
-	wolframscript.exe -script $<
+	wolframscript -script $<
 
 ${BUILD_DIR}/%.fig.pdf:%.fig.py
-	/c/Anaconda3/python.exe $<
+	${PYTHON} $<
 
 ${BUILD_DIR}:
 	mkdir -p ${BUILD_DIR}

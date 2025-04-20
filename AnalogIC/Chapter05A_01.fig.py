@@ -46,7 +46,8 @@ plt.rc('ytick', labelsize=6)
 plt.rcParams["axes.prop_cycle"]=xColorCycle
 
 runner=SimRunner(output_folder=folder,simulator=LTspice)
-netlist=SpiceEditor(fileASC)
+LTspice.create_netlist(fileASC)
+netlist=SpiceEditor(fileNET)
 for model in modelList:
     netlist.add_instruction(model)
 netlist.set_component_value("VDD","4")
